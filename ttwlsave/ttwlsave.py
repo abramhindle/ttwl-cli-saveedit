@@ -964,7 +964,7 @@ class TTWLSave(object):
         to_ret = {}
         for (key, equipslot) in self.equipslots.items():
             if eng:
-                key = slot_to_eng[key]
+                key = slot_to_eng.get(key,key)
             if equipslot.get_inventory_idx() >= 0:
                 to_ret[key] = self.items[equipslot.get_inventory_idx()]
             else:

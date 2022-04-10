@@ -1,5 +1,11 @@
 # Tiny Tina's Wonderlands Commandline Savegame/Profile Editor
 
+The purpose behind this is to get save file info and to change character names and GUIDs.
+
+I frankly don't care about anything else. Cheating is bad mkay, but working on builds is great.
+
+Completely stolen from: https://github.com/apocalyptech/bl3-cli-saveedit/
+
 # Hardly anything works and it is all BL3 oriented.
 
 This project is a commandline Python-based Borderlands 3 Savegame

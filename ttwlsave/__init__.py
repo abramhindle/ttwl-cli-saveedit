@@ -20,7 +20,9 @@
 # 3. This notice may not be removed or altered from any source distribution.
 
 # Editor Version
-__version__ = '1.16.1b1'
+__version__ = '0.0.1'
+# Forked from bl3-cli-saveedit
+# __version__ = '1.16.1b1'
 
 # Classes
 (BEASTMASTER, GUNNER, OPERATIVE, SIREN) = range(4)
