@@ -6,6 +6,19 @@ I frankly don't care about anything else. Cheating is bad mkay, but working on b
 
 Completely stolen from: https://github.com/apocalyptech/bl3-cli-saveedit/
 
+Installation?
+
+```
+pip3 install --user git+https://github.com/abramhindle/ttwl-cli-saveedit
+```
+
+Use?
+
+```
+ttwl-save-info -v -i 2.sav # gives info
+ttwl-save-edit --randomize-guid  --name 'CoolNewName' 2.sav 2.newbuild.sav # makes a new save file based on the old one with a new GUID and name
+```
+
 # Hardly anything works and it is all BL3 oriented.
 
 This project is a commandline Python-based Borderlands 3 Savegame
