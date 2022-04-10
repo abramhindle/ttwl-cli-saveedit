@@ -255,6 +255,8 @@ In Memoriam: Baysix, the author of the original web-based editor at bl3editor.co
 passed away in early 2021, and that editor is now permanently offline.  RIP!
 
 # Changelog
+**v0.0.1**
+ - Tried to port it to Tina Tiny's Wonderlands
 
 **v1.16.1** - *(unreleased)*
  - Added `--copy-tvhm` option to copy TVHM state to NVHM.  **(untested still!)**
