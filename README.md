@@ -1,4 +1,6 @@
-# Borderlands 3 Commandline Savegame/Profile Editor
+# Tiny Tina's Wonderlands Commandline Savegame/Profile Editor
+
+# Hardly anything works and it is all BL3 oriented.
 
 This project is a commandline Python-based Borderlands 3 Savegame
 and Profile Editor.  It's a companion to the very similar
