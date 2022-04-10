@@ -267,7 +267,9 @@ class TTWLSave(object):
         self.equipslots = {}
         for e in self.save.equipped_inventory_list:
             equip = BL3EquipSlot(e)
-            slot = slotobj_to_slot[equip.get_obj_name()]
+            # AH: don't have slot names
+            # slot = slotobj_to_slot[equip.get_obj_name()]
+            slot = equip.get_obj_name()
             self.equipslots[slot] = equip
 
     def import_json(self, json_str):
@@ -433,9 +435,9 @@ class TTWLSave(object):
         Returns the class of this character.  By default it will be a constant,
         but if `eng` is `True` it will be an English label instead.
         """
-        classval = classobj_to_class[self.save.player_class_data.player_class_path]
+        classval = classobj_to_class.get(self.save.player_class_data.player_class_path,self.save.player_class_data.player_class_path)
         if eng:
-            return class_to_eng[classval]
+            return class_to_eng.get(classval,classval)
         return classval
 
     def get_xp(self):
@@ -1238,9 +1240,9 @@ class TTWLSave(object):
             # Fabricator, presumably.  Anyway, just ignore it.
             if 'Eridium' in pool.resource_path:
                 continue
-            key = ammoobj_to_ammo[pool.resource_path]
+            key = ammoobj_to_ammo.get(pool.resource_path,pool.resource_path)
             if eng:
-                key = ammo_to_eng[key]
+                key = ammo_to_eng.get(key,key)
             to_ret[key] = int(pool.amount)
         return to_ret
 

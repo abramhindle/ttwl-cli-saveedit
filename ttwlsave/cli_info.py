@@ -97,7 +97,8 @@ def main():
     # XP/Level
     print('XP: {}'.format(save.get_xp()))
     print('Level: {}'.format(save.get_level()))
-    print('Guardian Rank: {}'.format(save.get_guardian_rank()))
+    # AH: need to convert to chaos
+    # print('Guardian Rank: {}'.format(save.get_guardian_rank()))
 
     # Currencies
     print('Money: {}'.format(save.get_money()))
@@ -193,10 +194,15 @@ def main():
 
     # Inventory Slots that we care about
     print('Unlockable Inventory Slots:')
+    # AH: these slots are wrong
     for slot in [ttwlsave.WEAPON3, ttwlsave.WEAPON4, ttwlsave.COM, ttwlsave.ARTIFACT]:
+        equip = save.get_equip_slot(slot)
+        enabled = False
+        if equip is not None:
+            enabled = equip.enabled()
         print(' - {}: {}'.format(
             ttwlsave.slot_to_eng[slot],
-            save.get_equip_slot(slot).enabled(),
+            enabled
             ))
 
     # Inventory
