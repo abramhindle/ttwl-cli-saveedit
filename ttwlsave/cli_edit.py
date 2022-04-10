@@ -23,17 +23,17 @@
 
 import os
 import sys
-import bl3save
+import ttwlsave
 import argparse
 from . import cli_common
 from . import plot_missions
-from bl3save.bl3save import BL3Save
+from ttwlsave.ttwlsave import TTWLSave
 
 def main():
 
     # Set up args
     parser = argparse.ArgumentParser(
-            description='Borderlands 3 CLI Savegame Editor v{} (PC Only)'.format(bl3save.__version__),
+            description='Borderlands 3 CLI Savegame Editor v{} (PC Only)'.format(ttwlsave.__version__),
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             epilog="""
                 The default output type of "savegame" will output theoretically-valid
@@ -50,7 +50,7 @@ def main():
 
     parser.add_argument('-V', '--version',
             action='version',
-            version='BL3 CLI SaveEdit v{}'.format(bl3save.__version__),
+            version='BL3 CLI SaveEdit v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-o', '--output',
@@ -101,13 +101,13 @@ def main():
 
     levelgroup.add_argument('--level',
             type=int,
-            help='Set the character to this level (from 1 to {})'.format(bl3save.max_level),
+            help='Set the character to this level (from 1 to {})'.format(ttwlsave.max_level),
             )
 
     levelgroup.add_argument('--level-max',
             dest='level_max',
             action='store_true',
-            help='Set the character to max level ({})'.format(bl3save.max_level),
+            help='Set the character to max level ({})'.format(ttwlsave.max_level),
             )
 
     itemlevelgroup = parser.add_mutually_exclusive_group()
@@ -127,12 +127,12 @@ def main():
     itemmayhemgroup.add_argument('--item-mayhem-max',
             dest='item_mayhem_max',
             action='store_true',
-            help='Set all inventory items to the maximum Mayhem level ({})'.format(bl3save.mayhem_max))
+            help='Set all inventory items to the maximum Mayhem level ({})'.format(ttwlsave.mayhem_max))
 
     itemmayhemgroup.add_argument('--item-mayhem-levels',
             dest='item_mayhem_levels',
             type=int,
-            choices=range(bl3save.mayhem_max+1),
+            choices=range(ttwlsave.mayhem_max+1),
             help='Set all inventory items to the specified Mayhem level (0 to remove)')
 
     parser.add_argument('--mayhem',
@@ -262,15 +262,15 @@ def main():
     # Parse args
     args = parser.parse_args()
     if args.level is not None:
-        if args.level < 1 or args.level > bl3save.max_supported_level:
+        if args.level < 1 or args.level > ttwlsave.max_supported_level:
             raise argparse.ArgumentTypeError('Valid level range is 1 through {} (currently known in-game max of {})'.format(
-                bl3save.max_supported_level,
-                bl3save.max_level,
+                ttwlsave.max_supported_level,
+                ttwlsave.max_level,
                 ))
-        if args.level > bl3save.max_level:
+        if args.level > ttwlsave.max_level:
             print('WARNING: Setting character level to {}, when {} is the currently-known max'.format(
                 args.level,
-                bl3save.max_level,
+                ttwlsave.max_level,
                 ))
 
     # Expand any of our "all" unlock actions
@@ -287,24 +287,24 @@ def main():
 
     # Set max level arg
     if args.level_max:
-        args.level = bl3save.max_level
+        args.level = ttwlsave.max_level
 
     # Set max mayhem arg
     if args.item_mayhem_max:
-        args.item_mayhem_levels = bl3save.mayhem_max
+        args.item_mayhem_levels = ttwlsave.mayhem_max
 
     # Check item level.  The max storeable in the serial number is 127, but the
     # effective limit in-game is 100, thanks to MaxGameStage attributes.  We
-    # could use `bl3save.max_level` here, too, of course, but in the event that
+    # could use `ttwlsave.max_level` here, too, of course, but in the event that
     # I don't get this updated in a timely fashion, having it higher would let
     # this util potentially continue to be able to level up gear.
     if args.item_levels:
         if args.item_levels < 1 or args.item_levels > 100:
             raise argparse.ArgumentTypeError('Valid item level range is 1 through 100')
-        if args.item_levels > bl3save.max_level:
+        if args.item_levels > ttwlsave.max_level:
             print('WARNING: Setting item levels to {}, when {} is the currently-known max'.format(
                 args.item_levels,
-                bl3save.max_level,
+                ttwlsave.max_level,
                 ))
 
     # Check to make sure that any deleted missions are not plot missions
@@ -331,7 +331,7 @@ def main():
     # Now load the savegame
     if not args.quiet:
         print('Loading {}'.format(args.input_filename))
-    save = BL3Save(args.input_filename)
+    save = TTWLSave(args.input_filename)
     if not args.quiet:
         print('')
 
@@ -414,7 +414,7 @@ def main():
             if args.mayhem > 0:
                 if not args.quiet:
                     print('   - Also ensuring that Mayhem Mode is unlocked')
-                save.unlock_challenge(bl3save.MAYHEM)
+                save.unlock_challenge(ttwlsave.MAYHEM)
 
         # Mayhem Seed
         if args.mayhem_seed is not None:
@@ -487,44 +487,44 @@ def main():
             if 'ammo' in args.unlock:
                 if not args.quiet:
                     print('   - Ammo SDUs (and setting ammo to max)')
-                save.set_max_sdus(bl3save.ammo_sdus)
+                save.set_max_sdus(ttwlsave.ammo_sdus)
                 save.set_max_ammo()
 
             # Backpack
             if 'backpack' in args.unlock:
                 if not args.quiet:
                     print('   - Backpack SDUs')
-                save.set_max_sdus([bl3save.SDU_BACKPACK])
+                save.set_max_sdus([ttwlsave.SDU_BACKPACK])
 
             # Eridian Analyzer
             if 'analyzer' in args.unlock:
                 if not args.quiet:
                     print('   - Eridian Analyzer')
-                save.unlock_challenge(bl3save.ERIDIAN_ANALYZER)
+                save.unlock_challenge(ttwlsave.ERIDIAN_ANALYZER)
 
             # Eridian Resonator
             if 'resonator' in args.unlock:
                 if not args.quiet:
                     print('   - Eridian Resonator')
-                save.unlock_challenge(bl3save.ERIDIAN_RESONATOR)
+                save.unlock_challenge(ttwlsave.ERIDIAN_RESONATOR)
 
             # Gun Slots
             if 'gunslots' in args.unlock:
                 if not args.quiet:
                     print('   - Weapon Slots (3+4)')
-                save.unlock_slots([bl3save.WEAPON3, bl3save.WEAPON4])
+                save.unlock_slots([ttwlsave.WEAPON3, ttwlsave.WEAPON4])
 
             # Artifact Slot
             if 'artifactslot' in args.unlock:
                 if not args.quiet:
                     print('   - Artifact Inventory Slot')
-                save.unlock_slots([bl3save.ARTIFACT])
+                save.unlock_slots([ttwlsave.ARTIFACT])
 
             # COM Slot
             if 'comslot' in args.unlock:
                 if not args.quiet:
                     print('   - COM Inventory Slot')
-                save.unlock_slots([bl3save.COM])
+                save.unlock_slots([ttwlsave.COM])
 
             # Vehicles
             if 'vehicles' in args.unlock:
@@ -532,7 +532,7 @@ def main():
                     print('   - Vehicles (and parts)')
                 save.unlock_vehicle_chassis()
                 save.unlock_vehicle_parts()
-                if not args.quiet and not save.has_vehicle_chassis(bl3save.jetbeast_main_chassis):
+                if not args.quiet and not save.has_vehicle_chassis(ttwlsave.jetbeast_main_chassis):
                     print('     - NOTE: The default Jetbeast chassis will be unlocked automatically by the game')
 
             # Vehicle Skins

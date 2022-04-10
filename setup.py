@@ -3,23 +3,23 @@
 
 import os
 from setuptools import find_packages, setup
-from bl3save import __version__
+from ttwlsave import __version__
 
 def readme():
     with open('README.md') as f:
         return f.read()
 
-app_name = 'bl3-cli-saveedit'
+app_name = 'ttwl-cli-saveedit'
 
 setup(
         name=app_name,
         version=__version__,
         packages=find_packages(),
         license='zlib/libpng',
-        description='Borderlands 3 Savegame Editor',
+        description='Tiny Tina\'s Winderlands Savegame Editor',
         long_description=readme(),
         long_description_content_type='text/markdown',
-        url='https://github.com/apocalyptech/bl3-cli-saveedit',
+        url='https://github.com/abramhindle/ttwl-cli-saveedit',
         author='CJ Kucera',
         author_email='cj@apocalyptech.com',
         data_files=[
@@ -31,7 +31,7 @@ setup(
             (f'share/{app_name}/item_exports', ['mod_testing_gear.txt']),
             ],
         package_data={
-            'bl3save': [
+            'ttwlsave': [
                 'resources/inventoryserialdb.json.xz',
                 'resources/balance_name_mapping.json.xz',
                 'resources/balance_to_inv_key.json.xz',
@@ -56,21 +56,21 @@ setup(
             'console_scripts': [
 
                 # Savegame-related scripts
-                'bl3-save-edit = bl3save.cli_edit:main',
-                'bl3-save-info = bl3save.cli_info:main',
-                'bl3-save-import-protobuf = bl3save.cli_import_protobuf:main',
-                'bl3-save-import-json = bl3save.cli_import_json:main',
-                'bl3-process-archive-saves = bl3save.cli_archive:main',
+                'ttwl-save-edit = ttwlsave.cli_edit:main',
+                'ttwl-save-info = ttwlsave.cli_info:main',
+                'ttwl-save-import-protobuf = ttwlsave.cli_import_protobuf:main',
+                'ttwl-save-import-json = ttwlsave.cli_import_json:main',
+                'ttwl-process-archive-saves = ttwlsave.cli_archive:main',
                 # Actually, gonna omit this one.  Without transferring a lot of other data,
                 # this can make things a bit weird, and at that point you may as well just
                 # copy the savegame and alter other bits about it.
-                #'bl3-save-copy-pt = bl3save.cli_copy_pt:main',
+                #'ttwl-save-copy-pt = ttwlsave.cli_copy_pt:main',
 
                 # Profile-related scripts
-                'bl3-profile-edit = bl3save.cli_prof_edit:main',
-                'bl3-profile-info = bl3save.cli_prof_info:main',
-                'bl3-profile-import-protobuf = bl3save.cli_prof_import_protobuf:main',
-                'bl3-profile-import-json = bl3save.cli_prof_import_json:main',
+                'ttwl-profile-edit = ttwlsave.cli_prof_edit:main',
+                'ttwl-profile-info = ttwlsave.cli_prof_info:main',
+                'ttwl-profile-import-protobuf = ttwlsave.cli_prof_import_protobuf:main',
+                'ttwl-profile-import-json = ttwlsave.cli_prof_import_json:main',
                 ],
             },
         )

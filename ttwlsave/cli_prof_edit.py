@@ -23,16 +23,16 @@
 
 import os
 import sys
-import bl3save
+import ttwlsave
 import argparse
 from . import cli_common
-from bl3save.bl3profile import BL3Profile
+from ttwlsave.bl3profile import BL3Profile
 
 def main():
 
     # Set up args
     parser = argparse.ArgumentParser(
-            description='Borderlands 3 CLI Profile Editor v{} (PC Only)'.format(bl3save.__version__),
+            description='Borderlands 3 CLI Profile Editor v{} (PC Only)'.format(ttwlsave.__version__),
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             epilog="""
                 The default output type of "profile" will output theoretically-valid
@@ -49,7 +49,7 @@ def main():
 
     parser.add_argument('-V', '--version',
             action='version',
-            version='BL3 CLI SaveEdit v{}'.format(bl3save.__version__),
+            version='BL3 CLI SaveEdit v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-o', '--output',
@@ -188,12 +188,12 @@ def main():
     itemmayhemgroup.add_argument('--item-mayhem-max',
             dest='item_mayhem_max',
             action='store_true',
-            help='Set all bank items to the maximum Mayhem level ({})'.format(bl3save.mayhem_max))
+            help='Set all bank items to the maximum Mayhem level ({})'.format(ttwlsave.mayhem_max))
 
     itemmayhemgroup.add_argument('--item-mayhem-levels',
             dest='item_mayhem_levels',
             type=int,
-            choices=range(bl3save.mayhem_max+1),
+            choices=range(ttwlsave.mayhem_max+1),
             help='Set all bank items to the specified Mayhem level (0 to remove)')
 
     parser.add_argument('-i', '--import-items',
@@ -260,11 +260,11 @@ def main():
 
     # Set max item level arg
     if args.item_levels_max:
-        args.item_levels = bl3save.max_level
+        args.item_levels = ttwlsave.max_level
 
     # Set max mayhem arg
     if args.item_mayhem_max:
-        args.item_mayhem_levels = bl3save.mayhem_max
+        args.item_mayhem_levels = ttwlsave.mayhem_max
 
     # Check key counts; don't let them be below zero
     if args.golden_keys is not None and args.golden_keys < 0:
@@ -286,16 +286,16 @@ def main():
 
     # Check item level.  The max storeable in the serial number is 127, but the
     # effective limit in-game is 100, thanks to MaxGameStage attributes.  We
-    # could use `bl3save.max_level` here, too, of course, but in the event that
+    # could use `ttwlsave.max_level` here, too, of course, but in the event that
     # I don't get this updated in a timely fashion, having it higher would let
     # this util potentially continue to be able to level up gear.
     if args.item_levels:
         if args.item_levels < 1 or args.item_levels > 100:
             raise argparse.ArgumentTypeError('Valid item level range is 1 through 100')
-        if args.item_levels > bl3save.max_level:
+        if args.item_levels > ttwlsave.max_level:
             print('WARNING: Setting item levels to {}, when {} is the currently-known max'.format(
                 args.item_levels,
-                bl3save.max_level,
+                ttwlsave.max_level,
                 ))
 
     # Check for overwrite warnings
@@ -483,13 +483,13 @@ def main():
             if 'lostloot' in args.unlock:
                 if not args.quiet:
                     print('   - Lost Loot SDUs')
-                profile.set_max_sdus([bl3save.PSDU_LOSTLOOT])
+                profile.set_max_sdus([ttwlsave.PSDU_LOSTLOOT])
 
             # Bank
             if 'bank' in args.unlock:
                 if not args.quiet:
                     print('   - Bank SDUs')
-                profile.set_max_sdus([bl3save.PSDU_BANK])
+                profile.set_max_sdus([ttwlsave.PSDU_BANK])
 
             # Skins
             if 'skins' in args.unlock:

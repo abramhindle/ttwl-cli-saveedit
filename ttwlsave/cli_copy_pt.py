@@ -24,19 +24,19 @@
 import os
 import sys
 import argparse
-import bl3save
-from bl3save.bl3save import BL3Save
+import ttwlsave
+from ttwlsave.ttwlsave import TTWLSave
 
 def main():
 
     # Set up args
     parser = argparse.ArgumentParser(
-            description='Copy BL3 Playthrough Data v{}'.format(bl3save.__version__),
+            description='Copy BL3 Playthrough Data v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-V', '--version',
             action='version',
-            version='BL3 CLI SaveEdit v{}'.format(bl3save.__version__),
+            version='BL3 CLI SaveEdit v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-f', '--from',
@@ -72,7 +72,7 @@ def main():
         raise argparse.ArgumentTypeError('To and From filenames cannot be the same')
 
     # Load the from file and do a quick sanity check
-    save_from = BL3Save(args.filename_from)
+    save_from = TTWLSave(args.filename_from)
     total_from_playthroughs = save_from.get_max_playthrough_with_data() + 1
     if args.playthrough > 0 and total_from_playthroughs < args.playthrough:
         raise Exception('{} does not have Playthrough {} data'.format(args.filename_from, args.playthrough))
@@ -88,7 +88,7 @@ def main():
     # trigger, but I'd accidentally unlocked a third playthrough on my savegame
     # archives, so I was able to test it out regardless, in the event that BL3 ever
     # gets a third playthrough.
-    save_to = BL3Save(args.filename_to)
+    save_to = TTWLSave(args.filename_to)
     if args.playthrough > 0:
         total_to_playthroughs = save_to.get_max_playthrough_with_data() + 1
         if total_to_playthroughs == 1:

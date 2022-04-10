@@ -21,21 +21,21 @@
 # 
 # 3. This notice may not be removed or altered from any source distribution.
 
-import bl3save
+import ttwlsave
 import argparse
 import itertools
-from bl3save.bl3save import BL3Save
+from ttwlsave.ttwlsave import TTWLSave
 
 def main():
 
     # Arguments
     parser = argparse.ArgumentParser(
-            description='Borderlands 3 Savegame Info Dumper v{}'.format(bl3save.__version__),
+            description='Borderlands 3 Savegame Info Dumper v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-V', '--version',
             action='version',
-            version='BL3 CLI SaveEdit v{}'.format(bl3save.__version__),
+            version='BL3 CLI SaveEdit v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-v', '--verbose',
@@ -74,7 +74,7 @@ def main():
     args = parser.parse_args()
 
     # Load the save
-    save = BL3Save(args.filename)
+    save = TTWLSave(args.filename)
 
     # Character name
     print('Character: {}'.format(save.get_char_name()))
@@ -171,7 +171,7 @@ def main():
                         print('     {}'.format(obj_name))
 
             # "Important" missions - I'm torn as to whether or not this kind of thing
-            # should be in bl3save.py itself, or at least some constants in __init__.py
+            # should be in ttwlsave.py itself, or at least some constants in __init__.py
             mission_set = set(completed_missions)
             importants = []
             if 'Divine Retribution' in mission_set:
@@ -193,9 +193,9 @@ def main():
 
     # Inventory Slots that we care about
     print('Unlockable Inventory Slots:')
-    for slot in [bl3save.WEAPON3, bl3save.WEAPON4, bl3save.COM, bl3save.ARTIFACT]:
+    for slot in [ttwlsave.WEAPON3, ttwlsave.WEAPON4, ttwlsave.COM, ttwlsave.ARTIFACT]:
         print(' - {}: {}'.format(
-            bl3save.slot_to_eng[slot],
+            ttwlsave.slot_to_eng[slot],
             save.get_equip_slot(slot).enabled(),
             ))
 
@@ -265,12 +265,12 @@ def main():
     # Vehicle unlocks
     print('Unlocked Vehicle Parts:')
     for vehicle, chassis_count in save.get_vehicle_chassis_counts().items():
-        eng = bl3save.vehicle_to_eng[vehicle]
+        eng = ttwlsave.vehicle_to_eng[vehicle]
         print(' - {} - Chassis (wheels): {}/{}, Parts: {}/{}, Skins: {}/{}'.format(
             eng,
-            chassis_count, len(bl3save.vehicle_chassis[vehicle]),
-            save.get_vehicle_part_count(vehicle), len(bl3save.vehicle_parts[vehicle]),
-            save.get_vehicle_skin_count(vehicle), len(bl3save.vehicle_skins[vehicle]),
+            chassis_count, len(ttwlsave.vehicle_chassis[vehicle]),
+            save.get_vehicle_part_count(vehicle), len(ttwlsave.vehicle_parts[vehicle]),
+            save.get_vehicle_skin_count(vehicle), len(ttwlsave.vehicle_skins[vehicle]),
             ))
 
 if __name__ == '__main__':

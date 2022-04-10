@@ -21,7 +21,7 @@
 # 
 # 3. This notice may not be removed or altered from any source distribution.
 
-# The encryption/decryption stanzas in BL3Save.__init__ and BL3Save.save_to
+# The encryption/decryption stanzas in TTWLSave.__init__ and TTWLSave.save_to
 # were helpfully provided by Gibbed (rick 'at' gibbed 'dot' us), so many
 # thanks for that!  https://twitter.com/gibbed/status/1246863435868049410?s=19
 #
@@ -143,7 +143,7 @@ class BL3EquipSlot(object):
         """
         return self.protobuf.slot_data_path
 
-class BL3Save(object):
+class TTWLSave(object):
     """
     Real simple wrapper for a BL3 savegame file.
     
@@ -222,10 +222,10 @@ class BL3Save(object):
             # Decrypt
             for i in range(len(data)-1, -1, -1):
                 if i < 32:
-                    b = BL3Save._prefix_magic[i]
+                    b = TTWLSave._prefix_magic[i]
                 else:
                     b = data[i - 32]
-                b ^= BL3Save._xor_magic[i % 32]
+                b ^= TTWLSave._xor_magic[i % 32]
                 data[i] ^= b
 
             # Make sure that was all there was
@@ -594,7 +594,7 @@ class BL3Save(object):
         one Playthrough to another (zero-indexed playthroughs).  Will refuse to create
         "gaps"; `to_pt` is only allowed to be one higher than the current number of
         Playthroughs.  Defaults to copying NVHM data to TVHM.  This can also be used to
-        copy data from another BL3Save object; pass in `from_obj` to do that.
+        copy data from another TTWLSave object; pass in `from_obj` to do that.
         """
         if not from_obj:
             from_obj = self
@@ -648,7 +648,7 @@ class BL3Save(object):
         (zero-indexed playthroughs).  Will refuse to create "gaps"; `to_pt`
         is only allowed to be one higher than the current number of Playthroughs.
         Defaults to copying NVHM data to TVHM.  This can also be used to copy
-        data from another BL3Save object; pass in `from_obj` to do that.
+        data from another TTWLSave object; pass in `from_obj` to do that.
         """
         if not from_obj:
             from_obj = self
@@ -758,7 +758,7 @@ class BL3Save(object):
         (zero-indexed playthroughs).  Will refuse to create "gaps"; `to_pt`
         is only allowed to be one higher than the current number of Playthroughs.
         Defaults to copying NVHM data to TVHM.  This can also be used to copy
-        data from another BL3Save object; pass in `from_obj` to do that.
+        data from another TTWLSave object; pass in `from_obj` to do that.
         """
         if not from_obj:
             from_obj = self
@@ -879,7 +879,7 @@ class BL3Save(object):
         playthroughs).  Will refuse to create "gaps"; `to_pt` is only
         allowed to be one higher than the current number of Playthroughs.
         Defaults to copying NVHM data to TVHM.  This can also be used to copy
-        data from another BL3Save object; pass in `from_obj` to do that.
+        data from another TTWLSave object; pass in `from_obj` to do that.
         """
         if not from_obj:
             from_obj = self
@@ -917,7 +917,7 @@ class BL3Save(object):
         handles: mission state, active Fast Travels, last station visited, and "game state," which
         includes mayhem mode.  Will refuse to crate "gaps"; `to_pt` is only allowed to be one
         higher than the current number of Playthroughs.  Defaults to copying NVHM to TVHM.
-        This can also be used to copy playthrough data from another BL3Save object; pass in `from_obj`
+        This can also be used to copy playthrough data from another TTWLSave object; pass in `from_obj`
         to do that.
         """
         if not from_obj:
@@ -1526,6 +1526,12 @@ class BL3Save(object):
         Returns the savegame GUID
         """
         return self.save.save_game_guid
+
+    def set_savegame_guid(self,guid):
+        """
+        Sets the savegame GUID
+        """
+        self.save.save_game_guid = guid
 
     def randomize_guid(self):
         """

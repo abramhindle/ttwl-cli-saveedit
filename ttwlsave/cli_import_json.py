@@ -24,19 +24,19 @@
 import os
 import sys
 import argparse
-import bl3save
-from bl3save.bl3profile import BL3Profile
+import ttwlsave
+from ttwlsave.ttwlsave import TTWLSave
 
 def main():
 
     # Set up args
     parser = argparse.ArgumentParser(
-            description='Import BL3 Profile JSON v{}'.format(bl3save.__version__),
+            description='Import BL3 Savegame JSON v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-V', '--version',
             action='version',
-            version='BL3 CLI SaveEdit v{}'.format(bl3save.__version__),
+            version='BL3 CLI SaveEdit v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-j', '--json',
@@ -63,13 +63,13 @@ def main():
     if not os.path.exists(args.json):
         raise Exception('Filename {} does not exist'.format(args.json))
 
-    # Load the profile file
-    prof_file = BL3Profile(args.filename_to)
+    # Load the savegame file
+    save_file = TTWLSave(args.filename_to)
 
     # Load the JSON file and import (so we know it's valid before
     # we ask for confirmation)
     with open(args.json, 'rt') as df:
-        prof_file.import_json(df.read())
+        save_file.import_json(df.read())
 
     # Ask for confirmation
     if not args.clobber:
@@ -88,7 +88,7 @@ def main():
             sys.exit(1)
 
     # ... and save.
-    prof_file.save_to(args.filename_to)
+    save_file.save_to(args.filename_to)
 
     # Report!
     print('')

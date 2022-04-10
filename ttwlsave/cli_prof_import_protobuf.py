@@ -24,31 +24,31 @@
 import os
 import sys
 import argparse
-import bl3save
-from bl3save.bl3save import BL3Save
+import ttwlsave
+from ttwlsave.bl3profile import BL3Profile
 
 def main():
 
     # Set up args
     parser = argparse.ArgumentParser(
-            description='Import BL3 Savegame JSON v{}'.format(bl3save.__version__),
+            description='Import BL3 Profile Protobuf v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-V', '--version',
             action='version',
-            version='BL3 CLI SaveEdit v{}'.format(bl3save.__version__),
+            version='BL3 CLI SaveEdit v{}'.format(ttwlsave.__version__),
             )
 
-    parser.add_argument('-j', '--json',
+    parser.add_argument('-p', '--protobuf',
             type=str,
             required=True,
-            help='Filename containing JSON to import')
+            help='Filename containing protobufs to import')
 
     parser.add_argument('-t', '--to-filename',
             dest='filename_to',
             type=str,
             required=True,
-            help='Filename to import JSON into')
+            help='Filename to import protobufs into')
 
     parser.add_argument('-c', '--clobber',
             action='store_true',
@@ -60,21 +60,21 @@ def main():
     # Make sure that files exist
     if not os.path.exists(args.filename_to):
         raise Exception('Filename {} does not exist'.format(args.filename_to))
-    if not os.path.exists(args.json):
-        raise Exception('Filename {} does not exist'.format(args.json))
+    if not os.path.exists(args.protobuf):
+        raise Exception('Filename {} does not exist'.format(args.protobuf))
 
-    # Load the savegame file
-    save_file = BL3Save(args.filename_to)
+    # Load the profile file
+    prof_file = BL3Profile(args.filename_to)
 
-    # Load the JSON file and import (so we know it's valid before
+    # Load the protobuf file and import (so we know it's valid before
     # we ask for confirmation)
-    with open(args.json, 'rt') as df:
-        save_file.import_json(df.read())
+    with open(args.protobuf, 'rb') as df:
+        prof_file.import_protobuf(df.read())
 
     # Ask for confirmation
     if not args.clobber:
-        sys.stdout.write('Really import JSON from {} into {} [y/N]? '.format(
-            args.json,
+        sys.stdout.write('Really import protobufs from {} into {} [y/N]? '.format(
+            args.protobuf,
             args.filename_to,
             ))
         sys.stdout.flush()
@@ -88,7 +88,7 @@ def main():
             sys.exit(1)
 
     # ... and save.
-    save_file.save_to(args.filename_to)
+    prof_file.save_to(args.filename_to)
 
     # Report!
     print('')

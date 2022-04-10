@@ -24,19 +24,19 @@
 import os
 import sys
 import argparse
-import bl3save
-from bl3save.bl3save import BL3Save
+import ttwlsave
+from ttwlsave.ttwlsave import TTWLSave
 
 def main():
 
     # Set up args
     parser = argparse.ArgumentParser(
-            description='Process Mod-Testing Borderlands 3 Archive Savegames v{}'.format(bl3save.__version__),
+            description='Process Mod-Testing Borderlands 3 Archive Savegames v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-V', '--version',
             action='version',
-            version='BL3 CLI SaveEdit v{}'.format(bl3save.__version__),
+            version='BL3 CLI SaveEdit v{}'.format(ttwlsave.__version__),
             )
 
     group = parser.add_mutually_exclusive_group()
@@ -140,7 +140,7 @@ def main():
 
         # Load!
         print('Processing: {}'.format(filename))
-        save = BL3Save(filename)
+        save = TTWLSave(filename)
 
         # Write to our info file, if we have it
         if args.info:
@@ -165,7 +165,7 @@ def main():
         save.set_char_name("BL3 Savegame Archive")
 
         # Max XP
-        save.set_level(bl3save.max_level)
+        save.set_level(ttwlsave.max_level)
 
         # Max SDUs
         save.set_max_sdus()
@@ -194,15 +194,15 @@ def main():
         # they'll get upgraded if needed, below.
         craders = 'BL3(AwAAAADHQ4C6yJOBkHsckEekyWhISinQpbNyysgdQgAAAAAAADIgAA==)'
         transformer = 'BL3(AwAAAACSdIC2t9hAkysShLxMKkMEAA==)'
-        save.overwrite_item_in_slot_encoded(bl3save.WEAPON1, craders)
-        save.overwrite_item_in_slot_encoded(bl3save.SHIELD, transformer)
+        save.overwrite_item_in_slot_encoded(ttwlsave.WEAPON1, craders)
+        save.overwrite_item_in_slot_encoded(ttwlsave.SHIELD, transformer)
 
         # Bring testing gear up to our max level, while we're at it.
         for item in save.get_items():
-            if item.level != bl3save.max_level:
-                item.level = bl3save.max_level
-            if item.mayhem_level != bl3save.mayhem_max:
-                item.mayhem_level = bl3save.mayhem_max
+            if item.level != ttwlsave.max_level:
+                item.level = ttwlsave.max_level
+            if item.mayhem_level != ttwlsave.mayhem_max:
+                item.mayhem_level = ttwlsave.mayhem_max
 
         # Wipe guardian rank
         save.zero_guardian_rank()

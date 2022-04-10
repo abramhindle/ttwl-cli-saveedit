@@ -21,21 +21,21 @@
 # 
 # 3. This notice may not be removed or altered from any source distribution.
 
-import bl3save
+import ttwlsave
 import argparse
 import itertools
-from bl3save.bl3profile import BL3Profile
+from ttwlsave.bl3profile import BL3Profile
 
 def main():
 
     # Arguments
     parser = argparse.ArgumentParser(
-            description='Borderlands 3 Profile Info Dumper v{}'.format(bl3save.__version__),
+            description='Borderlands 3 Profile Info Dumper v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-V', '--version',
             action='version',
-            version='BL3 CLI SaveEdit v{}'.format(bl3save.__version__),
+            version='BL3 CLI SaveEdit v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-v', '--verbose',
