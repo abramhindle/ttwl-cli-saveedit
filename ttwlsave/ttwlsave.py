@@ -72,11 +72,12 @@ class BL3Item(datalib.BL3Serial):
             flags |= 0x4
 
         # Now do the creation
-        return BL3Item(OakSave_pb2.OakInventoryItemSaveGameData(
+        return BL3Item(OakShared_pb2.OakInventoryItemSaveGameData(
                 item_serial_number=serial_number,
                 pickup_order_index=pickup_order_idx,
                 flags=flags,
-                weapon_skin_path=skin_path,
+                # AH: No weapon skins?
+                # weapon_skin_path=skin_path,
                 ), datawrapper)
 
     def get_pickup_order_idx(self):
