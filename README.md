@@ -255,6 +255,8 @@ In Memoriam: Baysix, the author of the original web-based editor at bl3editor.co
 passed away in early 2021, and that editor is now permanently offline.  RIP!
 
 # Changelog
+**v0.0.2**
+ - Updated the item defs from Gibbed from https://github.com/gibbed/WonderlandsDumps/blob/master/Inventory%20Serial%20Number%20Database.json
 **v0.0.1**
  - Tried to port it to Tina Tiny's Wonderlands
 

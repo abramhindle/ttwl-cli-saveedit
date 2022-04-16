@@ -300,6 +300,7 @@ class BL3Serial(object):
         num_bits = self.serial_db.get_num_bits(category, self._version)
         parts = []
         num_parts = bits.eat(count_bits)
+        # print(f"_get_inv_db_header_part_repeated {category} {bits} num_bits:{num_bits} count_bits:{count_bits} num_parts:{num_parts}, bits:{len(bits.data)} expected:{num_parts*num_bits}")
         for _ in range(num_parts):
             part_idx = bits.eat(num_bits)
             part_val = self.serial_db.get_part(category, part_idx)
@@ -368,7 +369,8 @@ class BL3Serial(object):
             # Read parts
             (self._part_bits, self._parts) = self._get_inv_db_header_part_repeated(
                     self._part_invkey, bits, 6)
-
+            # print((self._part_bits, self._parts))
+            # print(len(bits.data))
             # Read generics (anointments+mayhem)
             (self._generic_bits, self._generic_parts) = self._get_inv_db_header_part_repeated(
                     'InventoryGenericPartData', bits, 4)
@@ -392,26 +394,29 @@ class BL3Serial(object):
 
             # If we're a v4 (or higher) serial, read in the number of times we've
             # been re-rolled
-            if self.serial_version >= 4:
-                self._rerolled = bits.eat(8)
-            else:
-                self._rerolled = 0
-
-            # And read in our remaining data.  If there's more than 7 bits
-            # left, we've done something wrong, because it should only be
-            # zero-padding after all the "real" data is in place.
-            if len(bits.data) > 7:
-                self.parts_parsed = False
-                self.can_parse_parts = False
-                pass
-            elif '1' in bits.data:
-                # This is supposed to only be zero-padding at the moment, if
-                # we see something else, abort
-                self.parts_parsed = False
-                self.can_parse_parts = False
-            else:
-                # Okay, we're good!  Don't bother saving the remaining 0 bits.
-                pass
+            if (len(bits.data) >= 8):
+                if self.serial_version >= 4:
+                    self._rerolled = bits.eat(8)
+                else:
+                    self._rerolled = 0
+            # AH: Not sure if we need this
+            # # And read in our remaining data.  If there's more than 7 bits
+            # # left, we've done something wrong, because it should only be
+            # # zero-padding after all the "real" data is in place.
+            # if len(bits.data) > 7:
+            #     self.parts_parsed = False
+            #     self.can_parse_parts = False
+            #     pass
+            # elif '1' in bits.data:
+            #     # This is supposed to only be zero-padding at the moment, if
+            #     # we see something else, abort
+            #     self.parts_parsed = False
+            #     self.can_parse_parts = False
+            # else:
+            #     # Okay, we're good!  Don't bother saving the remaining 0 bits.
+            #     pass
+            if len(bits.data) > 3:                
+                self.item_type = bits.eat(3)                
 
     def _deparse_serial(self):
         """

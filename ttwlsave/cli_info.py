@@ -214,13 +214,18 @@ def main():
             print('Inventory:')
             to_report = []
             for item in items:
-                # if item.eng_name:
-                #     to_report.append(' - {} ({}): {}'.format(item.eng_name, item.get_level_eng(), item.get_serial_base64()))
-                # else:
-                #     to_report.append(' - unknown item: {}'.format(item.get_serial_base64()))
-                # AH: disable for now
-                # to_report.append(' - ({}): {}'.format(item.get_level_eng(), item.get_serial_base64()))
-                to_report.append(' - unknown item: {}'.format(item.get_serial_base64()))
+                # print(f'I:{item.get_serial_base64()}')
+                try:
+                    if item.eng_name:
+                        to_report.append(' - {} ({}): {}'.format(item.eng_name, item.get_level_eng(), item.get_serial_base64()))
+                    else:
+                        to_report.append(' - unknown item: {}'.format(item.get_serial_base64()))
+                except:
+                    print(f"Parse error for {item.get_serial_base64()}")
+                    to_report.append(' - unknown item: {}'.format(item.get_serial_base64()))
+                #to_report.append(' - unknown item: {}'.format(item.get_serial_base64()))
+                #print(f'IA:{item.get_serial_base64()}')
+
             for line in sorted(to_report):
                 print(line)
 
@@ -232,12 +237,14 @@ def main():
             to_report = []
             for (slot, item) in items.items():
                 if item:
-                    # AH: Disable for now
-                    # if item.eng_name:
-                    #     to_report.append(' - {}: {} ({}): {}'.format(slot, item.eng_name, item.get_level_eng(), item.get_serial_base64()))
-                    # else:
-                    #     to_report.append(' - {}: unknown item: {}'.format(slot, item.get_serial_base64()))
-                    to_report.append(' - {}: unknown item: {}'.format(slot, item.get_serial_base64()))
+                    try:
+                        if item.eng_name:
+                            to_report.append(' - {}: {} ({}): {}'.format(slot, item.eng_name, item.get_level_eng(), item.get_serial_base64()))
+                        else:
+                            to_report.append(' - {}: unknown item: {}'.format(slot, item.get_serial_base64()))
+                    except:
+                        print("Could not parse {}".format(item.get_serial_base64()))
+                        to_report.append(' - {}: unknown item: {}'.format(slot, item.get_serial_base64()))
             for line in sorted(to_report):
                 print(line)
         else:
