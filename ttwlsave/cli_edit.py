@@ -196,6 +196,11 @@ def main():
     #         action='store_true',
     #         help='"Un-finishes" the game: remove all TVHM data and set Playthrough 1 to Not Completed',
     #         )
+    parser.add_argument('--unfinish-missions',
+            dest='unfinish_missions',
+            action='store_true',
+            help='"Un-finishes" the game: remove all Playthrough 0 to Not Completed',
+            )
 
     parser.add_argument('-i', '--import-items',
             dest='import_items',
@@ -281,10 +286,10 @@ def main():
         args.unlock['gunslots'] = True
         args.unlock['artifactslot'] = True
         args.unlock['comslot'] = True
-
-    # Make sure we're not trying to clear and unlock THVM at the same time
-    if 'tvhm' in args.unlock and args.unfinish_nvhm:
-        raise argparse.ArgumentTypeError('Cannot both unlock TVHM and un-finish NVHM')
+    # AH: No TVHM
+    # # Make sure we're not trying to clear and unlock THVM at the same time
+    # if 'tvhm' in args.unlock and args.unfinish_nvhm:
+    #     raise argparse.ArgumentTypeError('Cannot both unlock TVHM and un-finish NVHM')
 
     # Set max level arg
     if args.level_max:
@@ -335,12 +340,12 @@ def main():
     save = TTWLSave(args.input_filename)
     if not args.quiet:
         print('')
-
-    # Some argument interactions we should check on
-    if args.copy_nvhm:
-        if save.get_playthroughs_completed() < 1:
-            if 'tvhm' not in args.unlock:
-                args.unlock['tvhm'] = True
+    # AH: More TVHM disable
+    # # Some argument interactions we should check on
+    # if args.copy_nvhm:
+    #     if save.get_playthroughs_completed() < 1:
+    #         if 'tvhm' not in args.unlock:
+    #             args.unlock['tvhm'] = True
     # AH: NO TVHM
     # # If we've been told to copy TVHM state to NVHM, make sure we have TVHM data.
     # # TODO: need to check this out
@@ -366,7 +371,8 @@ def main():
         args.import_items,
         args.items_to_char,
         args.item_levels,
-        args.unfinish_nvhm,
+        #args.unfinish_nvhm,
+        args.unfinish_missions,
         args.item_mayhem_levels is not None,
         # args.delete_pt1_mission is not None,
         # args.delete_pt2_mission is not None,
@@ -602,6 +608,14 @@ def main():
         #     save.set_playthroughs_completed(0)
         #     save.clear_playthrough_data(1)
 
+        if args.unfinish_missions:
+            if not args.quiet:
+                print(' - Un-finishing NVHM state entirely')
+            # ... or clearing TVHM state entirely.
+            save.set_playthroughs_completed(0)
+            save.clear_playthrough_data(0)
+
+        
         # Newline at the end of all this.
         if not args.quiet:
             print('')
