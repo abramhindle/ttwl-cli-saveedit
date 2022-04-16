@@ -1507,7 +1507,7 @@ diamondkey_category = '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryC
 diamondkey_hash = inventory_path_hash(diamondkey_category)
 
 # XP
-max_level = 72
+max_level = 40
 required_xp_list = [
     0,          # lvl 1
     358,        # lvl 2

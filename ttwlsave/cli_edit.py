@@ -84,18 +84,19 @@ def main():
             type=int,
             help='Set the save game slot ID (possibly not actually ever needed)',
             )
-
-    parser.add_argument('--randomize-guid',
+    # AH: By default if you don't change the GUID it doesn't work in TTWL
+    parser.add_argument('--dont-randomize-guid',
             dest='randomize_guid',
-            action='store_true',
-            help='Randomize the savegame GUID',
+            action='store_false',
+            default=True,
+            help='DON\'T Randomize the savegame GUID',
             )
-
-    parser.add_argument('--zero-guardian-rank',
-            dest='zero_guardian_rank',
-            action='store_true',
-            help='Zero out savegame Guardian Rank',
-            )
+    # AH: Disabled for now
+    # parser.add_argument('--zero-guardian-rank',
+    #         dest='zero_guardian_rank',
+    #         action='store_true',
+    #         help='Zero out savegame Guardian Rank',
+    #         )
 
     levelgroup = parser.add_mutually_exclusive_group()
 
@@ -137,7 +138,7 @@ def main():
 
     parser.add_argument('--mayhem',
             type=int,
-            choices=range(12),
+            choices=range(20),
             help='Set the mayhem mode for all playthroughs (mostly useful for Normal mode)',
             )
 
@@ -177,24 +178,24 @@ def main():
             default={},
             help='Game features to unlock',
             )
-
-    tvhmgroup = parser.add_mutually_exclusive_group()
-
-    tvhmgroup.add_argument('--copy-nvhm',
-            action='store_true',
-            help='Copies NVHM/Normal state to TVHM',
-            )
-
-    tvhmgroup.add_argument('--copy-tvhm',
-            action='store_true',
-            help='Copies TVHM state to NVHM/Normal',
-            )
-
-    tvhmgroup.add_argument('--unfinish-nvhm',
-            dest='unfinish_nvhm',
-            action='store_true',
-            help='"Un-finishes" the game: remove all TVHM data and set Playthrough 1 to Not Completed',
-            )
+    # AH: disabling NO TVHM
+    # tvhmgroup = parser.add_mutually_exclusive_group()
+    # 
+    # tvhmgroup.add_argument('--copy-nvhm',
+    #         action='store_true',
+    #         help='Copies NVHM/Normal state to TVHM',
+    #         )
+    # 
+    # tvhmgroup.add_argument('--copy-tvhm',
+    #         action='store_true',
+    #         help='Copies TVHM state to NVHM/Normal',
+    #         )
+    # 
+    # tvhmgroup.add_argument('--unfinish-nvhm',
+    #         dest='unfinish_nvhm',
+    #         action='store_true',
+    #         help='"Un-finishes" the game: remove all TVHM data and set Playthrough 1 to Not Completed',
+    #         )
 
     parser.add_argument('-i', '--import-items',
             dest='import_items',
@@ -208,47 +209,47 @@ def main():
             help='Allow importing Fabricator when importing items from file',
             )
 
-    parser.add_argument('--delete-pt1-mission',
-            type=str,
-            metavar='MISSIONPATH',
-            action='append',
-            help="""Deletes all stored info about the specified mission in
-                Playthrough 1 (Normal).  Will only work on sidemissions.
-                Use bl3-save-info's --mission-paths to see the correct
-                mission path to use here.  This option can be specified
-                more than once."""
-            )
-
-    parser.add_argument('--delete-pt2-mission',
-            type=str,
-            metavar='MISSIONPATH',
-            action='append',
-            help="""Deletes all stored info about the specified mission in
-                Playthrough 2 (TVHM).  Will only work on sidemissions.
-                Use bl3-save-info's --mission-paths to see the correct
-                mission path to use here.  This option can be specified
-                more than once."""
-            )
-
-    parser.add_argument('--clear-bloody-harvest',
-            action='store_true',
-            help='Clear Bloody Harvest challenge state',
-            )
-
-    parser.add_argument('--clear-broken-hearts',
-            action='store_true',
-            help='Clear Broken Hearts challenge state',
-            )
-
-    parser.add_argument('--clear-cartels',
-            action='store_true',
-            help='Clear Revenge of the Cartels challenge state',
-            )
-
-    parser.add_argument('--clear-all-events',
-            action='store_true',
-            help='Clear all seasonal event challenge states',
-            )
+    # parser.add_argument('--delete-pt1-mission',
+    #         type=str,
+    #         metavar='MISSIONPATH',
+    #         action='append',
+    #         help="""Deletes all stored info about the specified mission in
+    #             Playthrough 1 (Normal).  Will only work on sidemissions.
+    #             Use bl3-save-info's --mission-paths to see the correct
+    #             mission path to use here.  This option can be specified
+    #             more than once."""
+    #         )
+    # 
+    # parser.add_argument('--delete-pt2-mission',
+    #         type=str,
+    #         metavar='MISSIONPATH',
+    #         action='append',
+    #         help="""Deletes all stored info about the specified mission in
+    #             Playthrough 2 (TVHM).  Will only work on sidemissions.
+    #             Use bl3-save-info's --mission-paths to see the correct
+    #             mission path to use here.  This option can be specified
+    #             more than once."""
+    #         )
+    # AH: Disabled
+    # parser.add_argument('--clear-bloody-harvest',
+    #         action='store_true',
+    #         help='Clear Bloody Harvest challenge state',
+    #         )
+    # 
+    # parser.add_argument('--clear-broken-hearts',
+    #         action='store_true',
+    #         help='Clear Broken Hearts challenge state',
+    #         )
+    # 
+    # parser.add_argument('--clear-cartels',
+    #         action='store_true',
+    #         help='Clear Revenge of the Cartels challenge state',
+    #         )
+    # 
+    # parser.add_argument('--clear-all-events',
+    #         action='store_true',
+    #         help='Clear all seasonal event challenge states',
+    #         )
 
     # Positional args
     parser.add_argument('input_filename',
@@ -306,14 +307,14 @@ def main():
                 args.item_levels,
                 ttwlsave.max_level,
                 ))
-
-    # Check to make sure that any deleted missions are not plot missions
-    for arg in [args.delete_pt1_mission, args.delete_pt2_mission]:
-        if arg is not None:
-            for mission in arg:
-                if mission.lower() in plot_missions:
-                    raise argparse.ArgumentTypeError('Plot mission cannot be deleted: {}'.format(mission))
-
+    # AH: Only 1 playthrough
+    # # Check to make sure that any deleted missions are not plot missions
+    # for arg in [args.delete_pt1_mission, args.delete_pt2_mission]:
+    #     if arg is not None:
+    #         for mission in arg:
+    #             if mission.lower() in plot_missions:
+    #                 raise argparse.ArgumentTypeError('Plot mission cannot be deleted: {}'.format(mission))
+    # 
     # Check for overwrite warnings
     if os.path.exists(args.output_filename) and not args.force:
         if args.output_filename == args.input_filename:
@@ -340,19 +341,19 @@ def main():
         if save.get_playthroughs_completed() < 1:
             if 'tvhm' not in args.unlock:
                 args.unlock['tvhm'] = True
-
-    # If we've been told to copy TVHM state to NVHM, make sure we have TVHM data.
-    # TODO: need to check this out
-    if args.copy_tvhm:
-        if save.get_playthroughs_completed() < 1:
-            raise argparse.ArgumentTypeError('TVHM State not found to copy in {}'.format(args.input_filename))
-
+    # AH: NO TVHM
+    # # If we've been told to copy TVHM state to NVHM, make sure we have TVHM data.
+    # # TODO: need to check this out
+    # if args.copy_tvhm:
+    #     if save.get_playthroughs_completed() < 1:
+    #         raise argparse.ArgumentTypeError('TVHM State not found to copy in {}'.format(args.input_filename))
+    #  
     # Check to see if we have any changes to make
     have_changes = any([
         args.name,
         args.save_game_id is not None,
         args.randomize_guid,
-        args.zero_guardian_rank,
+        # args.zero_guardian_rank,
         args.level is not None,
         args.mayhem is not None,
         args.mayhem_seed is not None,
@@ -360,19 +361,19 @@ def main():
         args.eridium is not None,
         args.clear_takedowns,
         len(args.unlock) > 0,
-        args.copy_nvhm,
-        args.copy_tvhm,
+        # args.copy_nvhm,
+        # args.copy_tvhm,
         args.import_items,
         args.items_to_char,
         args.item_levels,
         args.unfinish_nvhm,
         args.item_mayhem_levels is not None,
-        args.delete_pt1_mission is not None,
-        args.delete_pt2_mission is not None,
-        args.clear_bloody_harvest,
-        args.clear_broken_hearts,
-        args.clear_cartels,
-        args.clear_all_events,
+        # args.delete_pt1_mission is not None,
+        # args.delete_pt2_mission is not None,
+        # args.clear_bloody_harvest,
+        # args.clear_broken_hearts,
+        # args.clear_cartels,
+        # args.clear_all_events,
         ])
 
     # Make changes
@@ -399,12 +400,12 @@ def main():
             if not args.quiet:
                 print(' - Randomizing savegame GUID')
             save.randomize_guid()
-
+        # AH: No guardian rank
         # Zeroing Guardian Rank
-        if args.zero_guardian_rank:
-            if not args.quiet:
-                print(' - Zeroing Guardian Rank')
-            save.zero_guardian_rank()
+        # if args.zero_guardian_rank:
+        #     if not args.quiet:
+        #         print(' - Zeroing Guardian Rank')
+        #     save.zero_guardian_rank()
 
         # Mayhem Level
         if args.mayhem is not None:
@@ -439,44 +440,45 @@ def main():
             if not args.quiet:
                 print(' - Setting Eridium to: {}'.format(args.eridium))
             save.set_eridium(args.eridium)
+        # AH: No Takedowns
+        # # Clearing Takedown Discovery
+        # if args.clear_takedowns:
+        #     if not args.quiet:
+        #         print(' - Clearing Takedown Discovery missions')
+        #     save.clear_takedown_discovery()
+        # AH: Temporarily disabling this
+        # # Deleting missions
+        # for label, pt, arg in [
+        #         ('Normal/NVHM', 0, args.delete_pt1_mission),
+        #         ('TVHM', 1, args.delete_pt2_mission),
+        #         ]:
+        #     if arg is not None:
+        #         for mission in arg:
+        #             if not args.quiet:
+        #                 print(' - Deleting {} mission: {}'.format(label, mission))
+        #             if not save.delete_mission(pt, mission):
+        #                 if not args.quiet:
+        #                     print('   NOTE: Could not find {} mission to delete: {}'.format(
+        #                         label,
+        #                         mission,
+        #                         ))
 
-        # Clearing Takedown Discovery
-        if args.clear_takedowns:
-            if not args.quiet:
-                print(' - Clearing Takedown Discovery missions')
-            save.clear_takedown_discovery()
-
-        # Deleting missions
-        for label, pt, arg in [
-                ('Normal/NVHM', 0, args.delete_pt1_mission),
-                ('TVHM', 1, args.delete_pt2_mission),
-                ]:
-            if arg is not None:
-                for mission in arg:
-                    if not args.quiet:
-                        print(' - Deleting {} mission: {}'.format(label, mission))
-                    if not save.delete_mission(pt, mission):
-                        if not args.quiet:
-                            print('   NOTE: Could not find {} mission to delete: {}'.format(
-                                label,
-                                mission,
-                                ))
-
-        # Clearing seasonal event status
-        if args.clear_bloody_harvest or args.clear_all_events:
-            if not args.quiet:
-                print(' - Clearing Bloody Harvest challenge state')
-            save.clear_bloody_harvest()
-
-        if args.clear_broken_hearts or args.clear_all_events:
-            if not args.quiet:
-                print(' - Clearing Broken Hearts challenge state')
-            save.clear_broken_hearts()
-
-        if args.clear_cartels or args.clear_all_events:
-            if not args.quiet:
-                print(' - Clearing Cartels challenge state')
-            save.clear_cartels()
+        # AH: No seasonal
+        # # Clearing seasonal event status
+        # if args.clear_bloody_harvest or args.clear_all_events:
+        #     if not args.quiet:
+        #         print(' - Clearing Bloody Harvest challenge state')
+        #     save.clear_bloody_harvest()
+        # 
+        # if args.clear_broken_hearts or args.clear_all_events:
+        #     if not args.quiet:
+        #         print(' - Clearing Broken Hearts challenge state')
+        #     save.clear_broken_hearts()
+        # 
+        # if args.clear_cartels or args.clear_all_events:
+        #     if not args.quiet:
+        #         print(' - Clearing Cartels challenge state')
+        #     save.clear_cartels()
 
         # Unlocks
         if len(args.unlock) > 0:
@@ -495,18 +497,18 @@ def main():
                 if not args.quiet:
                     print('   - Backpack SDUs')
                 save.set_max_sdus([ttwlsave.SDU_BACKPACK])
-
-            # Eridian Analyzer
-            if 'analyzer' in args.unlock:
-                if not args.quiet:
-                    print('   - Eridian Analyzer')
-                save.unlock_challenge(ttwlsave.ERIDIAN_ANALYZER)
-
-            # Eridian Resonator
-            if 'resonator' in args.unlock:
-                if not args.quiet:
-                    print('   - Eridian Resonator')
-                save.unlock_challenge(ttwlsave.ERIDIAN_RESONATOR)
+            # AH: No eridian
+            # # Eridian Analyzer
+            # if 'analyzer' in args.unlock:
+            #     if not args.quiet:
+            #         print('   - Eridian Analyzer')
+            #     save.unlock_challenge(ttwlsave.ERIDIAN_ANALYZER)
+            # 
+            # # Eridian Resonator
+            # if 'resonator' in args.unlock:
+            #     if not args.quiet:
+            #         print('   - Eridian Resonator')
+            #     save.unlock_challenge(ttwlsave.ERIDIAN_RESONATOR)
 
             # Gun Slots
             if 'gunslots' in args.unlock:
@@ -525,33 +527,33 @@ def main():
                 if not args.quiet:
                     print('   - COM Inventory Slot')
                 save.unlock_slots([ttwlsave.COM])
-
-            # Vehicles
-            if 'vehicles' in args.unlock:
-                if not args.quiet:
-                    print('   - Vehicles (and parts)')
-                save.unlock_vehicle_chassis()
-                save.unlock_vehicle_parts()
-                if not args.quiet and not save.has_vehicle_chassis(ttwlsave.jetbeast_main_chassis):
-                    print('     - NOTE: The default Jetbeast chassis will be unlocked automatically by the game')
-
-            # Vehicle Skins
-            if 'vehicleskins' in args.unlock:
-                if not args.quiet:
-                    print('   - Vehicle Skins')
-                save.unlock_vehicle_skins()
-
-            # TVHM
-            if 'tvhm' in args.unlock:
-                if not args.quiet:
-                    print('   - TVHM')
-                save.set_playthroughs_completed(1)
-
-            # Eridian Cube puzzle
-            if 'cubepuzzle' in args.unlock:
-                if not args.quiet:
-                    print('   - Eridian Cube Puzzle')
-                save.unlock_cube_puzzle()
+            # AH: No vehicles 
+            # # Vehicles
+            # if 'vehicles' in args.unlock:
+            #     if not args.quiet:
+            #         print('   - Vehicles (and parts)')
+            #     save.unlock_vehicle_chassis()
+            #     save.unlock_vehicle_parts()
+            #     if not args.quiet and not save.has_vehicle_chassis(ttwlsave.jetbeast_main_chassis):
+            #         print('     - NOTE: The default Jetbeast chassis will be unlocked automatically by the game')
+            # 
+            # # Vehicle Skins
+            # if 'vehicleskins' in args.unlock:
+            #     if not args.quiet:
+            #         print('   - Vehicle Skins')
+            #     save.unlock_vehicle_skins()
+            # 
+            # # TVHM
+            # if 'tvhm' in args.unlock:
+            #     if not args.quiet:
+            #         print('   - TVHM')
+            #     save.set_playthroughs_completed(1)
+            # 
+            # # Eridian Cube puzzle
+            # if 'cubepuzzle' in args.unlock:
+            #     if not args.quiet:
+            #         print('   - Eridian Cube Puzzle')
+            #     save.unlock_cube_puzzle()
 
         # Import Items
         if args.import_items:
@@ -583,22 +585,22 @@ def main():
                     args.item_mayhem_levels,
                     quiet=args.quiet,
                     )
-
-        # Copying NVHM/TVHM state (or otherwise fiddle with playthroughs)
-        if args.copy_nvhm:
-            if not args.quiet:
-                print(' - Copying NVHM state to TVHM')
-            save.copy_playthrough_data()
-        elif args.copy_tvhm:
-            if not args.quiet:
-                print(' - Copying TVHM state to NVHM')
-            save.copy_playthrough_data(from_pt=1, to_pt=0)
-        elif args.unfinish_nvhm:
-            if not args.quiet:
-                print(' - Un-finishing NVHM state entirely')
-            # ... or clearing TVHM state entirely.
-            save.set_playthroughs_completed(0)
-            save.clear_playthrough_data(1)
+        # AH: There is no NVHM
+        # # Copying NVHM/TVHM state (or otherwise fiddle with playthroughs)
+        # if args.copy_nvhm:
+        #     if not args.quiet:
+        #         print(' - Copying NVHM state to TVHM')
+        #     save.copy_playthrough_data()
+        # elif args.copy_tvhm:
+        #     if not args.quiet:
+        #         print(' - Copying TVHM state to NVHM')
+        #     save.copy_playthrough_data(from_pt=1, to_pt=0)
+        # elif args.unfinish_nvhm:
+        #     if not args.quiet:
+        #         print(' - Un-finishing NVHM state entirely')
+        #     # ... or clearing TVHM state entirely.
+        #     save.set_playthroughs_completed(0)
+        #     save.clear_playthrough_data(1)
 
         # Newline at the end of all this.
         if not args.quiet:
