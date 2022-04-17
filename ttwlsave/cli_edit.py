@@ -202,6 +202,12 @@ def main():
             help='"Un-finishes" the game: remove all Playthrough 0 to Not Completed',
             )
 
+    parser.add_argument('--fake-tvhm',
+            dest='fake_tvhm',
+            action='store_true',
+            help='"Un-finishes" the missions but finishes the game',
+            )
+
     parser.add_argument('-i', '--import-items',
             dest='import_items',
             type=str,
@@ -373,6 +379,7 @@ def main():
         args.item_levels,
         #args.unfinish_nvhm,
         args.unfinish_missions,
+        args.fake_tvhm,
         args.item_mayhem_levels is not None,
         # args.delete_pt1_mission is not None,
         # args.delete_pt2_mission is not None,
@@ -614,7 +621,19 @@ def main():
             # ... or clearing TVHM state entirely.
             save.set_playthroughs_completed(0)
             save.clear_playthrough_data(0)
-
+        if args.fake_tvhm:
+            if not args.quiet:
+                print(' - Un-finishing missions and marking the playthrough complete state entirely -- enables chaos mode')
+            # ... or clearing TVHM state entirely.
+            # save.clear_playthrough_data(0)
+            # save.clear_mission_pt(0)
+            missions = save.get_pt_completed_mission_lists()[0]
+            for mission in missions:
+                # print(mission)
+                if mission != "/Game/Missions/Plot/Mission_Plot11.Mission_Plot11_C":
+                    save.delete_mission(0,mission,allow_plot=True)
+            save.set_playthroughs_completed(1)
+            save.finish_game()
         
         # Newline at the end of all this.
         if not args.quiet:
@@ -649,6 +668,7 @@ def main():
     else:
         # Not sure how we'd ever get here
         raise Exception('Invalid output format specified: {}'.format(args.output))
+
 
 if __name__ == '__main__':
     main()

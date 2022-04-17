@@ -1618,6 +1618,83 @@ class TTWLSave(object):
                         league_instance=0,
                         ))
 
+    def finish_game(self):
+        """
+        Marks the Final Missions as completed, for all currently-available
+        playthroughs
+        """
+        """
+            >>> [x for x in ml if x.mission_class_path == final]
+            [status: MS_Complete
+            objectives_progress: 1
+            objectives_progress: 1
+            objectives_progress: 1
+            objectives_progress: 1
+            objectives_progress: 1
+            objectives_progress: 1
+            objectives_progress: 1
+            objectives_progress: 1
+            objectives_progress: 0
+            objectives_progress: 1
+            objectives_progress: 0
+            objectives_progress: 1
+            objectives_progress: 1
+            objectives_progress: 1
+            objectives_progress: 1
+            mission_class_path: "/Game/Missions/Plot/Mission_Plot11.Mission_Plot11_C"
+            active_objective_set_path: "/Game/Missions/Plot/Mission_Plot11.Set_ReturnToLobby_ObjectiveSet"
+            kickoff_played: true
+            ]
+        """
+        final_missions = {
+            '/Game/Missions/Plot/Mission_Plot11.Mission_Plot11_C':(
+                "/Game/Missions/Plot/Mission_Plot11.Set_ReturnToLobby_ObjectiveSet",
+                [ 1, 1, 1,1,1,1,1,1,0,1,0,1,1,1,1,]
+            ),
+        }
+        for pt in self.save.mission_playthroughs_data:
+            # First, complete the missions if they're already present
+            mission_seen = set()
+            for mission in pt.mission_list:
+                if mission.mission_class_path in final_missions:
+                    # print(f"Found mission: {mission.mission_class_path}")
+                    (_, objectives) = final_missions[mission.mission_class_path]
+                    mission_seen.add(mission.mission_class_path)
+                    mission.status = MissionState.MS_Complete
+                    del mission.objectives_progress[:]
+                    mission.objectives_progress.extend(objectives)
+                    mission.kickoff_played = True
+                    mission.has_been_viewed_in_log = True
+
+            # Now, if we didn't find one of 'em, inject it
+            for mission_path, (objectiveset, objectives) in final_missions.items():
+                if mission_path not in mission_seen:
+                    # print(f"Making mission: {mission.mission_class_path}")
+                    pt.mission_list.append(OakSave_pb2.MissionStatusPlayerSaveGameData(
+                        status=MissionState.MS_Complete,
+                        objectives_progress=objectives,
+                        mission_class_path=mission_path,
+                        active_objective_set_path=objectiveset,
+                        kickoff_played=True,
+                        has_been_viewed_in_log=True,
+                        dlc_package_id=0,
+                        # league_instance=0,
+                        ))
+
+                    
+    def finish_mission(self, pt, mission_name):
+        for pt in self.save.mission_playthroughs_data:
+            pt.mission_list.append(OakSave_pb2.MissionStatusPlayerSaveGameData(
+                status=MissionState.MS_Complete,
+                objectives_progress=objectives,
+                mission_class_path=mission_path,
+                active_objective_set_path=objectiveset,
+                kickoff_played=True,
+                has_been_viewed_in_log=True,
+                dlc_package_id=0,
+                league_instance=0,
+            ))
+
     def delete_mission(self, pt, mission_obj, allow_plot=False):
         """
         Deletes the specified mission (with object path `mission_obj`), in the
