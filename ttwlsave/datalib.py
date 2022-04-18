@@ -221,6 +221,11 @@ class BL3Serial(object):
 
         # Initial byte should always be 3 or, after the 2021-04-08 patch, 4.
         # 5 is for tiny tina wonderlands
+        #print(f'serial:{serial} {serial.__class__}')
+        if not (isinstance(serial,bytes) or isinstance(serial,str)):
+            #print(dir(serial))
+            #print(f'ss:{serial.item_serial_number}')
+            serial = serial.item_serial_number
         assert(serial[0] in [3,4,5])
         serial_version = serial[0]
 

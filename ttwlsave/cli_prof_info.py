@@ -24,7 +24,7 @@
 import ttwlsave
 import argparse
 import itertools
-from ttwlsave.bl3profile import BL3Profile
+from ttwlsave.ttwlprofile import BL3Profile
 
 def main():
 
@@ -61,20 +61,20 @@ def main():
     print('Keys:')
     print(' - Golden Keys: {}'.format(prof.get_golden_keys()))
     print(' - Diamond Keys: {}'.format(prof.get_diamond_keys()))
-    print(' - Vault Card 1 Keys: {}'.format(prof.get_vaultcard1_keys()))
-    print(' - Vault Card 1 Chests: {}'.format(prof.get_vaultcard1_chests()))
-    print(' - Vault Card 2 Keys: {}'.format(prof.get_vaultcard2_keys()))
-    print(' - Vault Card 2 Chests: {}'.format(prof.get_vaultcard2_chests()))
-    print(' - Vault Card 3 Keys: {}'.format(prof.get_vaultcard3_keys()))
-    print(' - Vault Card 3 Chests: {}'.format(prof.get_vaultcard3_chests()))
+    # print(' - Vault Card 1 Keys: {}'.format(prof.get_vaultcard1_keys()))
+    # print(' - Vault Card 1 Chests: {}'.format(prof.get_vaultcard1_chests()))
+    # print(' - Vault Card 2 Keys: {}'.format(prof.get_vaultcard2_keys()))
+    # print(' - Vault Card 2 Chests: {}'.format(prof.get_vaultcard2_chests()))
+    # print(' - Vault Card 3 Keys: {}'.format(prof.get_vaultcard3_keys()))
+    # print(' - Vault Card 3 Chests: {}'.format(prof.get_vaultcard3_chests()))
 
     # Guardian Rank
-    print('Guardian Rank: {}'.format(prof.get_guardian_rank()))
-    print('Available GR Tokens: {}'.format(prof.get_guardian_rank_tokens()))
+    # print('Guardian Rank: {}'.format(prof.get_guardian_rank()))
+    # print('Available GR Tokens: {}'.format(prof.get_guardian_rank_tokens()))
 
     # Borderlands Science
-    print("Borderlands Science Level: {}".format(prof.get_borderlands_science_level()))
-    print("Available BS Tokens: {}".format(prof.get_borderlands_science_tokens()))
+    # print("Borderlands Science Level: {}".format(prof.get_borderlands_science_level()))
+    # print("Available BS Tokens: {}".format(prof.get_borderlands_science_tokens()))
 
     # SDUs
     sdus = prof.get_sdus_with_max(True)
@@ -117,9 +117,9 @@ def main():
             ('Character Heads', prof.get_char_heads(), prof.get_char_heads_total()),
             ('ECHO Themes', prof.get_echo_themes(), prof.get_echo_themes_total()),
             ('Emotes', prof.get_emotes(), prof.get_emotes_total()),
-            ('Room Decorations', prof.get_room_decos(), prof.get_room_decos_total()),
-            ('Weapon Skins', prof.get_weapon_skins(), prof.get_weapon_skins_total()),
-            ('Weapon Trinkets', prof.get_weapon_trinkets(), prof.get_weapon_trinkets_total()),
+            #('Room Decorations', prof.get_room_decos(), prof.get_room_decos_total()),
+            #('Weapon Skins', prof.get_weapon_skins(), prof.get_weapon_skins_total()),
+            #('Weapon Trinkets', prof.get_weapon_trinkets(), prof.get_weapon_trinkets_total()),
             ]:
         print('{} Unlocked: {}/{}'.format(label, len(current), maxcount))
 
