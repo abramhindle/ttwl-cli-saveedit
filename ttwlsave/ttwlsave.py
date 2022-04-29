@@ -416,9 +416,9 @@ class TTWLSave(object):
         """
         ret = {}
         for name in self.save.nickname_mappings:
-            key = petkey_to_pet[name.key.lower()]
+            key = petkey_to_pet.get(name.key.lower(),name.key.lower())
             if eng:
-                key = pet_to_eng[key]
+                key = pet_to_eng.get(key,key)
             ret[key] = name.value
         return ret
 
