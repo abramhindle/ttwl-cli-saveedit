@@ -1,19 +1,87 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>In Browser Tiny Tina Wonderland's Save Game Editor</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://abramhindle.github.io/ttwl-cli-saveedit/" />
+    <meta property="og:title" content="In Browser Tiny Tina Wonderland's Save Game Editor, duplicate save files, fake TVHM, import items" />
     <script src="https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js"></script>
     <style>
       .disabled {
           pointer-events: none;
           opacity: 0.4;
       }
+      .status {
+          background-color: yellow;
+      }
+      p, ul, ol {
+          margin: 1em;
+          min-width: 10em;
+          width: 50vh;
+          padding: 0.25em;
+      }
+      h1, h2, h3 {
+          padding: 0.25em ;
+      }
+      .smaller {
+          font-size: x-small;
+      }
     </style>
   </head>
   <body>
+    <div>
+      <h1>Online In Browser Tiny Tina Wonderland's Save Game Editor</h1>
+      <p>
+        This is tech demo about running Python code in the browser,
+        but you may use it to the modify the savefiles in Tiny Tina's
+        Wonderlands. This was working as of TTWL v1.0.2b.
+      </p>
+      <p>
+        Using <a href="https://pyodide.org/en/stable/">Pyodide</a> I managed to host the python commandline program <a href="https://github.com/abramhindle/ttwl-cli-saveedit/">ttwl-cli-saveedit</a> on the web! So this means python is running in your browser. If you want to run it at home just run on a Linux or OSX computer:
+        <code>
+          <pre>
+            pip3 install --user git+https://github.com/abramhindle/ttwl-cli-saveedit
+          </pre>
+        </code>
+      <p>
+        More documentation for the commandline program is here: <a href="https://github.com/abramhindle/ttwl-cli-saveedit/">ttwl-cli-saveedit</a>
+      </p>
+      </p>
+      <h3>ttwl-cli-saveedit in your browser</h3>
+      <p>
+        This webpage provides a user interface for you to modify your Tiny Tina's Wonderlands (TTWL) save files.
+        What can this save editor do?
+      </p>
+      <ul>
+        <li> Allow you to duplicate your savefile (change/randomize your GUID). The game cannot see multiple savefiles if they have the same GUID.
+        <li> Unfinish all your missions. Do you want to play the game again as your current character? Then click `Unfinish Your Missions` and play the whole game again.
+        <li> Do you want the BL3 TVHM experience in TTWL? Well use
+        fake TVHM with Chaos Level. Replay the whole story (minus the
+        last boss) at your Chaos level and current level. Want to
+        primordial mission rewards? I'm not sure that's possible but
+          why don't you try it.
+        <li> Or do you want to import items from another savefile? Get their balance code and paste them into the item import box and give it a go!
+      </ul>
+      <h3>Instructions:</h3>
+      <ol>
+        <li> First load the example file or "upload" your save file. This program will not send your savefiles anywhere, they will be locally manipulated in your browser. The details of the file will be printed below.
+        <li> Second, manipulate your savefile. Every button will send you a new savefile that you can download.
+        <li> Copy your savefile into your TTWL save game directory or folder and rename to a number dot sav (like "100.sav" or "111.sav").
+      </ol>
+      <h3>No support provided:</h3>
+      <p class="smaller">
+        Here's where I come off as a jerk: I don't want to add
+        features that you want. I don't want to do extra work. I don't
+        care if you don't like this. I will listen to actual coherent
+        bug
+        reports <a href="https://github.com/abramhindle/ttwl-cli-saveedit/issues">here</a>. I am not interested in feature requests. This is a technology demo.
+        I will gladly accept pull requests. If you want something, then make it better, it is opensource, I just wanted to deploy python in the browser. Don't contact me about windows issues, or mac issues, or ask me where savefiles are stored. I don't know these things and I don't have any answers.
+      </p>
+    </div>
     <div id="status">Loading</div>
     <div id="ui">
       <button id="example" onclick="loadExample()">Load Example</button>
-      <input name="upload" id="upload" type="file">
+      <input name="upload" id="upload" type="file"><br>
       <button id="downloadInput" onclick="downloadInputFile()">Download Inputfile</button>
       <button id="dupeFile" onclick="randomizeGUID()">Duplicate your Savefile</button>
       <button id="unfinish" onclick="unfinishMissions()">Unfinish Your Missions</button>
