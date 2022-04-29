@@ -32,9 +32,9 @@ setup(
             ],
         package_data={
             'ttwlsave': [
-                'resources/inventoryserialdb.json.xz',
-                'resources/balance_name_mapping.json.xz',
-                'resources/balance_to_inv_key.json.xz',
+                'resources/inventoryserialdb.json.gz',
+                'resources/balance_name_mapping.json.gz',
+                'resources/balance_to_inv_key.json.gz',
                 ],
             },
         install_requires=[

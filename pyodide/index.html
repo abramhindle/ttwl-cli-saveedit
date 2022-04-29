@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <script src="https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js"></script>
+  </head>
+  <body>
+    <div id="status">Loading</div>
+    <div>
+      <button id="example" onclick="loadExample()">Load Example</button>
+      <input name="upload" id="upload" type="file">
+      <button id="downloadInput" onclick="downloadFile()">Download Inputfile</button>
+      <button id="dupeFile" onclick="randomizeGUID()">Duplicate your Savefile</button>
+    </div>
+    <div>
+      <h2> Character Info <h2>
+          <code>
+            <pre id="cinfo">
+            </pre>
+          </code>
+    </div>
+    <script type="text/javascript">
+      var pkg = undefined;
+      var content = undefined;
+      var uiElements = ["upload","example","downloadInput","dupeFile"]
+      function disableUI(value) {
+          uiElements.forEach( id => document.getElementById(id).disabled = value );
+      }
+      function status(x) {
+          document.getElementById("status").innerText = x;
+      }
+      function installListeners() {
+          document.getElementById("upload").onchange = function(e) {
+              const file = e.target.files[0];
+              console.log(file);
+              loadFile(file);
+          }
+      }
+      function characterInfo() {
+          document.getElementById("cinfo").innerText = pkg.character_info();
+      }
+      async function loadExample() {
+          if (pkg === undefined) {
+              status("File not loaded yet");
+              return;
+          }
+          res = await pkg.load_example();
+          status("TTWLSave loaded: " + res);
+          characterInfo();
+      }
+      function loadFile(file) {
+          // josephernest https://github.com/pyodide/pyodide/issues/679#issuecomment-637519913
+          var reader = new FileReader();
+          reader.readAsArrayBuffer(file);
+          reader.onload = evt => { 
+              content = evt.target.result; 
+              status("Bytes written: "+pkg.load_file_from_browser());
+              characterInfo();              
+          }
+      }
+      function downloadInputFile() {
+          var array = pkg.get_input_file();
+          downloadArray(array);
+      }
+      function downloadOutputFile() {
+          var array = pkg.get_output_file();
+          downloadArray(array);
+      }
+      function downloadArray(array) {
+          var blob = new Blob([array], {type: 'application/octet-stream'});
+          var url = window.URL.createObjectURL(blob);
+          window.location.assign(url);
+      }
+      function randomizeGUID() {
+          var newGUID = pkg.randomize_guid();
+          status("New GUID: "+newGUID);
+          characterInfo();
+          // downloadOutputFile();
+          downloadInputFile();
+      }
+      async function main(){
+          let pyodide = await loadPyodide();
+          await pyodide.loadPackage(["micropip"]);
+          console.log(pyodide.runPython("\" \".join([\"Hello\",\"World\"])"));
+          await pyodide.runPythonAsync(`
+    from pyodide.http import pyfetch
+    response = await pyfetch("./script.py")
+    with open("script.py", "wb") as f:
+        f.write(await response.bytes())
+`)          
+          status("Loading python");
+          pkg = pyodide.pyimport("script");
+          status("Installing Python modules");
+          await pkg.install_deps();
+          status("Python Modules Installed: READY TO GO!");
+          disableUI(false);
+          // status("Testing TTWLSave");
+          // res = await pkg.load_example();
+          // status("TTWLSave loaded: " + res);
+          // document.getElementById("cinfo").innerText = pkg.character_info();
+      }
+      disableUI(true);
+      installListeners();
+      main();
+
+    </script>
+  </body>
+</html>
