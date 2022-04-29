@@ -1,17 +1,35 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <script src="https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js"></script>
+    <style>
+      .disabled {
+          pointer-events: none;
+          opacity: 0.4;
+      }
+    </style>
   </head>
   <body>
     <div id="status">Loading</div>
-    <div>
+    <div id="ui">
       <button id="example" onclick="loadExample()">Load Example</button>
       <input name="upload" id="upload" type="file">
-      <button id="downloadInput" onclick="downloadFile()">Download Inputfile</button>
+      <button id="downloadInput" onclick="downloadInputFile()">Download Inputfile</button>
       <button id="dupeFile" onclick="randomizeGUID()">Duplicate your Savefile</button>
+      <button id="unfinish" onclick="unfinishMissions()">Unfinish Your Missions</button>
+      <button id="tvhm" onclick="fakeTVHM()">Fake TVHM with Chaos Level</button><br>
+      <div>
+        <h3>Item import</h3>
+        Try items like: Balance_M_Sword2H_BansheeClaw_Leg (level 40, mayhem unknown): BL3(BQAAAADCvYA7Cxphg0La6XWPTqQjCAAJAQ==)<br>
+        <textarea cols="80" id="inventory"></textarea></br>
+        <button id="import" onclick="importInventory()">Import Inventory Items</button>
+      </div>
     </div>
     <div>
+          <code>
+            <pre id="output">
+            </pre>
+          </code>
       <h2> Character Info <h2>
           <code>
             <pre id="cinfo">
@@ -22,8 +40,16 @@
       var pkg = undefined;
       var content = undefined;
       var uiElements = ["upload","example","downloadInput","dupeFile"]
-      function disableUI(value) {
-          uiElements.forEach( id => document.getElementById(id).disabled = value );
+      function disableUI(v) {
+          v = v?true:false;
+          [...(document.getElementById("ui").children)].forEach( elm => {
+              if (v) {
+                  elm.classList.add("disabled");
+              } else {
+                  elm.classList.remove("disabled");
+              }
+          });
+          // uiElements.forEach( id => document.getElementById(id).disabled = value );
       }
       function status(x) {
           document.getElementById("status").innerText = x;
@@ -38,14 +64,19 @@
       function characterInfo() {
           document.getElementById("cinfo").innerText = pkg.character_info();
       }
-      async function loadExample() {
+      function logOutput(text) {
+          document.getElementById("output").innerText = text;
+      }
+      function loadExample() {
           if (pkg === undefined) {
               status("File not loaded yet");
               return;
           }
-          res = await pkg.load_example();
-          status("TTWLSave loaded: " + res);
-          characterInfo();
+          status("Loading Example!");
+          pkg.load_example().then( res => {
+              status("TTWLSave loaded: " + res);
+              characterInfo();
+          });
       }
       function loadFile(file) {
           // josephernest https://github.com/pyodide/pyodide/issues/679#issuecomment-637519913
@@ -57,26 +88,70 @@
               characterInfo();              
           }
       }
-      function downloadInputFile() {
+      function downloadInputFile(filename) {
           var array = pkg.get_input_file();
-          downloadArray(array);
+          downloadArray(array,filename);
       }
       function downloadOutputFile() {
           var array = pkg.get_output_file();
-          downloadArray(array);
+          var filename = "ttwl-"+pkg.get_guid()+".sav";
+          downloadArray(array,filename);
       }
-      function downloadArray(array) {
+      function downloadArray(array,filename) {
           var blob = new Blob([array], {type: 'application/octet-stream'});
           var url = window.URL.createObjectURL(blob);
-          window.location.assign(url);
+          // This part is dumb, why javascript do I have to do this?
+          var anchor = window.document.createElement('a');
+          anchor.href = url;
+          anchor.download = filename?filename:"output.sav";
+          document.body.appendChild(anchor);
+          anchor.click();
+          document.body.removeChild(anchor);          
       }
       function randomizeGUID() {
+          disableUI(true);          
+          status("Randomizing the GUID");
           var newGUID = pkg.randomize_guid();
           status("New GUID: "+newGUID);
           characterInfo();
           // downloadOutputFile();
-          downloadInputFile();
+          downloadInputFile("ttwl-"+newGUID+".sav");
+          disableUI(false);
       }
+      function unfinishMissions() {
+          disableUI(true);
+          status("Randomizing the GUID");
+          var newGUID = pkg.unfinish_missions();
+          status("Unfinished Missions and New GUID: "+newGUID);
+          characterInfo();
+          // downloadOutputFile();
+          downloadInputFile("ttwl-"+newGUID+".sav");
+          disableUI(false);
+      }
+      function fakeTVHM() {
+          disableUI(true);
+          status("Randomizing the GUID");
+          var newGUID = pkg.fake_tvhm();
+          status("Fake TVHM New GUID: "+newGUID);
+          characterInfo();
+          // downloadOutputFile();
+          downloadInputFile("ttwl-"+newGUID+".sav");
+          disableUI(false);
+      }
+      function importInventory() {
+          disableUI(true);
+          status("Importing Items");
+          var items = document.getElementById("inventory").value;
+          var out = pkg.import_items( items );
+          outText = out[0];
+          newGUID = out[1];
+          logOutput(outText);
+          characterInfo();
+          // downloadOutputFile();
+          downloadInputFile("ttwl-"+newGUID+".sav");
+          disableUI(false);              
+      }
+
       async function main(){
           let pyodide = await loadPyodide();
           await pyodide.loadPackage(["micropip"]);
@@ -86,22 +161,25 @@
     response = await pyfetch("./script.py")
     with open("script.py", "wb") as f:
         f.write(await response.bytes())
-`)          
+`
+                                      )          
           status("Loading python");
           pkg = pyodide.pyimport("script");
           status("Installing Python modules");
           await pkg.install_deps();
           status("Python Modules Installed: READY TO GO!");
           disableUI(false);
-          // status("Testing TTWLSave");
-          // res = await pkg.load_example();
-          // status("TTWLSave loaded: " + res);
-          // document.getElementById("cinfo").innerText = pkg.character_info();
       }
       disableUI(true);
-      installListeners();
-      main();
-
+      window.addEventListener("load", 
+                              function() {
+                                  disableUI(true);
+                                  installListeners();
+                                  main().then( () =>
+                                               disableUI(false)
+                                             )
+                              }, false);
+                              
     </script>
   </body>
 </html>
