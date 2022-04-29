@@ -161,7 +161,8 @@ class BL3Serial(object):
         self._generic_parts = None
         self._additional_data = None
         self._num_customs = None
-
+        self._item_type = None
+        
         # Call out to any superclass procedures here
         self._update_superclass_serial()
 
@@ -421,7 +422,7 @@ class BL3Serial(object):
             #     # Okay, we're good!  Don't bother saving the remaining 0 bits.
             #     pass
             if len(bits.data) > 3:                
-                self.item_type = bits.eat(3)                
+                self._item_type = bits.eat(3)
 
     def _deparse_serial(self):
         """
