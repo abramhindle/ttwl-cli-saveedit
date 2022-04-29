@@ -1,6 +1,7 @@
 print("Booting Up Python")
 import builtins
 import micropip
+from pyodide import to_js
 
 sav = None
 input_filename = "/input.sav"
@@ -120,3 +121,24 @@ def fake_tvhm():
     # duped in cli_edit.py
     save.save_to( input_filename )
     return save.get_savegame_guid()
+
+def import_items(items_text):
+    filename = "/import.csv"
+    with open(filename,"wt") as fd:
+        fd.write(items_text)
+    from ttwlsave.ttwlsave import TTWLSave    
+    save = TTWLSave( input_filename )
+    save.randomize_guid();
+    guid = save.get_savegame_guid()
+    import ttwlsave.cli_common
+    def task():
+        ttwlsave.cli_common.import_items(filename,
+                                         save.create_new_item_encoded,
+                                         save.add_item,
+                                         file_csv=True,
+                                         allow_fabricator=True,
+                                         quiet=False
+        )
+    res =  wrap_io(task)
+    save.save_to( input_filename )
+    return to_js([res,guid])

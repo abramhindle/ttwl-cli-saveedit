@@ -17,9 +17,19 @@
       <button id="downloadInput" onclick="downloadInputFile()">Download Inputfile</button>
       <button id="dupeFile" onclick="randomizeGUID()">Duplicate your Savefile</button>
       <button id="unfinish" onclick="unfinishMissions()">Unfinish Your Missions</button>
-      <button id="tvhm" onclick="fakeTVHM()">Fake TVHM with Chaos Level</button>
+      <button id="tvhm" onclick="fakeTVHM()">Fake TVHM with Chaos Level</button><br>
+      <div>
+        <h3>Item import</h3>
+        Try items like: Balance_M_Sword2H_BansheeClaw_Leg (level 40, mayhem unknown): BL3(BQAAAADCvYA7Cxphg0La6XWPTqQjCAAJAQ==)<br>
+        <textarea cols="80" id="inventory"></textarea></br>
+        <button id="import" onclick="importInventory()">Import Inventory Items</button>
+      </div>
     </div>
     <div>
+          <code>
+            <pre id="output">
+            </pre>
+          </code>
       <h2> Character Info <h2>
           <code>
             <pre id="cinfo">
@@ -53,6 +63,9 @@
       }
       function characterInfo() {
           document.getElementById("cinfo").innerText = pkg.character_info();
+      }
+      function logOutput(text) {
+          document.getElementById("output").innerText = text;
       }
       function loadExample() {
           if (pkg === undefined) {
@@ -125,7 +138,19 @@
           downloadInputFile("ttwl-"+newGUID+".sav");
           disableUI(false);
       }
-
+      function importInventory() {
+          disableUI(true);
+          status("Importing Items");
+          var items = document.getElementById("inventory").value;
+          var out = pkg.import_items( items );
+          outText = out[0];
+          newGUID = out[1];
+          logOutput(outText);
+          characterInfo();
+          // downloadOutputFile();
+          downloadInputFile("ttwl-"+newGUID+".sav");
+          disableUI(false);              
+      }
 
       async function main(){
           let pyodide = await loadPyodide();
@@ -149,7 +174,6 @@
       window.addEventListener("load", 
                               function() {
                                   disableUI(true);
-                                  console.log("what");
                                   installListeners();
                                   main().then( () =>
                                                disableUI(false)
