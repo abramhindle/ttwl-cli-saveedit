@@ -90,3 +90,33 @@ def randomize_guid():
     save.randomize_guid();
     save.save_to( input_filename )
     return save.get_savegame_guid()
+
+def get_guid():
+    return sav.get_savegame_guid()
+
+# duped in cli_edit.py
+def unfinish_missions():
+    from ttwlsave.ttwlsave import TTWLSave    
+    save = TTWLSave( input_filename )
+    save.randomize_guid();
+    # duped in cli_edit.py
+    save.set_playthroughs_completed(0)
+    save.clear_playthrough_data(0)
+    # duped in cli_edit.py
+    save.save_to( input_filename )
+    return save.get_savegame_guid()
+
+def fake_tvhm():
+    from ttwlsave.ttwlsave import TTWLSave    
+    save = TTWLSave( input_filename )
+    save.randomize_guid();
+    # duped in cli_edit.py
+    for missions in save.get_pt_completed_mission_lists():
+        for mission in missions:
+            if mission != "/Game/Missions/Plot/Mission_Plot11.Mission_Plot11_C":
+                save.delete_mission(0,mission,allow_plot=True)
+    save.set_playthroughs_completed(1)
+    save.finish_game()
+    # duped in cli_edit.py
+    save.save_to( input_filename )
+    return save.get_savegame_guid()
