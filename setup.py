@@ -16,7 +16,7 @@ setup(
         version=__version__,
         packages=find_packages(),
         license='zlib/libpng',
-        description='Tiny Tina\'s Winderlands Savegame Editor',
+        description='Tiny Tina\'s Wonderlands Savegame Editor',
         long_description=readme(),
         long_description_content_type='text/markdown',
         url='https://github.com/abramhindle/ttwl-cli-saveedit',
