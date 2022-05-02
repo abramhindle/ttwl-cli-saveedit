@@ -10,7 +10,8 @@ output_filename = "/output.sav"
 async def install_deps():
     await micropip.install('setuptools')
     import setuptools
-    await micropip.install('https://softwareprocess.es/2022/ttwl_cli_saveedit-0.0.5-py3-none-any.whl')
+    # await micropip.install('https://softwareprocess.es/2022/ttwl_cli_saveedit-0.0.5-py3-none-any.whl')
+    await micropip.install('ttwl-cli-saveedit')
     import ttwlsave
     from ttwlsave.ttwlsave import TTWLSave
     print("Done deps")
