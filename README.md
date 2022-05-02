@@ -19,6 +19,12 @@ ttwl-save-info -v -i 2.sav # gives info
 ttwl-save-edit --randomize-guid  --name 'CoolNewName' 2.sav 2.newbuild.sav # makes a new save file based on the old one with a new GUID and name
 ```
 
+Or you can just use it online without having to install anything:
+
+https://abramhindle.github.io/ttwl-cli-saveedit/
+
+Yes it will install python and ttwl-cli-saveedit in your browser and give you a tiny UI to dupe your savefiles or import items.
+
 # Hardly anything works and it is all BL3 oriented.
 
 This project is a commandline Python-based Borderlands 3 Savegame
@@ -255,6 +261,8 @@ In Memoriam: Baysix, the author of the original web-based editor at bl3editor.co
 passed away in early 2021, and that editor is now permanently offline.  RIP!
 
 # Changelog
+**v0.0.5**
+ - Changes to deploy it in the browser.
 **v0.0.4**
  - Dealt with pet names. Missing profile.
 **v0.0.3**
