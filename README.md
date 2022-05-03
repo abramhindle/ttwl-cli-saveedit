@@ -261,6 +261,9 @@ In Memoriam: Baysix, the author of the original web-based editor at bl3editor.co
 passed away in early 2021, and that editor is now permanently offline.  RIP!
 
 # Changelog
+**v0.0.6**
+ - Updated Inventory
+ - Added Primary and Secondary Class Reporting
 **v0.0.5**
  - Changes to deploy it in the browser.
 **v0.0.4**
