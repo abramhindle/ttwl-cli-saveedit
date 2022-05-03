@@ -92,7 +92,8 @@ def main():
             print(' - {} Name: {}'.format(pet_type, pet_name))
 
     # Class
-    print('Player Class: {}'.format(save.get_class(True)))
+    print('Player Primary Class: {}'.format(save.get_primary_class(True)))
+    print('Player Secondary Class: {}'.format(save.get_secondary_class(True)))
 
     # XP/Level
     print('XP: {}'.format(save.get_xp()))

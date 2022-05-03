@@ -441,6 +441,28 @@ class TTWLSave(object):
             return class_to_eng.get(classval,classval)
         return classval
 
+    def get_primary_class(self, eng=False):
+        """
+        Returns the class of this character.  By default it will be a constant,
+        but if `eng` is `True` it will be an English label instead.
+        """
+        primary = self.save.ability_data.dual_class_save_data.primary_branch_path
+        classval = classobj_to_class.get( primary, primary )
+        if eng:
+            return class_to_eng.get(classval,classval)
+        return classval
+    def get_secondary_class(self, eng=False):
+        """
+        Returns the class of this character.  By default it will be a constant,
+        but if `eng` is `True` it will be an English label instead.
+        """
+        primary = self.save.ability_data.dual_class_save_data.slotted_secondary_branch_path
+        classval = classobj_to_class.get( primary, primary )
+        if eng:
+            return class_to_eng.get(classval,classval)
+        return classval
+
+
     def get_xp(self):
         """
         Returns the character's XP
