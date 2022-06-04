@@ -261,21 +261,29 @@ In Memoriam: Baysix, the author of the original web-based editor at bl3editor.co
 passed away in early 2021, and that editor is now permanently offline.  RIP!
 
 # Changelog
+
 **v0.0.8**
  - Added options to turn everything into chaotics, volatiles, or primordials
+
 **v0.0.7**
  - Updated Inventory
+
 **v0.0.6**
  - Updated Inventory
  - Added Primary and Secondary Class Reporting
+
 **v0.0.5**
  - Changes to deploy it in the browser.
+
 **v0.0.4**
  - Dealt with pet names. Missing profile.
+
 **v0.0.3**
  - Updated from Gibbed's repo again for coiled captors. Made the profile info work.
+
 **v0.0.2**
  - Updated the item defs from Gibbed from https://github.com/gibbed/WonderlandsDumps/blob/master/Inventory%20Serial%20Number%20Database.json
+
 **v0.0.1**
  - Tried to port it to Tina Tiny's Wonderlands
 
