@@ -32,7 +32,8 @@ async def load_example():
     global sav
     import ttwlsave
     from ttwlsave.ttwlsave import TTWLSave    
-    await save_binary_url("https://softwareprocess.es/2022/example-ttwl.sav",input_filename)
+    # await save_binary_url("https://softwareprocess.es/2022/example-ttwl.sav",input_filename)
+    await save_binary_url("./example-ttwl.sav",input_filename)
     sav = TTWLSave("/input.sav")
     print(sav.get_char_name())
     return sav.get_char_name()
@@ -122,6 +123,25 @@ def fake_tvhm():
     # duped in cli_edit.py
     save.save_to( input_filename )
     return save.get_savegame_guid()
+
+def item_types(item_type):
+    from ttwlsave.ttwlsave import TTWLSave    
+    save = TTWLSave( input_filename )
+    save.randomize_guid();
+    import ttwlsave.cli_common
+    ttwlsave.cli_common.update_item_type(save.get_items(),
+                    item_type,
+                    False
+    )
+    save.save_to( input_filename )
+    return save.get_savegame_guid()
+
+def chaotic():
+    return item_types(1)
+def volatile():
+    return item_types(2)
+def primordial():
+    return item_types(3)
 
 def import_items(items_text):
     filename = "/import.csv"

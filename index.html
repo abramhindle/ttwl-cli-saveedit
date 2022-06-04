@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>In Browser Tiny Tina Wonderland's Save Game Editor</title>
+    <title>In Browser Tiny Tina Wonderland's Save Editor</title>
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://abramhindle.github.io/ttwl-cli-saveedit/" />
-    <meta property="og:title" content="In Browser Tiny Tina Wonderland's Save Game Editor, duplicate save files, fake TVHM, import items" />
+    <meta property="og:title" content="In Browser Tiny Tina Wonderland's Save Editor, duplicate save files, fake TVHM, import items" />
     <script src="https://cdn.jsdelivr.net/pyodide/v0.20.0/full/pyodide.js"></script>
     <style>
       .disabled {
@@ -30,8 +30,10 @@
   </head>
   <body>
     <div>
-      <h1>Online In Browser Tiny Tina Wonderland's Save Game Editor</h1>
+      <h1>Online In Browser Tiny Tina Wonderland's Save Editor</h1>
       <p>
+        Do you want to modify Tiny Tina Wonderland's Saves, Tiny Tina
+        Wonderland's Savefiles, or Tiny Tina Wonderland's Save Games?
         This is tech demo about running Python code in the browser,
         but you may use it to the modify the savefiles in Tiny Tina's
         Wonderlands. This was working as of TTWL v1.0.2b.
@@ -70,27 +72,28 @@
       </ol>
       <h3>No support provided:</h3>
       <p class="smaller">
-        Here's where I come off as a jerk: I don't want to add
-        features that you want. I don't want to do extra work. I don't
-        care if you don't like this. I will listen to actual coherent
+        Here's where I come off as a jerk:
+        I will listen to actual coherent
         bug
-        reports <a href="https://github.com/abramhindle/ttwl-cli-saveedit/issues">here</a>. I am not interested in feature requests. This is a technology demo.
+        reports <a href="https://github.com/abramhindle/ttwl-cli-saveedit/issues">here</a>. I am not very interested in feature requests. This is a technology demo.
         I will gladly accept pull requests. If you want something, then make it better, it is opensource, I just wanted to deploy python in the browser. Don't contact me about windows issues, or mac issues, or ask me where savefiles are stored. I don't know these things and I don't have any answers.
       </p>
     </div>
     <div id="status">Loading</div>
     <div id="ui">
-      <button id="example" onclick="loadExample()">Load Example</button>
+      <button id="example" onclick="loadExample()">Load Example</button> or upload your own:
       <input name="upload" id="upload" type="file"><br>
-      <button id="downloadInput" onclick="downloadInputFile()">Download Inputfile</button>
-      <button id="dupeFile" onclick="randomizeGUID()">Duplicate your Savefile</button>
-      <button id="unfinish" onclick="unfinishMissions()">Unfinish Your Missions</button>
-      <button id="tvhm" onclick="fakeTVHM()">Fake TVHM with Chaos Level</button><br>
+      <button class="needFile" id="downloadInput" onclick="downloadInputFile()">Download Inputfile</button>
+      <button class="needFile" id="dupeFile" onclick="randomizeGUID()">Duplicate your Savefile</button>
+      <button class="needFile" id="unfinish" onclick="unfinishMissions()">Unfinish Your Missions</button>
+      <button class="needFile" id="tvhm" onclick="fakeTVHM()">Fake TVHM with Chaos Level</button><br>
+      <button class="needFile" id="tvhm" onclick="chaotic()">Make all gear Chaotic</button>
+      <button class="needFile" id="tvhm" onclick="volatile()">Make all gear Volatile</button><br>
       <div>
         <h3>Item import</h3>
         Try items like: Balance_M_Sword2H_BansheeClaw_Leg (level 40, mayhem unknown): BL3(BQAAAADCvYA7Cxphg0La6XWPTqQjCAAJAQ==)<br>
         <textarea cols="80" id="inventory"></textarea></br>
-        <button id="import" onclick="importInventory()">Import Inventory Items</button>
+        <button class="needFile" id="import" onclick="importInventory()">Import Inventory Items</button>
       </div>
     </div>
     <div>
@@ -119,6 +122,16 @@
           });
           // uiElements.forEach( id => document.getElementById(id).disabled = value );
       }
+      function disableNeedFile(v) {
+          v = v?true:false;
+          [...(document.getElementsByClassName("needFile"))].forEach( elm => {
+              if (v) {
+                  elm.classList.add("disabled");
+              } else {
+                  elm.classList.remove("disabled");
+              }
+          });
+      }
       function status(x) {
           document.getElementById("status").innerText = x;
       }
@@ -144,6 +157,7 @@
           pkg.load_example().then( res => {
               status("TTWLSave loaded: " + res);
               characterInfo();
+              disableNeedFile(false);
           });
       }
       function loadFile(file) {
@@ -153,8 +167,9 @@
           reader.onload = evt => { 
               content = evt.target.result; 
               status("Bytes written: "+pkg.load_file_from_browser());
-              characterInfo();              
-          }
+              characterInfo();
+              disableNeedFile(false);
+          }          
       }
       function downloadInputFile(filename) {
           var array = pkg.get_input_file();
@@ -206,6 +221,26 @@
           downloadInputFile("ttwl-"+newGUID+".sav");
           disableUI(false);
       }
+      function chaotic() {
+          disableUI(true);
+          status("Turning Weapons Chaotic")
+          var newGUID = pkg.chaotic();
+          status("New GUID: "+newGUID);
+          characterInfo();
+          // downloadOutputFile();
+          downloadInputFile("ttwl-"+newGUID+".sav");
+          disableUI(false);
+      }
+      function volatile() {
+          disableUI(true);
+          status("Turning Weapons Volatile")
+          var newGUID = pkg.volatile();
+          status("New GUID: "+newGUID);
+          characterInfo();
+          // downloadOutputFile();
+          downloadInputFile("ttwl-"+newGUID+".sav");
+          disableUI(false);
+      }
       function importInventory() {
           disableUI(true);
           status("Importing Items");
@@ -243,9 +278,10 @@
                               function() {
                                   disableUI(true);
                                   installListeners();
-                                  main().then( () =>
-                                               disableUI(false)
-                                             )
+                                  main().then( () => {
+                                               disableUI(false);
+                                               disableNeedFile(true);
+                                  })
                               }, false);
                               
     </script>
