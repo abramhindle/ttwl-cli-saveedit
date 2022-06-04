@@ -241,6 +241,17 @@
           downloadInputFile("ttwl-"+newGUID+".sav");
           disableUI(false);
       }
+      function primordial() {
+          disableUI(true);
+          status("Turning Weapons Volatile")
+          var newGUID = pkg.volatile();
+          status("New GUID: "+newGUID);
+          characterInfo();
+          // downloadOutputFile();
+          downloadInputFile("ttwl-"+newGUID+".sav");
+          disableUI(false);
+      }
+
       function importInventory() {
           disableUI(true);
           status("Importing Items");
