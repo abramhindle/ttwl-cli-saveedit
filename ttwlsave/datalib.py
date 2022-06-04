@@ -488,6 +488,9 @@ class BL3Serial(object):
             # Then, if we're a v4 serial, the number of times we've been rerolled
             if self.serial_version >= 4:
                 bits.append_value(self._rerolled, 8)
+            # Then, if we're a v4 serial, the item_type
+            if self.serial_version >= 4:
+                bits.append_value(self._item_type, 3)
 
         else:
             # Otherwise, we can re-use our original remaining data
@@ -690,6 +693,52 @@ class BL3Serial(object):
         # return!
         return True
 
+    def can_have_item_type(self):
+        """
+        Returns `True` if this is an item type which can have a mayhem level,
+        or `False` otherwise.  Will also return `False` if we're unable to
+        parse parts for the item.
+        """
+        if not self.parsed or not self.parts_parsed:
+            self._parse_serial()
+            if not self.can_parse or not self.can_parse_parts:
+                return False
+        return self._item_type is not None
+
+    @property
+    def item_type(self):
+        """
+        Returns the current item_type 0 being basic, 1 being chaotic. 
+         and `None` signifying that
+        the item_type level could not be parsed
+        """
+        if not self.parsed or not self.parts_parsed:
+            self._parse_serial()
+            if not self.can_parse or not self.can_parse_parts:
+                return None
+        return self._item_type
+
+    
+    @item_type.setter
+    def item_type(self, value):
+        """
+        Sets the given item_type level on the item.  Returns `True` if we were
+        able to do so, or `False` if not.
+        """
+        # The call to `can_have_mayhem` will parse the serial if possible,
+        # so we'll be all set.
+        if not self.can_have_item_type():
+            return False
+        # Don't forget to set this
+        self.changed_parts = True
+        self._item_type = value
+        # Re-serialize
+        self._deparse_serial()
+        self._update_superclass_serial()
+        # return!
+        return True
+
+    
     def set_anointment(self, anointment):
         """
         Sets the given anointment on the item, if possible.  Returns `True` if we were
@@ -743,7 +792,10 @@ class BL3Serial(object):
 
         # return!
         return True
-
+    def get_item_type_eng(self):
+        it = self.item_type
+        return item_type_eng.get(it,it)
+        
     def get_level_eng(self):
         """
         Returns an English representation of our level, including Mayhem level,

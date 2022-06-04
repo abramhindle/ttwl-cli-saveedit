@@ -20,7 +20,7 @@
 # 3. This notice may not be removed or altered from any source distribution.
 
 # Editor Version
-__version__ = '0.0.7'
+__version__ = '0.0.8'
 # Forked from bl3-cli-saveedit
 # __version__ = '1.16.1b1'
 
@@ -2932,3 +2932,11 @@ fts_to_map = {
         '/game/patchdlc/takedown2/gamedata/leveltravel/lts_sanctuary3_td2.lts_sanctuary3_td2': 'Sanctuary3_P',
         }
 
+# item type to english
+item_type_eng = {
+    0: "",
+    1: "Chaotic",
+    2: "Volatile",
+    3: "Primordial",
+#    4: "Ascended",
+}

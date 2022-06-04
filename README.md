@@ -261,6 +261,8 @@ In Memoriam: Baysix, the author of the original web-based editor at bl3editor.co
 passed away in early 2021, and that editor is now permanently offline.  RIP!
 
 # Changelog
+**v0.0.8**
+ - Added options to turn everything into chaotics, volatiles, or primordials
 **v0.0.7**
  - Updated Inventory
 **v0.0.6**

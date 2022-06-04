@@ -123,6 +123,26 @@ def main():
             type=int,
             help='Set all inventory items to the specified level')
 
+    itemlevelgroup.add_argument('--item-chaotic',
+            dest='item_chaotic',
+            action='store_true',
+            help='Set all inventory items to chaotic')
+
+    itemlevelgroup.add_argument('--item-volatile',
+            dest='item_volatile',
+            action='store_true',
+            help='Set all inventory items to volatile')
+
+    itemlevelgroup.add_argument('--item-primordial',
+            dest='item_primordial',
+            action='store_true',
+            help='Set all inventory items to primordial')
+    # itemlevelgroup.add_argument('--item-ascended',
+    #         dest='item_ascended',
+    #         action='store_true',
+    #         help='Set all inventory items to ascended')
+
+    
     itemmayhemgroup = parser.add_mutually_exclusive_group()
 
     itemmayhemgroup.add_argument('--item-mayhem-max',
@@ -158,11 +178,6 @@ def main():
             help='Set Eridium value',
             )
 
-    parser.add_argument('--clear-takedowns',
-            dest='clear_takedowns',
-            action='store_true',
-            help='Clears out the Takedown Discovery missions so they don\'t clutter your UI',
-            )
 
     unlock_choices = [
             'ammo', 'backpack',
@@ -370,13 +385,16 @@ def main():
         args.mayhem_seed is not None,
         args.money is not None,
         args.eridium is not None,
-        args.clear_takedowns,
         len(args.unlock) > 0,
         # args.copy_nvhm,
         # args.copy_tvhm,
         args.import_items,
         args.items_to_char,
         args.item_levels,
+        args.item_chaotic,
+        args.item_volatile,
+        args.item_primordial,
+        # args.item_ascended,
         #args.unfinish_nvhm,
         args.unfinish_missions,
         args.fake_tvhm,
@@ -592,6 +610,21 @@ def main():
                     quiet=args.quiet,
                     )
 
+        item_type_flags = [False,
+                           args.item_chaotic,
+                           args.item_volatile,
+                           args.item_primordial,
+                           # args.item_ascended,
+        ]
+        if True in item_type_flags:
+            value = [x[0] for x in enumerate(item_type_flags) if x[1]][0]
+            cli_common.update_item_type(save.get_items(),
+                    value,
+                    quiet=args.quiet,
+            )
+
+
+            
         # Item Mayhem level
         if args.item_mayhem_levels is not None:
             cli_common.update_item_mayhem_levels(save.get_items(),

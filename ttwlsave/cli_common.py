@@ -193,6 +193,49 @@ def update_item_levels(items, to_level, quiet=False):
             remaining_txt,
             ))
 
+def update_item_type(items, to_item_type, quiet=False):
+    """
+    Given a list of `items`, update their base level to `level`.  If `quiet`
+    is `True`, only errors will be printed.
+    """
+    num_items = len(items)
+    if not quiet:
+        if num_items == 1:
+            plural = ''
+        else:
+            plural = 's'
+        print(' - Updating {} item{} to type {}'.format(
+            num_items,
+            plural,
+            to_item_type,
+            ))
+    actually_updated = 0
+    for item in items:
+        if item.item_type != to_item_type:
+            item.item_type = to_item_type
+            actually_updated += 1
+    if not quiet:
+        remaining = num_items - actually_updated
+        if actually_updated == 1:
+            updated_verb = 'was'
+        else:
+            updated_verb = 'were'
+        if remaining > 0:
+            if remaining == 1:
+                remaining_verb = 'was'
+            else:
+                remaining_verb = 'were'
+            remaining_txt = ' ({} {} already at that level)'.format(remaining, remaining_verb)
+        else:
+            remaining_txt = ''
+        print('   - {} {} updated{}'.format(
+            actually_updated,
+            updated_verb,
+            remaining_txt,
+            ))
+
+
+        
 def update_item_mayhem_levels(items, to_level, quiet=False):
     """
     Given a list of `items`, update their mayhem level to `level`.  If

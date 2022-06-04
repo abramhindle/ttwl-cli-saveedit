@@ -218,7 +218,7 @@ def main():
                 # print(f'I:{item.get_serial_base64()}')
                 try:
                     if item.eng_name:
-                        to_report.append(' - {} ({}): {}'.format(item.eng_name, item.get_level_eng(), item.get_serial_base64()))
+                        to_report.append(' - {} ({}) {}: {}'.format(item.eng_name, item.get_level_eng(), item.get_item_type_eng(), item.get_serial_base64()))
                     else:
                         to_report.append(' - unknown item: {}'.format(item.get_serial_base64()))
                 except:
@@ -240,7 +240,7 @@ def main():
                 if item:
                     try:
                         if item.eng_name:
-                            to_report.append(' - {}: {} ({}): {}'.format(slot, item.eng_name, item.get_level_eng(), item.get_serial_base64()))
+                            to_report.append(' - {}: {} ({}) ({}): {}'.format(slot, item.eng_name, item.get_level_eng(), item.get_item_type_eng(), item.get_serial_base64()))
                         else:
                             to_report.append(' - {}: unknown item: {}'.format(slot, item.get_serial_base64()))
                     except:
