@@ -262,6 +262,9 @@ passed away in early 2021, and that editor is now permanently offline.  RIP!
 
 # Changelog
 
+**v0.0.9**
+ - Updated Inventory for Molten Mirrors (20220623)
+
 **v0.0.8**
  - Added options to turn everything into chaotics, volatiles, or primordials
 
