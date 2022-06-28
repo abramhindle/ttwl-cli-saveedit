@@ -1176,17 +1176,17 @@ class TTWLSave(object):
         """
         return self.set_currency(MONEY, new_value)
 
-    def get_eridium(self):
+    def get_moon_orbs(self):
         """
-        Returns the amount of eridium we have
+        Returns the amount of moon_orbs we have
         """
-        return self.get_currency(ERIDIUM)
+        return self.get_currency(MOON_ORBS)
 
-    def set_eridium(self, new_value):
+    def set_moon_orbs(self, new_value):
         """
-        Sets the amount of eridium we have
+        Sets the amount of moon orbs we have
         """
-        return self.set_currency(ERIDIUM, new_value)
+        return self.set_currency(MOON_ORBS, new_value)
 
     def get_sdus(self, eng=False):
         """

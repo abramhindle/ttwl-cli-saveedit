@@ -27,7 +27,7 @@ commands will be:
   - [Character Level](#character-level)
   - [Mayhem Level](#mayhem-level)
   - [Mayhem Random Seed](#mayhem-random-seed)
-  - [Currency (Money and Eridium)](#currency-money-and-eridium)
+  - [Currency (Money and Moon Orbs)](#currency-money-and-moon-orbs)
   - [Takedown Discovery Missions](#takedown-discovery-missions)
   - [Mission Deletion](#mission-deletion)
   - [Seasonal Event Status](#seasonal-event-status)
@@ -206,13 +206,13 @@ available Mayhem modifiers, such as by disabling some, or adding new ones,
 the random seeds you're used to will start to give a different result, so
 you may have to reroll a bunch to find your favorite set, again.
 
-## Currency (Money and Eridium)
+## Currency (Money and Moon Orbs)
 
-Money and Eridium can be set with the `--money` and `--eridium`
+Money and Moon Orbs can be set with the `--money` and `--moon-orbs`
 arguments, respectively:
 
     bl3-save-edit old.sav new.sav --money 20000000
-    bl3-save-edit old.sav new.sav --eridium 10000
+    bl3-save-edit old.sav new.sav --moon-orbs 10000
 
 ## Takedown Discovery Missions
 

@@ -103,7 +103,7 @@ def main():
 
     # Currencies
     print('Money: {}'.format(save.get_money()))
-    print('Eridium: {}'.format(save.get_eridium()))
+    print('Moon Orbs: {}'.format(save.get_moon_orbs()))
 
     # Playthroughs
     print('Playthroughs Completed: {}'.format(save.get_playthroughs_completed()))

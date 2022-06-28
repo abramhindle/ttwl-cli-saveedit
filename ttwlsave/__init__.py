@@ -58,14 +58,14 @@ petkey_to_pet = {
 pet_to_petkey = {v: k for k, v in petkey_to_pet.items()}
 
 # Currencies
-(MONEY, ERIDIUM) = range(2)
+(MONEY, MOON_ORBS) = range(2)
 currency_to_eng = {
         MONEY: 'Money',
-        ERIDIUM: 'Eridium',
+        MOON_ORBS: 'Moon Orbs',
         }
 currency_to_curhash = {
         MONEY: 618814354,
-        ERIDIUM: 3679636065
+        MOON_ORBS: 3679636065
         }
 curhash_to_currency = {v: k for k, v in currency_to_curhash.items()}
 

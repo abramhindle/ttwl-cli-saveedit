@@ -173,9 +173,9 @@ def main():
             help='Set money value',
             )
 
-    parser.add_argument('--eridium',
+    parser.add_argument('--moon-orbs',
             type=int,
-            help='Set Eridium value',
+            help='Set Moon Orbs value',
             )
 
 
@@ -384,7 +384,7 @@ def main():
         args.mayhem is not None,
         args.mayhem_seed is not None,
         args.money is not None,
-        args.eridium is not None,
+        args.moon_orbs is not None,
         len(args.unlock) > 0,
         # args.copy_nvhm,
         # args.copy_tvhm,
@@ -466,11 +466,11 @@ def main():
                 print(' - Setting Money to: {}'.format(args.money))
             save.set_money(args.money)
 
-        # Eridium
-        if args.eridium is not None:
+        # Moon Orbs
+        if args.moon_orbs is not None:
             if not args.quiet:
-                print(' - Setting Eridium to: {}'.format(args.eridium))
-            save.set_eridium(args.eridium)
+                print(' - Setting Moon Orbs to: {}'.format(args.moon_orbs))
+            save.set_moon_orbs(args.moon_orbs)
         # AH: No Takedowns
         # # Clearing Takedown Discovery
         # if args.clear_takedowns:
