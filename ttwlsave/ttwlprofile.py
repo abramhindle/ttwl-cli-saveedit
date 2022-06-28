@@ -677,17 +677,17 @@ class BL3Profile(object):
             quantity=num_keys
             ))
 
-    def get_golden_keys(self):
+    def get_skeleton_keys(self):
         """
-        Returns the number of golden keys stored on this profile
+        Returns the number of skeleton keys stored on this profile
         """
-        return self._get_generic_keys(goldenkey_hash)
+        return self._get_generic_keys(skeletonkey_hash)
 
-    def set_golden_keys(self, num_keys):
+    def set_skeleton_keys(self, num_keys):
         """
-        Sets the number of golden keys to `num_keys`
+        Sets the number of skeleton keys to `num_keys`
         """
-        self._set_generic_keys(goldenkey_hash, num_keys)
+        self._set_generic_keys(skeletonkey_hash, num_keys)
 
     def get_diamond_keys(self):
         """

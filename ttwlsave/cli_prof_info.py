@@ -57,9 +57,9 @@ def main():
     # Load the profile
     prof = BL3Profile(args.filename)
 
-    # Golden Keys
+    # Skeleton Keys
     print('Keys:')
-    print(' - Golden Keys: {}'.format(prof.get_golden_keys()))
+    print(' - Skeleton Keys: {}'.format(prof.get_skeleton_keys()))
     print(' - Diamond Keys: {}'.format(prof.get_diamond_keys()))
     # print(' - Vault Card 1 Keys: {}'.format(prof.get_vaultcard1_keys()))
     # print(' - Vault Card 1 Chests: {}'.format(prof.get_vaultcard1_chests()))

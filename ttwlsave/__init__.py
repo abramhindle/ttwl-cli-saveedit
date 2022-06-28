@@ -1320,7 +1320,7 @@ _weapon_cust_crc32_table = [
 
 def inventory_path_hash(object_path):
     """
-    Computes the hashes used in the profile for weapon customizations and the golden key
+    Computes the hashes used in the profile for weapon customizations and the skeleton key
     count.  Possibly used for other things, too.  Many thanks to Gibbed, yet again, for this!
     """
     global _weapon_cust_crc32_table
@@ -1486,9 +1486,9 @@ profile_weapontrinkets_obj_to_eng = {
 profile_weapontrinkets_hash_to_eng = weapon_cust_paths_to_hash(profile_weapontrinkets_obj_to_eng)
 profile_weapontrinkets_eng_to_hash = {v: k for k, v in profile_weapontrinkets_hash_to_eng.items()}
 
-# Golden Keys
-goldenkey_category = '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_GoldenKey'
-goldenkey_hash = inventory_path_hash(goldenkey_category)
+# Skeleton Keys
+skeletonkey_category = '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_GoldenKey'
+skeletonkey_hash = inventory_path_hash(skeletonkey_category)
 
 # Vault Card #1 Keys
 vaultcard1key_category = '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_VaultCard1Key'

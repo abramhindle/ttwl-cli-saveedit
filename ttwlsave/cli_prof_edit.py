@@ -74,10 +74,10 @@ def main():
 
     # Now the actual arguments
 
-    parser.add_argument('--golden-keys',
-            dest='golden_keys',
+    parser.add_argument('--skeleton-keys',
+            dest='skeleton_keys',
             type=int,
-            help='Number of Golden Keys in the profile',
+            help='Number of Skeleton Keys in the profile',
             )
 
     parser.add_argument('--diamond-keys',
@@ -267,8 +267,8 @@ def main():
         args.item_mayhem_levels = ttwlsave.mayhem_max
 
     # Check key counts; don't let them be below zero
-    if args.golden_keys is not None and args.golden_keys < 0:
-        raise argparse.ArgumentTypeError('Golden keys cannot be negative')
+    if args.skeleton_keys is not None and args.skeleton_keys < 0:
+        raise argparse.ArgumentTypeError('Skeleton keys cannot be negative')
     if args.diamond_keys is not None and args.diamond_keys < 0:
         raise argparse.ArgumentTypeError('Diamond keys cannot be negative')
     if args.vaultcard1_keys is not None and args.vaultcard1_keys < 0:
@@ -321,7 +321,7 @@ def main():
 
     # Check to see if we have any changes to make
     have_changes = any([
-        args.golden_keys is not None,
+        args.skeleton_keys is not None,
         args.diamond_keys is not None,
         args.vaultcard1_keys is not None,
         args.vaultcard1_chests is not None,
@@ -355,11 +355,11 @@ def main():
             print('Making requested changes...')
             print('')
 
-        # Golden Keys
-        if args.golden_keys is not None:
+        # Skeleton Keys
+        if args.skeleton_keys is not None:
             if not args.quiet:
-                print(' - Setting Golden Key count to {}'.format(args.golden_keys))
-            profile.set_golden_keys(args.golden_keys)
+                print(' - Setting Skeleton Key count to {}'.format(args.skeleton_keys))
+            profile.set_skeleton_keys(args.skeleton_keys)
 
         # Diamond Keys
         if args.diamond_keys is not None:

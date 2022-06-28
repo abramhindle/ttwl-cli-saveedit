@@ -20,7 +20,7 @@ commands will be:
 - [Output Formats](#output-formats)
 - [Modifying the Profile](#modifying-the-profile)
   - [Keys](#keys)
-    - [Golden Keys](#golden-keys)
+    - [Skeleton Keys](#skeleton-keys)
     - [Diamond Keys](#diamond-keys)
     - [Vault Card 1 Keys](#vault-card-1-keys)
     - [Vault Card 1 Chests](#vault-card-1-chests)
@@ -129,12 +129,12 @@ process multiple changes at once.
 The Profile editor supports editing the various keys that are acquired
 throughout the game
 
-### Golden Keys
+### Skeleton Keys
 
-The number of Golden Keys stored in the profile can be set using
-the `--golden-keys` argument:
+The number of Skeleton Keys stored in the profile can be set using
+the `--skeleton-keys` argument:
 
-    bl3-profile-edit profile.sav newprofile.sav --golden-keys 150
+    bl3-profile-edit profile.sav newprofile.sav --skeleton-keys 150
 
 ### Diamond Keys
 
