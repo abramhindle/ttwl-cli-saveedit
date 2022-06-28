@@ -22,7 +22,7 @@
 # 3. This notice may not be removed or altered from any source distribution.
 
 import io
-import lzma
+import gzip
 import json
 import codecs
 import argparse
@@ -31,11 +31,11 @@ from Crypto.Cipher import AES
 # Takes InventorySerialNumberDatabase.dat from inside the BL3 paks and turns
 # it into a compressed JSON file suitable for use in our savegame apps.
 # At user request, will also write out a version suitable for sending PRs
-# to https://github.com/gibbed/Borderlands3Dumps
+# to https://github.com/gibbed/WonderlandsDumps
 
 # Input/Output parameters
 input_file = 'InventorySerialNumberDatabase.dat'
-output_file = 'inventoryserialdb.json.xz'
+output_file = 'inventoryserialdb.json.gz'
 gibbed_file = 'Inventory Serial Number Database.json'
 
 ###
@@ -60,7 +60,7 @@ parser = argparse.ArgumentParser(description='Convert InventorySerialNumberDatab
 
 parser.add_argument('-g', '--gibbed',
         action='store_true',
-        help='Also generate JSON suitable for sending PRs to Gibbed at https://github.com/gibbed/Borderlands3Dumps')
+        help='Also generate JSON suitable for sending PRs to Gibbed at https://github.com/gibbed/WonderlandsDumps')
 
 args = parser.parse_args()
 
@@ -107,7 +107,7 @@ for line in df:
         top[cur_class]['assets'].append(obj_name)
 
 # Output to compressed JSON
-with lzma.open(output_file, 'wt') as odf:
+with gzip.open(output_file, 'wt') as odf:
     json.dump(top, odf, separators=(',', ':'))
 print('')
 print('Wrote JSON to {}'.format(output_file))
