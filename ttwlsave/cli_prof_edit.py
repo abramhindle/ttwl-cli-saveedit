@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # vim: set expandtab tabstop=4 shiftwidth=4:
 
-# Copyright (c) 2020-2021 CJ Kucera (cj@apocalyptech.com)
+# Copyright (c) 2020-2022 CJ Kucera (cj@apocalyptech.com)
 # 
 # This software is provided 'as-is', without any express or implied warranty.
 # In no event will the authors be held liable for any damages arising from
@@ -26,30 +26,30 @@ import sys
 import ttwlsave
 import argparse
 from . import cli_common
-from ttwlsave.bl3profile import BL3Profile
+from ttwlsave.ttwlprofile import BL3Profile
 
 def main():
 
     # Set up args
     parser = argparse.ArgumentParser(
-            description='Borderlands 3 CLI Profile Editor v{} (PC Only)'.format(ttwlsave.__version__),
+            description='Wonderlands CLI Profile Editor v{} (PC Only)'.format(ttwlsave.__version__),
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             epilog="""
                 The default output type of "profile" will output theoretically-valid
-                profile which can be loaded into BL3.  The output type "protobuf"
+                profile which can be loaded into WL.  The output type "protobuf"
                 will save out the extracted, decrypted protobufs.  The output
                 type "json" will output a JSON-encoded version of the protobufs
                 in question.  The output type "items" will output a text file
                 containing base64-encoded representations of items in the user's
                 bank.  These can be read back in using the -i/--import-items
                 option.  Note that these are NOT the same as the item strings used
-                by the BL3 Memory Editor.
+                by the WL Memory Editor.
             """
             )
 
     parser.add_argument('-V', '--version',
             action='version',
-            version='BL3 CLI SaveEdit v{}'.format(ttwlsave.__version__),
+            version='WL CLI SaveEdit v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-o', '--output',
