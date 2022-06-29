@@ -140,8 +140,8 @@ psduobj_to_psdu = {
         }
 psdu_to_psduobj = {v: k for k, v in psduobj_to_psdu.items()}
 psdu_to_max = {
-        PSDU_LOSTLOOT: 10,
-        PSDU_BANK: 28,
+        PSDU_LOSTLOOT: 8,
+        PSDU_BANK: 23,
         }
 
 # Ammo
