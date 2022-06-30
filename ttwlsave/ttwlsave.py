@@ -38,7 +38,7 @@ from . import OakSave_pb2, OakShared_pb2
 
 MissionState = OakSave_pb2.MissionStatusPlayerSaveGameData.MissionState
 
-class BL3Item(datalib.BL3Serial):
+class BL3Item(datalib.WLSerial):
     """
     Pretty thin wrapper around the protobuf object for an item.  We're
     ignoring `development_save_data` entirely since it doesn't seem to
@@ -1085,7 +1085,7 @@ class TTWLSave(object):
         Creates a new item from the base64-encoded (and "BL3()"-wrapped)
         `item_serial_b64`, which can later be added to our item list.
         """
-        return self.create_new_item(datalib.BL3Serial.decode_serial_base64(item_serial_b64))
+        return self.create_new_item(datalib.WLSerial.decode_serial_base64(item_serial_b64))
 
     def add_new_item(self, item_serial):
         """
@@ -1102,7 +1102,7 @@ class TTWLSave(object):
         "BL3()"-wrapped) `item_serial_b64`.  Returns a tuple containing the
         new BL3Item object itself, and its new index in our item list.
         """
-        return self.add_new_item(datalib.BL3Serial.decode_serial_base64(item_serial_b64))
+        return self.add_new_item(datalib.WLSerial.decode_serial_base64(item_serial_b64))
 
     def overwrite_item_in_slot(self, slot, itemdata):
         """
@@ -1134,7 +1134,7 @@ class TTWLSave(object):
         whatever item is in the given `slot`.  Will create a new item object
         if the slot is empty.
         """
-        self.overwrite_item_in_slot(slot, datalib.BL3Serial.decode_serial_base64(item_serial_b64))
+        self.overwrite_item_in_slot(slot, datalib.WLSerial.decode_serial_base64(item_serial_b64))
 
     def get_currency(self, currency_type):
         """

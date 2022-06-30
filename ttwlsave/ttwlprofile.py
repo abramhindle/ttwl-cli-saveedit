@@ -36,7 +36,7 @@ from . import *
 from . import datalib
 from . import OakProfile_pb2, OakShared_pb2
 
-class BL3ProfItem(datalib.BL3Serial):
+class BL3ProfItem(datalib.WLSerial):
     """
     Pretty thin wrapper around the serial number for an item.  Mostly
     just so we can keep track of what index it is in the profile.
@@ -361,7 +361,7 @@ class BL3Profile(object):
         "BL3()"-wrapped) `item_serial_b64`, which can later be added to our item
         list.
         """
-        return self.create_new_item(datalib.BL3Serial.decode_serial_base64(item_serial_b64))
+        return self.create_new_item(datalib.WLSerial.decode_serial_base64(item_serial_b64))
 
     def get_lostloot_items(self):
         """

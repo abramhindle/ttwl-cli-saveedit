@@ -101,9 +101,9 @@ class ArbitraryBits(object):
             byte_data.append(int(temp_data[i*8:(i*8)+8], 2))
         return bytearray(byte_data)
 
-class BL3Serial(object):
+class WLSerial(object):
     """
-    Class to handle serializing and deserializing BL3 item/weapon serial
+    Class to handle serializing and deserializing WL item/weapon serial
     numbers.
     """
 
@@ -129,7 +129,7 @@ class BL3Serial(object):
         """
 
         self.serial = serial
-        (self.decrypted_serial, self.orig_seed, self.serial_version) = BL3Serial._decrypt_serial(serial)
+        (self.decrypted_serial, self.orig_seed, self.serial_version) = WLSerial._decrypt_serial(serial)
         self.parsed = False
         self.parts_parsed = False
         self.can_parse = True
@@ -195,7 +195,7 @@ class BL3Serial(object):
         """
 
         # First run it through the xor wringer.
-        temp = BL3Serial._xor_data(data, seed)
+        temp = WLSerial._xor_data(data, seed)
 
         # Now rotate the data
         steps = (seed & 0x1F) % len(data)
@@ -212,7 +212,7 @@ class BL3Serial(object):
         rotated = bytearray(data[steps:] + data[:steps])
 
         # Then run through the xor stuff
-        return bytearray(BL3Serial._xor_data(rotated, seed))
+        return bytearray(WLSerial._xor_data(rotated, seed))
 
     @staticmethod
     def _decrypt_serial(serial):
@@ -234,7 +234,7 @@ class BL3Serial(object):
         orig_seed = struct.unpack('>i', serial[1:5])[0]
 
         # Do the actual "decryption"
-        decrypted = BL3Serial._bogodecrypt(serial[5:], orig_seed)
+        decrypted = WLSerial._bogodecrypt(serial[5:], orig_seed)
 
         # Grab the CRC stored in the serial itself
         orig_checksum = bytearray(decrypted[:2])
@@ -273,7 +273,7 @@ class BL3Serial(object):
         checksum = struct.pack('>H', ((crc32 >> 16) ^ crc32) & 0xFFFF)
 
         # Return the freshly-encrypted item
-        return header + BL3Serial._bogoencrypt(checksum + data, seed)
+        return header + WLSerial._bogoencrypt(checksum + data, seed)
 
     def _get_inv_db_header_part(self, category, bits):
         """
@@ -500,7 +500,7 @@ class BL3Serial(object):
         new_data = bits.get_data()
 
         # Encode the new serial (using seed 0; unencrypted)
-        new_serial = BL3Serial._encrypt_serial(new_data, self.serial_version, 0)
+        new_serial = WLSerial._encrypt_serial(new_data, self.serial_version, 0)
 
         # Load in the new serial (this will set `parsed` to `False`)
         # It bothers me that I've just done an `_encrypt_serial` in the
@@ -585,7 +585,7 @@ class BL3Serial(object):
             seed = self.orig_seed
         else:
             seed = 0
-        return BL3Serial._encrypt_serial(self.decrypted_serial, self.serial_version, seed)
+        return WLSerial._encrypt_serial(self.decrypted_serial, self.serial_version, seed)
 
     def get_serial_base64(self, orig_seed=False):
         """
@@ -594,14 +594,14 @@ class BL3Serial(object):
         savegame.  Otherwise, it will use a seed of `0`, which will then be
         unencrypted.
         """
-        return 'BL3({})'.format(base64.b64encode(self.get_serial_number(orig_seed)).decode('latin1'))
+        return 'TTWL({})'.format(base64.b64encode(self.get_serial_number(orig_seed)).decode('latin1'))
 
     @staticmethod
     def decode_serial_base64(new_data):
         """
-        Decodes a `BL3()`-encoded item serial into a binary serial
+        Decodes a `WL()`-encoded item serial into a binary serial
         """
-        if not new_data.lower().startswith('bl3(') or not new_data.endswith(')'):
+        if not new_data.lower().startswith('ttwl(') or not new_data.endswith(')'):
             raise Exception('Unknown item format: {}'.format(new_data))
         encoded = new_data[4:-1]
         return base64.b64decode(encoded)
