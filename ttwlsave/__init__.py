@@ -25,18 +25,26 @@ __version__ = '0.0.9'
 # __version__ = '1.16.1b1'
 
 # Classes
-(BEASTMASTER, GUNNER, OPERATIVE, SIREN) = range(4)
+(BRRZERKER, CLAWBRINGER, GRAVEBORN, SPELLSHOT, SPOREWARDEN, STABBOMANCER) = range(6)
 class_to_eng = {
-        BEASTMASTER: 'Beastmaster',
-        GUNNER: 'Gunner',
-        OPERATIVE: 'Operative',
-        SIREN: 'Siren',
+        BRRZERKER: 'Brr-Zerker',
+        CLAWBRINGER: 'Clawbringer',
+        GRAVEBORN: 'Graveborn',
+        SPELLSHOT: 'Spellshot',
+        SPOREWARDEN: 'Spore Warden',
+        STABBOMANCER: 'Stabbomancer',
         }
 classobj_to_class = {
-        '/Game/PlayerCharacters/Beastmaster/PlayerClassId_Beastmaster.PlayerClassId_Beastmaster': BEASTMASTER,
-        '/Game/PlayerCharacters/Gunner/PlayerClassId_Gunner.PlayerClassId_Gunner': GUNNER,
-        '/Game/PlayerCharacters/Operative/PlayerClassId_Operative.PlayerClassId_Operative': OPERATIVE,
-        '/Game/PlayerCharacters/SirenBrawler/PlayerClassId_Siren.PlayerClassId_Siren': SIREN,
+        '/Game/PlayerCharacters/Barbarian/_Shared/_Design/SkillTree/AbilityTree_Branch_Barbarian.AbilityTree_Branch_Barbarian': BRRZERKER,
+        '/Game/PlayerCharacters/GunMage/_Shared/_Design/SkillTree/AbilityTree_Branch_GunMage.AbilityTree_Branch_GunMage': SPELLSHOT,
+        '/Game/PlayerCharacters/KnightOfTheClaw/_Shared/_Design/SkillTree/AbilityTree_Branch_DragonCleric.AbilityTree_Branch_DragonCleric': CLAWBRINGER,
+        '/Game/PlayerCharacters/Necromancer/_Shared/_Design/SkillTree/AbilityTree_Branch_Necromancer.AbilityTree_Branch_Necromancer': GRAVEBORN,
+        '/Game/PlayerCharacters/Ranger/_Shared/_Design/SkillTree/AbilityTree_Branch_Ranger.AbilityTree_Branch_Ranger': SPOREWARDEN,
+        '/Game/PlayerCharacters/Rogue/_Shared/_Design/SkillTree/AbilityTree_Branch_Rogue.AbilityTree_Branch_Rogue': STABBOMANCER,
+        #'/Game/PlayerCharacters/Beastmaster/PlayerClassId_Beastmaster.PlayerClassId_Beastmaster': BEASTMASTER,
+        #'/Game/PlayerCharacters/Gunner/PlayerClassId_Gunner.PlayerClassId_Gunner': GUNNER,
+        #'/Game/PlayerCharacters/Operative/PlayerClassId_Operative.PlayerClassId_Operative': OPERATIVE,
+        #'/Game/PlayerCharacters/SirenBrawler/PlayerClassId_Siren.PlayerClassId_Siren': SIREN,
         }
 
 # Pets
@@ -196,10 +204,10 @@ challenge_to_eng = {
         COM_SIREN: 'Siren COM Slot',
         }
 challenge_char_lock = {
-        COM_BEASTMASTER: BEASTMASTER,
-        COM_GUNNER: GUNNER,
-        COM_OPERATIVE: OPERATIVE,
-        COM_SIREN: SIREN,
+        #COM_BEASTMASTER: BEASTMASTER,
+        #COM_GUNNER: GUNNER,
+        #COM_OPERATIVE: OPERATIVE,
+        #COM_SIREN: SIREN,
         }
 challengeobj_to_challenge = {
         '/Game/GameData/Challenges/Account/Challenge_VaultReward_Analyzer.Challenge_VaultReward_Analyzer_C': ERIDIAN_ANALYZER,
