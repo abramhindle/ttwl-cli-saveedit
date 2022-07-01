@@ -48,12 +48,17 @@ classobj_to_class = {
         }
 
 # Pets
-(LICH) = range(1)
+(LICH, WYVERN, MUSHROOM) = range(3)
 pet_to_eng = {
         LICH: 'Demi-Lich',
+        WYVERN: 'Wyvern',
+        MUSHROOM: 'Mushroom',
         }
 petkey_to_pet = {
         'petnicknamelich': LICH,
+        # TODO: just guessing at these two
+        'petnicknamewyvern': WYVERN,
+        'petnicknamemushroom': MUSHROOM,
         }
 pet_to_petkey = {v: k for k, v in petkey_to_pet.items()}
 
