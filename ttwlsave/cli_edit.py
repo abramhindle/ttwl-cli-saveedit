@@ -27,17 +27,18 @@ import ttwlsave
 import argparse
 from . import cli_common
 from . import plot_missions
+from ttwlsave import InvSlot
 from ttwlsave.ttwlsave import TTWLSave
 
 def main():
 
     # Set up args
     parser = argparse.ArgumentParser(
-            description='Borderlands 3 CLI Savegame Editor v{} (PC Only)'.format(ttwlsave.__version__),
+            description='Wonderlands CLI Savegame Editor v{} (PC Only)'.format(ttwlsave.__version__),
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
             epilog="""
                 The default output type of "savegame" will output theoretically-valid
-                savegames which can be loaded into BL3.  The output type "protobuf"
+                savegames which can be loaded into WL.  The output type "protobuf"
                 will save out the extracted, decrypted protobufs.  The output
                 type "json" will output a JSON-encoded version of the protobufs
                 in question.  The output type "items" will output a text
@@ -182,7 +183,7 @@ def main():
     unlock_choices = [
             'ammo', 'backpack',
             'analyzer', 'resonator',
-            'gunslots', 'artifactslot', 'comslot', 'allslots',
+            'equipslots',
             'tvhm',
             'vehicles', 'vehicleskins',
             'cubepuzzle',
@@ -303,10 +304,6 @@ def main():
     # Expand any of our "all" unlock actions
     if 'all' in args.unlock:
         args.unlock = {k: True for k in unlock_choices}
-    elif 'allslots' in args.unlock:
-        args.unlock['gunslots'] = True
-        args.unlock['artifactslot'] = True
-        args.unlock['comslot'] = True
     # AH: No TVHM
     # # Make sure we're not trying to clear and unlock THVM at the same time
     # if 'tvhm' in args.unlock and args.unfinish_nvhm:
@@ -541,23 +538,20 @@ def main():
             #         print('   - Eridian Resonator')
             #     save.unlock_challenge(ttwlsave.ERIDIAN_RESONATOR)
 
-            # Gun Slots
-            if 'gunslots' in args.unlock:
+            # Equipment Slots
+            if 'equipslots' in args.unlock:
                 if not args.quiet:
-                    print('   - Weapon Slots (3+4)')
-                save.unlock_slots([ttwlsave.WEAPON3, ttwlsave.WEAPON4])
+                    print('   - Equipment Slots')
+                save.unlock_slots([
+                    # Not unlocking the second spell slot since that's class-specific
+                    InvSlot.WEAPON3,
+                    InvSlot.WEAPON4,
+                    InvSlot.ARMOR,
+                    InvSlot.RING1,
+                    InvSlot.RING2,
+                    InvSlot.AMULET,
+                    ])
 
-            # Artifact Slot
-            if 'artifactslot' in args.unlock:
-                if not args.quiet:
-                    print('   - Artifact Inventory Slot')
-                save.unlock_slots([ttwlsave.ARTIFACT])
-
-            # COM Slot
-            if 'comslot' in args.unlock:
-                if not args.quiet:
-                    print('   - COM Inventory Slot')
-                save.unlock_slots([ttwlsave.COM])
             # AH: No vehicles 
             # # Vehicles
             # if 'vehicles' in args.unlock:

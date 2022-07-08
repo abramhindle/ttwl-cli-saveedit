@@ -792,6 +792,7 @@ class WLSerial(object):
 
         # return!
         return True
+
     def get_item_type_eng(self):
         it = self.item_type
         return item_type_eng.get(it,it)

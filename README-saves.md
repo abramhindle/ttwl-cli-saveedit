@@ -37,7 +37,7 @@ commands will be:
     - [Ammo/Backpack Unlocks](#ammobackpack-unlocks)
     - [Eridian Resonator](#eridian-resonator)
     - [Eridian Analyzer](#eridian-analyzer)
-    - [Inventory Slots](#inventory-slots)
+    - [Equipment Slots](#equipment-slots)
     - [Vehicles](#vehicles)
     - [Vehicle Skins](#vehicle-skins)
     - [TVHM](#tvhm)
@@ -341,21 +341,14 @@ receive this ability during the plot mission "The Great Vault."
 
     bl3-save-edit old.sav new.sav --unlock analyzer
 
-### Inventory Slots
+### Equipment Slots
 
-You can use the `gunslots`, `artifactslot`, and `comslot` unlocks
-to activate the inventory slots which are ordinarily locked until
-certain points in the game.  You can also use the `allslots` to
-unlock all of them at once, rather than having to specify three
-unlocks.
+You can use the `equipslots` unlock to activate all equipment
+slots (namely: the 3rd and 4th weapon slots, armor, both rings,
+and amulet).  This will *not* unlock the second spell slot,
+since that's skill/class-based.
 
-    bl3-save-edit old.sav new.sav --unlock gunslots
-    bl3-save-edit old.sav new.sav --unlock comslot
-    bl3-save-edit old.sav new.sav --unlock artifactslot
-
-Or: 
-
-    bl3-save-edit old.sav new.sav --unlock allslots
+    bl3-save-edit old.sav new.sav --unlock equipslots
 
 ### Vehicles
 

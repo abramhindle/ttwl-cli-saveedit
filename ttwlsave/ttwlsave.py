@@ -90,13 +90,12 @@ class BL3Item(datalib.WLSerial):
         """
         self.protobuf.item_serial_number = self.serial
 
-class BL3EquipSlot(object):
+class WLEquipSlot(object):
     """
-    Real simple wrapper for a BL3 equipment slot.
+    Real simple wrapper for a WL equipment slot.
 
     We touch this in a couple of different ways, so it felt like maybe we should
-    wrap it up a bit.  We don't touch trinkets at all so I haven't wrapped any
-    of that stuff.
+    wrap it up a bit.
 
     All these getters/setters are rather un-Pythonic; should be using
     some decorations for that instead.  Alas!
@@ -104,14 +103,19 @@ class BL3EquipSlot(object):
 
     def __init__(self, protobuf):
         self.protobuf = protobuf
+        if self.protobuf.slot_data_path in slotobj_to_slot:
+            self.slot = slotobj_to_slot[self.protobuf.slot_data_path]
+            self.english = self.slot.value
+        else:
+            self.slot = None
+            self.english = self.protobuf.slot_data_path
 
     @staticmethod
-    def create(index, obj_name, enabled=True, trinket_name=''):
-        return BL3EquipSlot(OakSave_pb2.EquippedInventorySaveGameData(
+    def create(index, obj_name, enabled=True):
+        return WLEquipSlot(OakSave_pb2.EquippedInventorySaveGameData(
             inventory_list_index=index,
             enabled=enabled,
             slot_data_path=obj_name,
-            trinket_data_path=trinket_name,
             ))
 
     def get_inventory_idx(self):
@@ -267,10 +271,8 @@ class TTWLSave(object):
         # Next: Equip slots
         self.equipslots = {}
         for e in self.save.equipped_inventory_list:
-            equip = BL3EquipSlot(e)
-            # AH: don't have slot names
-            # slot = slotobj_to_slot[equip.get_obj_name()]
-            slot = equip.get_obj_name()
+            equip = WLEquipSlot(e)
+            slot = slotobj_to_slot[equip.get_obj_name()]
             self.equipslots[slot] = equip
 
     def import_json(self, json_str):
@@ -987,7 +989,7 @@ class TTWLSave(object):
         to_ret = {}
         for (key, equipslot) in self.equipslots.items():
             if eng:
-                key = slot_to_eng.get(key,key)
+                key = equipslot.english
             if equipslot.get_inventory_idx() >= 0:
                 to_ret[key] = self.items[equipslot.get_inventory_idx()]
             else:
@@ -1006,7 +1008,7 @@ class TTWLSave(object):
 
     def get_equip_slots(self, eng=False):
         """
-        Returns a dict of slot ID and BL3EquipSlot objects, for all inventory
+        Returns a dict of slot ID and WLEquipSlot objects, for all inventory
         slots.  The slot will be a constant by default, or an English label if
         `eng` is `True`
         """
@@ -1014,7 +1016,7 @@ class TTWLSave(object):
 
     def get_equip_slot(self, slot):
         """
-        Returns the BL3EquipSlot object in the specified `slot`.
+        Returns the WLEquipSlot object in the specified `slot`.
         """
         if slot in self.equipslots:
             return self.equipslots[slot]
@@ -1032,10 +1034,13 @@ class TTWLSave(object):
             slots = slot_to_eng.keys()
         for slot in slots:
             self.equipslots[slot].set_enabled()
-            if slot == ARTIFACT:
-                self.unlock_challenge(CHAL_ARTIFACT)
-            elif slot == COM:
-                self.unlock_char_com_challenge()
+            # TODO: Find out if there are any challenges associated with these.  It
+            # seems that if so, unlocking them isn't strictly necessary (ie: the
+            # slots seem perfectly usable without), but I do like to be thorough.
+            #if slot == ARTIFACT:
+            #    self.unlock_challenge(CHAL_ARTIFACT)
+            #elif slot == COM:
+            #    self.unlock_char_com_challenge()
 
     def add_item(self, new_item):
         """

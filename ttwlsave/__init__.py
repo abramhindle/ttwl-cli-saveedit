@@ -24,6 +24,8 @@ __version__ = '0.0.9'
 # Forked from bl3-cli-saveedit
 # __version__ = '1.16.1b1'
 
+import enum
+
 # Classes
 (BRRZERKER, CLAWBRINGER, GRAVEBORN, SPELLSHOT, SPOREWARDEN, STABBOMANCER) = range(6)
 class_to_eng = {
@@ -75,26 +77,32 @@ currency_to_curhash = {
 curhash_to_currency = {v: k for k, v in currency_to_curhash.items()}
 
 # Inventory Slots
-(WEAPON1, WEAPON2, WEAPON3, WEAPON4, SHIELD, GRENADE, COM, ARTIFACT) = range(8)
-slot_to_eng = {
-        WEAPON1: 'Weapon 1',
-        WEAPON2: 'Weapon 2',
-        WEAPON3: 'Weapon 3',
-        WEAPON4: 'Weapon 4',
-        SHIELD: 'Shield',
-        GRENADE: 'Grenade',
-        COM: 'COM',
-        ARTIFACT: 'Artifact',
-}
+class InvSlot(enum.Enum):
+    MELEE = 'Melee'
+    WEAPON1 = 'Weapon 1'
+    WEAPON2 = 'Weapon 2'
+    WEAPON3 = 'Weapon 3'
+    WEAPON4 = 'Weapon 4'
+    WARD = 'Ward'
+    SPELL1 = 'Spell'
+    SPELL2 = 'Spell 2'
+    ARMOR = 'Armor'
+    RING1 = 'Ring 1'
+    RING2 = 'Ring 2'
+    AMULET = 'Amulet'
 slotobj_to_slot = {
-        '/Game/Gear/Weapons/_Shared/_Design/InventorySlots/BPInvSlot_Weapon1.BPInvSlot_Weapon1': WEAPON1,
-        '/Game/Gear/Weapons/_Shared/_Design/InventorySlots/BPInvSlot_Weapon2.BPInvSlot_Weapon2': WEAPON2,
-        '/Game/Gear/Weapons/_Shared/_Design/InventorySlots/BPInvSlot_Weapon3.BPInvSlot_Weapon3': WEAPON3,
-        '/Game/Gear/Weapons/_Shared/_Design/InventorySlots/BPInvSlot_Weapon4.BPInvSlot_Weapon4': WEAPON4,
-        '/Game/Gear/Shields/_Design/A_Data/BPInvSlot_Shield.BPInvSlot_Shield': SHIELD,
-        '/Game/Gear/GrenadeMods/_Design/A_Data/BPInvSlot_GrenadeMod.BPInvSlot_GrenadeMod': GRENADE,
-        '/Game/Gear/ClassMods/_Design/_Data/BPInvSlot_ClassMod.BPInvSlot_ClassMod': COM,
-        '/Game/Gear/Artifacts/_Design/_Data/BPInvSlot_Artifact.BPInvSlot_Artifact': ARTIFACT,
+        '/Game/Gear/Weapons/_Shared/_Design/InventorySlots/BPInvSlot_Weapon1.BPInvSlot_Weapon1': InvSlot.WEAPON1,
+        '/Game/Gear/Weapons/_Shared/_Design/InventorySlots/BPInvSlot_Weapon2.BPInvSlot_Weapon2': InvSlot.WEAPON2,
+        '/Game/Gear/Weapons/_Shared/_Design/InventorySlots/BPInvSlot_Weapon3.BPInvSlot_Weapon3': InvSlot.WEAPON3,
+        '/Game/Gear/Weapons/_Shared/_Design/InventorySlots/BPInvSlot_Weapon4.BPInvSlot_Weapon4': InvSlot.WEAPON4,
+        '/Game/Gear/Melee/_Shared/_Design/A_Data/BPInvSlot_Melee.BPInvSlot_Melee': InvSlot.MELEE,
+        '/Game/Gear/Shields/_Design/A_Data/BPInvSlot_Shield.BPInvSlot_Shield': InvSlot.WARD,
+        '/Game/Gear/SpellMods/_Shared/_Design/A_Data/BPInvSlot_SpellMod.BPInvSlot_SpellMod': InvSlot.SPELL1,
+        '/Game/Gear/SpellMods/_Shared/_Design/A_Data/BPInvSlot_SecondSpellMod.BPInvSlot_SecondSpellMod': InvSlot.SPELL2,
+        '/Game/Gear/Pauldrons/_Shared/_Design/A_Data/InvSlot_Pauldron.InvSlot_Pauldron': InvSlot.ARMOR,
+        '/Game/Gear/Rings/_Shared/Design/A_Data/InvSlot_Ring_1.InvSlot_Ring_1': InvSlot.RING1,
+        '/Game/Gear/Rings/_Shared/Design/A_Data/InvSlot_Ring_2.InvSlot_Ring_2': InvSlot.RING2,
+        '/Game/Gear/Amulets/_Shared/_Design/A_Data/InvSlot_Amulet.InvSlot_Amulet': InvSlot.AMULET,
         }
 slot_to_slotobj = {v: k for k, v in slotobj_to_slot.items()}
 

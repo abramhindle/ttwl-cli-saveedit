@@ -24,6 +24,7 @@
 import ttwlsave
 import argparse
 import itertools
+from ttwlsave import InvSlot
 from ttwlsave.ttwlsave import TTWLSave
 
 def main():
@@ -195,15 +196,22 @@ def main():
 
     # Inventory Slots that we care about
     print('Unlockable Inventory Slots:')
-    # AH: these slots are wrong
-    for slot in [ttwlsave.WEAPON3, ttwlsave.WEAPON4, ttwlsave.COM, ttwlsave.ARTIFACT]:
+    for slot in [
+            # Not reporting on second spell slot since that's class-specific
+            InvSlot.WEAPON3,
+            InvSlot.WEAPON4,
+            InvSlot.ARMOR,
+            InvSlot.RING1,
+            InvSlot.RING2,
+            InvSlot.AMULET,
+            ]:
         equip = save.get_equip_slot(slot)
         enabled = False
         if equip is not None:
             enabled = equip.enabled()
         print(' - {}: {}'.format(
-            ttwlsave.slot_to_eng[slot],
-            enabled
+            slot.value,
+            enabled,
             ))
 
     # Inventory
