@@ -210,7 +210,7 @@ def main():
         if equip is not None:
             enabled = equip.enabled()
         print(' - {}: {}'.format(
-            slot.value,
+            slot.label,
             enabled,
             ))
 

@@ -26,6 +26,33 @@ __version__ = '0.0.9'
 
 import enum
 
+class LabelEnum(enum.Enum):
+    """
+    An enum whose members have a label in addition to the value.  For our
+    purposes, the value is going to be the object name.
+    """
+
+    def __new__(cls, label, value):
+        obj = object.__new__(cls)
+        obj.label = label
+        obj._value_ = value
+        return obj
+
+    @classmethod
+    def has_value(cls, value, default=None):
+        try:
+            return cls(value)
+        except:
+            return default
+
+    @classmethod
+    def get_label(cls, value):
+        obj = cls.has_value(value)
+        if obj:
+            return obj.label
+        else:
+            return value
+
 # Classes
 (BRRZERKER, CLAWBRINGER, GRAVEBORN, SPELLSHOT, SPOREWARDEN, STABBOMANCER) = range(6)
 class_to_eng = {
@@ -77,34 +104,19 @@ currency_to_curhash = {
 curhash_to_currency = {v: k for k, v in currency_to_curhash.items()}
 
 # Inventory Slots
-class InvSlot(enum.Enum):
-    MELEE = 'Melee'
-    WEAPON1 = 'Weapon 1'
-    WEAPON2 = 'Weapon 2'
-    WEAPON3 = 'Weapon 3'
-    WEAPON4 = 'Weapon 4'
-    WARD = 'Ward'
-    SPELL1 = 'Spell'
-    SPELL2 = 'Spell 2'
-    ARMOR = 'Armor'
-    RING1 = 'Ring 1'
-    RING2 = 'Ring 2'
-    AMULET = 'Amulet'
-slotobj_to_slot = {
-        '/Game/Gear/Weapons/_Shared/_Design/InventorySlots/BPInvSlot_Weapon1.BPInvSlot_Weapon1': InvSlot.WEAPON1,
-        '/Game/Gear/Weapons/_Shared/_Design/InventorySlots/BPInvSlot_Weapon2.BPInvSlot_Weapon2': InvSlot.WEAPON2,
-        '/Game/Gear/Weapons/_Shared/_Design/InventorySlots/BPInvSlot_Weapon3.BPInvSlot_Weapon3': InvSlot.WEAPON3,
-        '/Game/Gear/Weapons/_Shared/_Design/InventorySlots/BPInvSlot_Weapon4.BPInvSlot_Weapon4': InvSlot.WEAPON4,
-        '/Game/Gear/Melee/_Shared/_Design/A_Data/BPInvSlot_Melee.BPInvSlot_Melee': InvSlot.MELEE,
-        '/Game/Gear/Shields/_Design/A_Data/BPInvSlot_Shield.BPInvSlot_Shield': InvSlot.WARD,
-        '/Game/Gear/SpellMods/_Shared/_Design/A_Data/BPInvSlot_SpellMod.BPInvSlot_SpellMod': InvSlot.SPELL1,
-        '/Game/Gear/SpellMods/_Shared/_Design/A_Data/BPInvSlot_SecondSpellMod.BPInvSlot_SecondSpellMod': InvSlot.SPELL2,
-        '/Game/Gear/Pauldrons/_Shared/_Design/A_Data/InvSlot_Pauldron.InvSlot_Pauldron': InvSlot.ARMOR,
-        '/Game/Gear/Rings/_Shared/Design/A_Data/InvSlot_Ring_1.InvSlot_Ring_1': InvSlot.RING1,
-        '/Game/Gear/Rings/_Shared/Design/A_Data/InvSlot_Ring_2.InvSlot_Ring_2': InvSlot.RING2,
-        '/Game/Gear/Amulets/_Shared/_Design/A_Data/InvSlot_Amulet.InvSlot_Amulet': InvSlot.AMULET,
-        }
-slot_to_slotobj = {v: k for k, v in slotobj_to_slot.items()}
+class InvSlot(LabelEnum):
+    MELEE = ('Melee', '/Game/Gear/Melee/_Shared/_Design/A_Data/BPInvSlot_Melee.BPInvSlot_Melee')
+    WEAPON1 = ('Weapon 1', '/Game/Gear/Weapons/_Shared/_Design/InventorySlots/BPInvSlot_Weapon1.BPInvSlot_Weapon1')
+    WEAPON2 = ('Weapon 2', '/Game/Gear/Weapons/_Shared/_Design/InventorySlots/BPInvSlot_Weapon2.BPInvSlot_Weapon2')
+    WEAPON3 = ('Weapon 3', '/Game/Gear/Weapons/_Shared/_Design/InventorySlots/BPInvSlot_Weapon3.BPInvSlot_Weapon3')
+    WEAPON4 = ('Weapon 4', '/Game/Gear/Weapons/_Shared/_Design/InventorySlots/BPInvSlot_Weapon4.BPInvSlot_Weapon4')
+    WARD = ('Ward', '/Game/Gear/Shields/_Design/A_Data/BPInvSlot_Shield.BPInvSlot_Shield')
+    SPELL1 = ('Spell', '/Game/Gear/SpellMods/_Shared/_Design/A_Data/BPInvSlot_SpellMod.BPInvSlot_SpellMod')
+    SPELL2 = ('Spell 2', '/Game/Gear/SpellMods/_Shared/_Design/A_Data/BPInvSlot_SecondSpellMod.BPInvSlot_SecondSpellMod')
+    ARMOR = ('Armor', '/Game/Gear/Pauldrons/_Shared/_Design/A_Data/InvSlot_Pauldron.InvSlot_Pauldron')
+    RING1 = ('Ring 1', '/Game/Gear/Rings/_Shared/Design/A_Data/InvSlot_Ring_1.InvSlot_Ring_1')
+    RING2 = ('Ring 2', '/Game/Gear/Rings/_Shared/Design/A_Data/InvSlot_Ring_2.InvSlot_Ring_2')
+    AMULET = ('Amulet', '/Game/Gear/Amulets/_Shared/_Design/A_Data/InvSlot_Amulet.InvSlot_Amulet')
 
 # SDUs
 (SDU_BACKPACK, SDU_AR, SDU_PISTOL, SDU_SNIPER, SDU_SHOTGUN, SDU_GRENADE, SDU_SMG, SDU_HEAVY) = range(8)

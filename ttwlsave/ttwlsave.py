@@ -103,12 +103,8 @@ class WLEquipSlot(object):
 
     def __init__(self, protobuf):
         self.protobuf = protobuf
-        if self.protobuf.slot_data_path in slotobj_to_slot:
-            self.slot = slotobj_to_slot[self.protobuf.slot_data_path]
-            self.english = self.slot.value
-        else:
-            self.slot = None
-            self.english = self.protobuf.slot_data_path
+        self.slot = InvSlot.has_value(self.protobuf.slot_data_path)
+        self.label = InvSlot.get_label(self.protobuf.slot_data_path)
 
     @staticmethod
     def create(index, obj_name, enabled=True):
@@ -272,8 +268,7 @@ class TTWLSave(object):
         self.equipslots = {}
         for e in self.save.equipped_inventory_list:
             equip = WLEquipSlot(e)
-            slot = slotobj_to_slot[equip.get_obj_name()]
-            self.equipslots[slot] = equip
+            self.equipslots[equip.slot] = equip
 
     def import_json(self, json_str):
         """
@@ -989,7 +984,7 @@ class TTWLSave(object):
         to_ret = {}
         for (key, equipslot) in self.equipslots.items():
             if eng:
-                key = equipslot.english
+                key = equipslot.label
             if equipslot.get_inventory_idx() >= 0:
                 to_ret[key] = self.items[equipslot.get_inventory_idx()]
             else:
