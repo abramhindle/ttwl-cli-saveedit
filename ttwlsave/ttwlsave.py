@@ -1019,14 +1019,14 @@ class TTWLSave(object):
 
     def unlock_slots(self, slots=None):
         """
-        Unlocks the specified inventory `slots`, which should be a list of slot
-        IDs.  If `slots` is not passed in, will unlock all inventory slots.  This
+        Unlocks the specified inventory `slots`, which should be a list of InvSlot
+        members.  If `slots` is not passed in, will unlock all inventory slots.  This
         will take the initiative to unlock some associated challenges, if
         necessary -- Artifacts and COMs in particular have an associated challenge
         with their slot unlocking, which we'll go ahead and process.
         """
-        if not slots:
-            slots = slot_to_eng.keys()
+        if slots is None:
+            slots = InvSlot
         for slot in slots:
             self.equipslots[slot].set_enabled()
             # TODO: Find out if there are any challenges associated with these.  It

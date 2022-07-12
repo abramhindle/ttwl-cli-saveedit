@@ -40,6 +40,10 @@ class LabelEnum(enum.Enum):
 
     @classmethod
     def has_value(cls, value, default=None):
+        """
+        Check to see if this Enum contains the given `value`, returning a `default`
+        value (`None` by default) if not found.
+        """
         try:
             return cls(value)
         except:
@@ -47,6 +51,10 @@ class LabelEnum(enum.Enum):
 
     @classmethod
     def get_label(cls, value):
+        """
+        Returns our label for the specified `value`, if we can.  If `value` is
+        not known to the Enum, return the `value` back, instead.
+        """
         obj = cls.has_value(value)
         if obj:
             return obj.label
