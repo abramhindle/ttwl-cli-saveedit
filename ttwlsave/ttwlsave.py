@@ -1145,26 +1145,29 @@ class TTWLSave(object):
         Returns the amount of currency of the given type
         """
         for cat_save_data in self.save.inventory_category_list:
-            if cat_save_data.base_category_definition_hash in curhash_to_currency:
-                if currency_type == curhash_to_currency[cat_save_data.base_category_definition_hash]:
-                    return cat_save_data.quantity
+            if cat_save_data.base_category_definition_hash == currency_type.value:
+                return cat_save_data.quantity
         return 0
 
-    def set_currency(self, currency_type, new_value):
+    def set_currency(self, currency_type, new_value, quiet=False):
         """
         Sets a new currency value
         """
 
+        # Warn about invalid values (but let the user do it anyway)
+        if not quiet:
+            if currency_type.num is not None and new_value > currency_type.num:
+                print(f'WARNING: Maximum value for {currency_type.label} is {currency_type.num:,} - setting to {new_value:,} anyway')
+
         # Update an existing value, if we have it
         for cat_save_data in self.save.inventory_category_list:
-            if cat_save_data.base_category_definition_hash in curhash_to_currency:
-                if currency_type == curhash_to_currency[cat_save_data.base_category_definition_hash]:
-                    cat_save_data.quantity = new_value
-                    return
+            if cat_save_data.base_category_definition_hash == currency_type.value:
+                cat_save_data.quantity = new_value
+                return
 
         # Add a new one, if we don't
         self.save.inventory_category_list.append(OakShared_pb2.InventoryCategorySaveData(
-            base_category_definition_hash=currency_to_curhash[currency_type],
+            base_category_definition_hash=currency_type.value,
             quantity=new_value,
             ))
 
@@ -1172,25 +1175,37 @@ class TTWLSave(object):
         """
         Returns the amount of money we have
         """
-        return self.get_currency(MONEY)
+        return self.get_currency(Currency.MONEY)
 
     def set_money(self, new_value):
         """
         Sets the amount of money we have
         """
-        return self.set_currency(MONEY, new_value)
+        return self.set_currency(Currency.MONEY, new_value)
 
     def get_moon_orbs(self):
         """
-        Returns the amount of moon_orbs we have
+        Returns the amount of moon orbs we have
         """
-        return self.get_currency(MOON_ORBS)
+        return self.get_currency(Currency.MOON_ORBS)
 
     def set_moon_orbs(self, new_value):
         """
         Sets the amount of moon orbs we have
         """
-        return self.set_currency(MOON_ORBS, new_value)
+        return self.set_currency(Currency.MOON_ORBS, new_value)
+
+    def get_souls(self):
+        """
+        Returns the amount of souls we have
+        """
+        return self.get_currency(Currency.SOULS)
+
+    def set_souls(self, new_value):
+        """
+        Sets the amount of souls we have
+        """
+        return self.set_currency(Currency.SOULS, new_value)
 
     def get_sdus(self, eng=False):
         """

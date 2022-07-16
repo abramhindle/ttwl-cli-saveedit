@@ -103,8 +103,10 @@ def main():
     # print('Guardian Rank: {}'.format(save.get_guardian_rank()))
 
     # Currencies
-    print('Money: {}'.format(save.get_money()))
-    print('Moon Orbs: {}'.format(save.get_moon_orbs()))
+    print('Currencies:')
+    print(' - Money: {:,}'.format(save.get_money()))
+    print(' - Moon Orbs: {:,}'.format(save.get_moon_orbs()))
+    print(' - Souls: {:,}'.format(save.get_souls()))
 
     # Playthroughs
     print('Playthroughs Completed: {}'.format(save.get_playthroughs_completed()))

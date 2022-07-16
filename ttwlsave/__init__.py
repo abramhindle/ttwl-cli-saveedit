@@ -118,6 +118,25 @@ def inventory_path_hash(object_path):
         crc32 = (_hash_cust_crc32_table[(crc32 ^ (char >> 8)) & 0xFF] ^ (crc32 >> 8)) & 0xFFFFFFFF
     return crc32
 
+class HashLabelEnum(LabelEnum):
+    """
+    A version of LabelEnum whose values should be the "hashed" inventory keys used
+    by various things (money, some customizations) in savefiles.  Introduces an
+    `obj_path` attribute which LabelEnum doesn't have, to store the "original"
+    value.  Note that in these cases, the object path itself won't ever show up
+    in saves/profiles directly, only the hashed value.
+    """
+
+    # Honestly not sure how I'd extend this "properly"; just reimplementing
+    # it w/ our new functionality.
+    def __new__(cls, label, obj_path, num=None):
+        obj = object.__new__(cls)
+        obj.label = label
+        obj.obj_path = obj_path
+        obj._value_ = inventory_path_hash(obj_path)
+        obj.num = num
+        return obj
+
 # Classes
 (BRRZERKER, CLAWBRINGER, GRAVEBORN, SPELLSHOT, SPOREWARDEN, STABBOMANCER) = range(6)
 class_to_eng = {
@@ -157,16 +176,10 @@ petkey_to_pet = {
 pet_to_petkey = {v: k for k, v in petkey_to_pet.items()}
 
 # Currencies
-(MONEY, MOON_ORBS) = range(2)
-currency_to_eng = {
-        MONEY: 'Money',
-        MOON_ORBS: 'Moon Orbs',
-        }
-currency_to_curhash = {
-        MONEY: 618814354,
-        MOON_ORBS: 3679636065
-        }
-curhash_to_currency = {v: k for k, v in currency_to_curhash.items()}
+class Currency(HashLabelEnum):
+    MONEY = ('Money', '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_Money.InventoryCategory_Money', 2000000000)
+    MOON_ORBS = ('Moon Orbs', '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_Eridium.InventoryCategory_Eridium', 16000)
+    SOULS = ('Souls', '/Game/PatchDLC/Indigo1/Common/Pickups/IndCurrency/InventoryCategory_IndCurrency.InventoryCategory_IndCurrency', None)
 
 # Inventory Slots
 class InvSlot(LabelEnum):

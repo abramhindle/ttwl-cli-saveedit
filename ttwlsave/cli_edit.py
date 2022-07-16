@@ -179,6 +179,11 @@ def main():
             help='Set Moon Orbs value',
             )
 
+    parser.add_argument('--souls',
+            type=int,
+            help='Set Souls value',
+            )
+
 
     unlock_choices = [
             'ammo', 'backpack',
@@ -382,6 +387,7 @@ def main():
         args.mayhem_seed is not None,
         args.money is not None,
         args.moon_orbs is not None,
+        args.souls is not None,
         len(args.unlock) > 0,
         # args.copy_nvhm,
         # args.copy_tvhm,
@@ -460,14 +466,21 @@ def main():
         # Money
         if args.money is not None:
             if not args.quiet:
-                print(' - Setting Money to: {}'.format(args.money))
+                print(' - Setting Money to: {:,}'.format(args.money))
             save.set_money(args.money)
 
         # Moon Orbs
         if args.moon_orbs is not None:
             if not args.quiet:
-                print(' - Setting Moon Orbs to: {}'.format(args.moon_orbs))
+                print(' - Setting Moon Orbs to: {:,}'.format(args.moon_orbs))
             save.set_moon_orbs(args.moon_orbs)
+
+        # Souls
+        if args.souls is not None:
+            if not args.quiet:
+                print(' - Setting Souls to: {:,}'.format(args.souls))
+            save.set_souls(args.souls)
+
         # AH: No Takedowns
         # # Clearing Takedown Discovery
         # if args.clear_takedowns:

@@ -27,7 +27,7 @@ commands will be:
   - [Character Level](#character-level)
   - [Mayhem Level](#mayhem-level)
   - [Mayhem Random Seed](#mayhem-random-seed)
-  - [Currency (Money and Moon Orbs)](#currency-money-and-moon-orbs)
+  - [Currency (Money, Moon Orbs, and Souls)](#currency-money-and-moon-orbs-and-souls)
   - [Takedown Discovery Missions](#takedown-discovery-missions)
   - [Mission Deletion](#mission-deletion)
   - [Seasonal Event Status](#seasonal-event-status)
@@ -206,13 +206,19 @@ available Mayhem modifiers, such as by disabling some, or adding new ones,
 the random seeds you're used to will start to give a different result, so
 you may have to reroll a bunch to find your favorite set, again.
 
-## Currency (Money and Moon Orbs)
+## Currency (Money, Moon Orbs, and Souls)
 
-Money and Moon Orbs can be set with the `--money` and `--moon-orbs`
-arguments, respectively:
+Money, Moon Orbs, and Souls can be set with the `--money`, `--moon-orbs`,
+and `--souls` arguments, respectively:
 
     bl3-save-edit old.sav new.sav --money 20000000
     bl3-save-edit old.sav new.sav --moon-orbs 10000
+    bl3-save-edit old.sav new.sav --souls 200
+
+Note that the game's maximum money is 2 billion, and the maximum Moon
+Orbs is 16,000.  This utility will let you set values higher than that,
+but doing so isn't recommended.  There doesn't seem to be a defined
+maximum for Souls.
 
 ## Takedown Discovery Missions
 
