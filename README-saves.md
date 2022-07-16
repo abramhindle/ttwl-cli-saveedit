@@ -1,7 +1,7 @@
-# Borderlands 3 Commandline Savegame Editor - Savegame Editing Reference
+# Wonderlands Commandline Savegame Editor - Savegame Editing Reference
 
 This is the documentation for the save editing portions of the
-BL3 CLI Savegame Editor.  For general app information, installation,
+TTWL CLI Savegame Editor.  For general app information, installation,
 upgrade procedures, and other information, please see the main
 [README file](README.md).
 
@@ -9,11 +9,11 @@ These docs will assume that you've installed via `pip3` - if you're using
 a Github checkout, substitute the commands as appropriate.  The equivalent
 commands will be:
 
-    python -m bl3save.cli_edit -h
-    python -m bl3save.cli_info -h
-    python -m bl3save.cli_import_protobuf -h
-    python -m bl3save.cli_import_json -h
-    python -m bl3save.cli_archive -h
+    python -m ttwlsave.cli_edit -h
+    python -m ttwlsave.cli_info -h
+    python -m ttwlsave.cli_import_protobuf -h
+    python -m ttwlsave.cli_import_json -h
+    python -m ttwlsave.cli_archive -h
 
 # Table of Contents
 
@@ -51,22 +51,22 @@ commands will be:
 At its most basic, you can run the editor with only an input and output
 file, and it will simply load and then re-encode the savegame.  For
 instance, in this example, `old.sav` and `new.sav` will be identical as
-far as BL3 is concerned:
+far as WL is concerned:
 
-    bl3-save-edit old.sav new.sav
+    ttwl-save-edit old.sav new.sav
 
 If `new.sav` exists, the utility will prompt you if you want to overwrite
 it.  If you want to force the utility to overwrite without asking,
 use the `-f`/`--force` option:
 
-    bl3-save-edit old.sav new.sav -f
+    ttwl-save-edit old.sav new.sav -f
 
 As the app processes files, it will output exactly what it's doing.  If
 you prefer to have silent output (unless there's an error), such as if
 you're using this to process a group of files in a loop, you can use
 the `-q`/`--quiet` option:
 
-    bl3-save-edit old.sav new.sav -q
+    ttwl-save-edit old.sav new.sav -q
 
 Note that currently, the app will refuse to overwrite the same file that
 you're editing.  You'll need to move/rename the `new.sav` over the
@@ -78,30 +78,30 @@ backups!
 The editor can output files in a few different formats, and you can
 specify the format using the `-o`/`--output` option, like so:
 
-    bl3-save-edit old.sav new.sav -o savegame
-    bl3-save-edit old.sav new.pbraw -o protobuf
-    bl3-save-edit old.sav new.json -o json
-    bl3-save-edit old.sav new.txt -o items
+    ttwl-save-edit old.sav new.sav -o savegame
+    ttwl-save-edit old.sav new.pbraw -o protobuf
+    ttwl-save-edit old.sav new.json -o json
+    ttwl-save-edit old.sav new.txt -o items
 
 - **savegame** - This is the default, if you don't specify an output
-  format.  It will save the game like a valid BL3 savegame.  This
+  format.  It will save the game like a valid WL savegame.  This
   will likely be your most commonly-used option.
 - **protobuf** - This will write out the raw, unencrypted Protobuf
   entries contained in the savegame, which might be useful if you
   want to look at them with a Protobuf viewer of some sort (such
   as [this one](https://protogen.marcgravell.com/decode)), or to
   make hand edits of your own.  Raw protobuf files can be imported
-  back into savegames using the separate `bl3-save-import-protobuf`
+  back into savegames using the separate `ttwl-save-import-protobuf`
   command, whose docs you can find near the bottom of this README.
 - **json** - Alternatively, this will write out the raw protobufs
   as encoded into JSON.  Like the protobuf output, you should be
   able to edit this by hand and then re-import using the
-  `bl3-save-import-json` utility.  **NOTE:** JSON import is not
+  `ttwl-save-import-json` utility.  **NOTE:** JSON import is not
   super well-tested yet, so keep backups!
 - **items** - This will output a text file containing item codes
   which can be read back in to other savegames.  It uses a format
   similar to the item codes used by Gibbed's BL2/TPS editors.
-  (It will probably be identical to the codes used by Gibbed's BL3
+  (It will probably be identical to the codes used by Gibbed's WL
   editor, once that is released, but time will tell on that front.)
   - You can optionally specify the `--csv` flag to output a CSV file
     instead of "regular" text file.  The first column will be the
@@ -121,16 +121,16 @@ process multiple changes at once.
 
 This can be done with the `--name` option:
 
-    bl3-save-edit old.sav new.sav --name "Gregor Samsa"
+    ttwl-save-edit old.sav new.sav --name "Gregor Samsa"
 
 ## Save Game ID
 
 Like with BL2/TPS, I suspect that this ID isn't at all important, but
-the editor can set it anyway with the `--save-game-id` option.  BL3
+the editor can set it anyway with the `--save-game-id` option.  WL
 itself sets the savegame ID to match the filename of the savegame, if
 interpreted as a hex value (so `10.sav` would have an ID of `16`).
 
-    bl3-save-edit old.sav new.sav --save-game-id 2
+    ttwl-save-edit old.sav new.sav --save-game-id 2
 
 ## Save Game GUID
 
@@ -143,7 +143,7 @@ ever actually important (I've copied characters many times without
 randomizing this value, and they've worked fine) but here's the
 option anyway:
 
-    bl3-save-edit old.sav new.sav --randomize-guid
+    ttwl-save-edit old.sav new.sav --randomize-guid
 
 ## Guardian Rank
 
@@ -154,15 +154,15 @@ you're making changes to values in your profile.  After zeroing out
 the Guardian Rank in a savegame, the next time the character is loaded
 into the game, it will inherit the main profile's Guardian Rank.
 
-    bl3-save-edit old.sav new.sav --zero-guardian-rank
+    ttwl-save-edit old.sav new.sav --zero-guardian-rank
 
 ## Character Level
 
 You can set your character to a specific level using `--level <num>`,
 or to the max level allowed by the game using `--level-max`
 
-    bl3-save-edit old.sav new.sav --level 20
-    bl3-save-edit old.sav new.sav --level-max
+    ttwl-save-edit old.sav new.sav --level 20
+    ttwl-save-edit old.sav new.sav --level-max
 
 ## Mayhem Level
 
@@ -174,7 +174,7 @@ game, so this will be the only way of changing Mayhem mode until that
 point in the game.  This will set the Mayhem level for all
 playthroughs found in the game.
 
-    bl3-save-edit old.sav new.sav --mayhem 10
+    ttwl-save-edit old.sav new.sav --mayhem 10
 
 Note that in order to have Anointments drop while playing in Normal
 mode, your savegame does need to have THVM unlocked, so see the `--unlock`
@@ -185,10 +185,10 @@ docs below for how to do that.
 The active modifiers in Mayhem Mode are all generated using a single
 [random seed](https://en.wikipedia.org/wiki/Pseudorandom_number_generator)
 which is specified on a per-playthrough basis.  If you have a set of
-Mayhem modifiers you like, you can take that seed (shown in the `bl3-save-info`
+Mayhem modifiers you like, you can take that seed (shown in the `ttwl-save-info`
 output) and set it onto another save using the `--mayhem-seed` argument:
 
-    bl3-save-edit old.sav new.save --mayhem-seed -3938591
+    ttwl-save-edit old.sav new.save --mayhem-seed -3938591
 
 The seeds may be positive or negative, and can range up to 2 billion or
 so, both negative and positive.  Note that if Gearbox changes the pool of
@@ -201,9 +201,9 @@ you may have to reroll a bunch to find your favorite set, again.
 Money, Moon Orbs, and Souls can be set with the `--money`, `--moon-orbs`,
 and `--souls` arguments, respectively:
 
-    bl3-save-edit old.sav new.sav --money 20000000
-    bl3-save-edit old.sav new.sav --moon-orbs 10000
-    bl3-save-edit old.sav new.sav --souls 200
+    ttwl-save-edit old.sav new.sav --money 20000000
+    ttwl-save-edit old.sav new.sav --moon-orbs 10000
+    ttwl-save-edit old.sav new.sav --souls 200
 
 Note that the game's maximum money is 2 billion, and the maximum Moon
 Orbs is 16,000.  This utility will let you set values higher than that,
@@ -223,11 +223,11 @@ game.
 The `pt1` argument corresponds to the first playthrough (Normal/NVHM), and
 the `pt2` argument corresponds to the second playthrough (TVHM).  To use
 this argument, you'll need to know the full object path to the mission you
-want to delete.  This can be found using `bl3-save-info --mission-paths`.
+want to delete.  This can be found using `ttwl-save-info --mission-paths`.
 Docs for that function [can be found here](#missions).
 
-    bl3-save-edit old.sav new.sav --delete-pt1-mission /Game/Missions/Side/Zone_0/Prologue/Mission_UnderwearTink.Mission_UnderwearTink_C
-    bl3-save-edit old.sav new.sav --delete-pt2-mission /Game/Missions/Side/Zone_0/Prologue/Mission_UnderwearTink.Mission_UnderwearTink_C
+    ttwl-save-edit old.sav new.sav --delete-pt1-mission /Game/Missions/Side/Zone_0/Prologue/Mission_UnderwearTink.Mission_UnderwearTink_C
+    ttwl-save-edit old.sav new.sav --delete-pt2-mission /Game/Missions/Side/Zone_0/Prologue/Mission_UnderwearTink.Mission_UnderwearTink_C
 
 The `--delete-pt1-mission` and `--delete-pt2-mission` arguments can be
 specified more than once if you'd like to delete more than one mission at
@@ -244,13 +244,13 @@ challenge rewards from the previous years.
 
 To clear out the event challenge statuses individually:
 
-    bl3-save-edit old.sav new.sav --clear-bloody-harvest
-    bl3-save-edit old.sav new.sav --clear-broken-hearts
-    bl3-save-edit old.sav new.sav --clear-cartels
+    ttwl-save-edit old.sav new.sav --clear-bloody-harvest
+    ttwl-save-edit old.sav new.sav --clear-broken-hearts
+    ttwl-save-edit old.sav new.sav --clear-cartels
 
 Or, you can do all three at once:
 
-    bl3-save-edit old.sav new.sav --clear-all-events
+    ttwl-save-edit old.sav new.sav --clear-all-events
 
 ## Item Levels
 
@@ -260,11 +260,11 @@ If you're also changing your character's level at the same time,
 items/weapons will get that new level.  This can be done with
 `--items-to-char`
 
-    bl3-save-edit old.sav new.sav --items-to-char
+    ttwl-save-edit old.sav new.sav --items-to-char
 
 Alternatively, you can set an explicit level using `--item-levels`
 
-    bl3-save-edit old.sav new.sav --item-levels 57
+    ttwl-save-edit old.sav new.sav --item-levels 57
 
 ## Item Mayhem Levels
 
@@ -274,12 +274,12 @@ using `--item-mayhem-max`.  Note that currently only weapons and
 grenades can have Mayhem applied; other items will end up generating
 a message like `<num> were unable to be levelled`.
 
-    bl3-save-edit old.sav new.sav --item-mayhem-max
+    ttwl-save-edit old.sav new.sav --item-mayhem-max
 
 Alternatively, you can specify a specific Mayhem level with
 `--item-mayhem-levels`:
 
-    bl3-save-edit old.sav new.sav --item-mayhem-levels 5
+    ttwl-save-edit old.sav new.sav --item-mayhem-levels 5
 
 To remove Mayhem levels from weapons/greandes entirely, specify `0` for
 `--item-mayhem-levels`.
@@ -291,7 +291,7 @@ specified using the `--unlock` argument.  You can specify this
 multiple times on the commandline, to unlock more than one thing
 at once, like so:
 
-    bl3-save-edit old.sav new.sav --unlock ammo --unlock backpack
+    ttwl-save-edit old.sav new.sav --unlock ammo --unlock backpack
 
 ### Ammo/Backpack Unlocks
 
@@ -299,8 +299,8 @@ The `ammo` and `backpack` unlocks will give you the maximum number
 of SDUs for all ammo types, and your backpack space, respectively.
 The `ammo` SDU unlock will also fill your ammo reserves.
 
-    bl3-save-edit old.sav new.sav --unlock ammo
-    bl3-save-edit old.sav new.sav --unlock backpack
+    ttwl-save-edit old.sav new.sav --unlock ammo
+    ttwl-save-edit old.sav new.sav --unlock backpack
 
 ### Equipment Slots
 
@@ -309,23 +309,23 @@ slots (namely: the 3rd and 4th weapon slots, armor, both rings,
 and amulet).  This will *not* unlock the second spell slot,
 since that's skill/class-based.
 
-    bl3-save-edit old.sav new.sav --unlock equipslots
+    ttwl-save-edit old.sav new.sav --unlock equipslots
 
 ### All Unlocks at Once
 
 You can also use `all` to unlock all the various `--unlock`
 options at once, without having to specify each one individually:
 
-    bl3-save-edit old.sav new.sav --unlock all
+    ttwl-save-edit old.sav new.sav --unlock all
 
 ## Import Items
 
 The `-i`/`--import-items` option will let you import items into
 a savegame, of the sort you can export using `-o items`.  Simply
 specify a text file as the argument to `-i` and it will load in
-any line starting with `BL3(` as an item into the savegame:
+any line starting with `TTWL(` as an item into the savegame:
 
-    bl3-save-edit old.sav new.sav -i items.txt
+    ttwl-save-edit old.sav new.sav -i items.txt
 
 Note that by default, the app will not allow Fabricators to be
 imported into a save, since the player doesn't have a good way to
@@ -333,10 +333,10 @@ get rid of them.  You can tell the app to allow importing
 Fabricators anyway with the `--allow-fabricator` option (which has
 no use when not used along with `-i`/`--import-items`)
 
-    bl3-save-edit old.sav new.sav -i items.txt --allow-fabricator
+    ttwl-save-edit old.sav new.sav -i items.txt --allow-fabricator
 
 If the utility can't tell what an item is during import (which may
-happen if BL3 has been updated but this editor hasn't been updated
+happen if WL has been updated but this editor hasn't been updated
 yet), it will refuse to import the unknown items, unless
 `--allow-fabricator` is specified, since the unknown item could be
 a Fabricator.  Other edits and imports can still happen, however.
@@ -345,9 +345,9 @@ If you have items saved in a CSV file (such as one exported using
 `-o items --csv`), you can add the `--csv` argument to import items
 from the CSV:
 
-    bl3-save-edit old.sav new.sav -i items.csv --csv
+    ttwl-save-edit old.sav new.sav -i items.csv --csv
 
-When reading CSV files, any valid BL3 item code found by itself in
+When reading CSV files, any valid WL item code found by itself in
 a field in the CSV will be imported, so the CSV doesn't have to
 be in the exact same format as the ones generated by `-o items --csv`.
 
@@ -356,18 +356,18 @@ be in the exact same format as the ones generated by `-o items --csv`.
 If you've saved a savegame in raw protobuf format (using the
 `-o protobuf` option, or otherwise), you may want to re-import it
 into a savegame, perhaps after having edited it by hand.  This can
-be done with the separate utility `bl3-save-import-protobuf`.  This
+be done with the separate utility `ttwl-save-import-protobuf`.  This
 requires a `-p`/`--protobuf` argument to specify the file where
 the raw protobuf is stored, and a `-t`/`--to-filename` argument,
 which specifies the filename to import the protobufs into:
 
-    bl3-save-import-protobuf -p edited.pbraw -t old.sav
+    ttwl-save-import-protobuf -p edited.pbraw -t old.sav
 
 By default this will prompt for confirmation before actually
 overwriting the file, but you can use the `-c`/`--clobber` option
 to force it to overwrite without asking:
 
-    bl3-save-import-protobuf -p edited.pbraw -t old.sav -c
+    ttwl-save-import-protobuf -p edited.pbraw -t old.sav -c
 
 **NOTE:** This (and the JSON import) is the one place where these
 utilities *expect* to overwrite the file you're giving it.  In the
@@ -381,17 +381,17 @@ you.
 If you saved a savegame in JSON format (using the `-o json` option),
 you may want to re-import it into a savegame, perhaps after having
 edited it by hand.  This can be done with the separate utility
-`bl3-save-import-json`.  This requires a `-j`/`--json` argument to
+`ttwl-save-import-json`.  This requires a `-j`/`--json` argument to
 specify the file where the JSON is stored, and a `-t`/`--to-filename`
 argument, which specifies the filename to import the JSON into:
 
-    bl3-save-import-json -j edited.json -t old.sav
+    ttwl-save-import-json -j edited.json -t old.sav
 
 By default this will prompt for confirmation before actually
 overwriting the file, but you can use the `-c`/`--clobber` option
 to force it to overwrite without asking:
 
-    bl3-save-import-json -j edited.json -t old.sav -c
+    ttwl-save-import-json -j edited.json -t old.sav -c
 
 **NOTE:** This (and the protobuf import) is the one place where these
 utilities *expect* to overwrite the file you're giving it.  In the
@@ -402,13 +402,13 @@ you.
 
 # Savegame Info Usage
 
-The `bl3-save-info` script is extremely simple, and just dumps a bunch
+The `ttwl-save-info` script is extremely simple, and just dumps a bunch
 of information about the specified savegame to the console.  If you
 specify the `-v`/`--verbose` option, it'll output a bunch more info
 than it ordinarily would, such as inventory contents and discovered
 Fast Travel stations:
 
-    bl3-save-info -v old.sav
+    ttwl-save-info -v old.sav
 
 Instead of doing a global "verbose" option, you can instead choose
 to output just some of the extra information:
@@ -418,7 +418,7 @@ to output just some of the extra information:
 The `-i`/`--items` argument will output your inventory, including item
 codes which could be put in a text file for later import:
 
-    bl3-save-info -i old.sav
+    ttwl-save-info -i old.sav
 
 ## Fast Travel Stations
 
@@ -428,17 +428,17 @@ object name in the game, so you may have to use a
 [level name reference](https://github.com/BLCM/BLCMods/wiki/Level-Name-Reference#borderlands-3)
 to get a feel for what is what.
 
-    bl3-save-info --fast-travel old.sav
+    ttwl-save-info --fast-travel old.sav
 
 ## Challenges
 
 The `--all-challenges` argument will output the state of all challenges
-in your savegame.  Note that BL3 uses challenges to keep track of a
+in your savegame.  Note that WL uses challenges to keep track of a
 lot of info in the savegames, and this list will be over 1.5k items
 long!  As with the fast travel stations, these will be reported as the
 raw object names.
 
-    bl3-save-info --all-challenges old.sav
+    ttwl-save-info --all-challenges old.sav
 
 ## Missions
 
@@ -446,12 +446,12 @@ The `--all-missions` argument will output all of the missions that the
 character has completed, in addition to the active missions which are
 always shown.
 
-    bl3-save-info --all-missions old.sav
+    ttwl-save-info --all-missions old.sav
 
 If you want to see the actual object paths to any reported missions
 (for instance, when looking to clear out sidemission progress to deal
 with locked missions), use the `--mission-paths` option:
 
-    bl3-save-info --mission-paths old.sav
-    bl3-save-info --all-missions --mission-paths old.sav
+    ttwl-save-info --mission-paths old.sav
+    ttwl-save-info --all-missions --mission-paths old.sav
 

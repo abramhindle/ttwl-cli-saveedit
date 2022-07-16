@@ -1,7 +1,7 @@
-# Borderlands 3 Commandline Profile Editor - Profile Editing Reference
+# Wonderlands Commandline Profile Editor - Profile Editing Reference
 
 This is the documentation for the profile editing portions of the
-BL3 CLI Savegame Editor.  For general app information, installation,
+TTWL CLI Savegame Editor.  For general app information, installation,
 upgrade procedures, and other information, please see the main
 [README file](README.md).
 
@@ -9,10 +9,10 @@ These docs will assume that you've installed via `pip3` - if you're using
 a Github checkout, substitute the commands as appropriate.  The equivalent
 commands will be:
 
-    python -m bl3save.cli_prof_edit -h
-    python -m bl3save.cli_prof_info -h
-    python -m bl3save.cli_prof_import_protobuf -h
-    python -m bl3save.cli_prof_import_json -h
+    python -m ttwlsave.cli_prof_edit -h
+    python -m ttwlsave.cli_prof_info -h
+    python -m ttwlsave.cli_prof_import_protobuf -h
+    python -m ttwlsave.cli_prof_import_json -h
 
 # Table of Contents
 
@@ -43,22 +43,22 @@ commands will be:
 At its most basic, you can run the editor with only an input and output
 file, and it will simply load and then re-encode the profile.  For
 instance, in this example, `profile.sav` and `newprofile.sav` will be
-identical as far as BL3 is concerned:
+identical as far as WL is concerned:
 
-    bl3-profile-edit profile.sav newprofile.sav
+    ttwl-profile-edit profile.sav newprofile.sav
 
 If `newprofile.sav` exists, the utility will prompt you if you want to
 overwrite it.  If you want to force the utility to overwrite without asking,
 use the `-f`/`--force` option:
 
-    bl3-profile-edit profile.sav newprofile.sav -f
+    ttwl-profile-edit profile.sav newprofile.sav -f
 
 As the app processes files, it will output exactly what it's doing.  If
 you prefer to have silent output (unless there's an error), such as if
 you're using this to process a group of files in a loop, you can use
 the `-q`/`--quiet` option:
 
-    bl3-profile-edit profile.sav newprofile.sav -q
+    ttwl-profile-edit profile.sav newprofile.sav -q
 
 Note that currently, the app will refuse to overwrite the same file that
 you're editing.  You'll need to move/rename the `newprofile.sav` over the
@@ -70,31 +70,31 @@ backups!
 The editor can output files in a few different formats, and you can
 specify the format using the `-o`/`--output` option, like so:
 
-    bl3-profile-edit profile.sav newprofile.sav -o profile
-    bl3-profile-edit profile.sav newprofile.pbraw -o protobuf
-    bl3-profile-edit profile.sav newprofile.json -o json
-    bl3-profile-edit profile.sav newprofile.txt -o items
+    ttwl-profile-edit profile.sav newprofile.sav -o profile
+    ttwl-profile-edit profile.sav newprofile.pbraw -o protobuf
+    ttwl-profile-edit profile.sav newprofile.json -o json
+    ttwl-profile-edit profile.sav newprofile.txt -o items
 
 - **profile** - This is the default, if you don't specify an output
-  format.  It will save the game like a valid BL3 profile.  This
+  format.  It will save the game like a valid WL profile.  This
   will likely be your most commonly-used option.
 - **protobuf** - This will write out the raw, unencrypted Protobuf
   entries contained in the profile, which might be useful if you
   want to look at them with a Protobuf viewer of some sort (such
   as [this one](https://protogen.marcgravell.com/decode)), or to
   make hand edits of your own.  Raw protobuf files can be imported
-  back into the profile using the separate `bl3-profile-import-protobuf`
+  back into the profile using the separate `ttwl-profile-import-protobuf`
   command, whose docs you can find near the bottom of this README.
 - **json** - Alternatively, this will write out the raw protobufs
   as encoded into JSON.  Like the protobuf output, you should be
   able to edit this by hand and then re-import using the
-  `bl3-profile-import-json` utility.  **NOTE:** JSON import is not
+  `ttwl-profile-import-json` utility.  **NOTE:** JSON import is not
   super well-tested yet, so keep backups!
 - **items** - This will output a text file containing item codes
   for all items in your bank, which can be read back in to other
   savegames or profiles.  It uses a format similar to the item codes
   used by Gibbed's BL2/TPS editors.  (It will probably be identical
-  to the codes used by Gibbed's BL3 editor, once that is released,
+  to the codes used by Gibbed's WL editor, once that is released,
   but time will tell on that front.)
   - You can optionally specify the `--csv` flag to output a CSV file
     instead of "regular" text file.  The first column will be the
@@ -115,7 +115,7 @@ process multiple changes at once.
 The number of Skeleton Keys stored in the profile can be set using
 the `--skeleton-keys` argument:
 
-    bl3-profile-edit profile.sav newprofile.sav --skeleton-keys 150
+    ttwl-profile-edit profile.sav newprofile.sav --skeleton-keys 150
 
 ## Guardian Rank
 
@@ -142,7 +142,7 @@ option below might be better, if you're looking to start from scratch.
 Anyway, there's probably not much call for it nowadays, but here it is,
 just in case.
 
-    bl3-profile-edit profile.sav newprofile.sav --zero-guardian-rank
+    ttwl-profile-edit profile.sav newprofile.sav --zero-guardian-rank
 
 ### Minimizing Guardian Rank
 
@@ -153,7 +153,7 @@ from the first savegame that it loads.  So if you're looking to reset your
 GR and start over from scratch, this is probably the better of the two
 options.  The argument is called `--min-guardian-rank`:
 
-    bl3-profile-edit profile.sav newprofile.sav --min-guardian-rank
+    ttwl-profile-edit profile.sav newprofile.sav --min-guardian-rank
 
 ### Guardian Rank Rewards
 
@@ -162,7 +162,7 @@ eighteen rewards, use the `--guardian-rank-rewards` argument.  The value
 you use should be the number of times you want each reward to be
 "redeemed."  For example, to put everything at about 14%:
 
-    bl3-profile-edit profile.sav newprofile.sav --guardian-rank-rewards 40
+    ttwl-profile-edit profile.sav newprofile.sav --guardian-rank-rewards 40
 
 Specifying `1` for the value is nearly identical to using `--min-guardian-rank`,
 except that this argument doesn't clear out the Guardian XP reported by
@@ -175,7 +175,7 @@ rewards and available tokens.
 The number of available Guardian Rank tokens can be set using the
 `--guardian-rank-tokens` argument:
 
-    bl3-profile-edit profile.sav newprofile.sav --guardian-rank-tokens 10
+    ttwl-profile-edit profile.sav newprofile.sav --guardian-rank-tokens 10
 
 This argument will also update your main Guardian Rank number to be an
 appropriate value, given the number of rewards and available tokens.
@@ -186,11 +186,11 @@ There are two arguments to set item levels for gear that's stored in
 your bank.  The first is to set all items/weapons in the bank to the
 max level in the game.  This can be done with `--item-levels-max`
 
-    bl3-profile-edit profile.sav newprofile.sav --item-levels-max
+    ttwl-profile-edit profile.sav newprofile.sav --item-levels-max
 
 Alternatively, you can set an explicit level using `--item-levels`
 
-    bl3-profile-edit profile.sav newprofile.sav --item-levels 57
+    ttwl-profile-edit profile.sav newprofile.sav --item-levels 57
 
 ## Bank Item Mayhem Levels
 
@@ -200,12 +200,12 @@ using `--item-mayhem-max`.  Note that currently only weapons and
 grenades can have Mayhem applied; other items will end up generating
 a message like `<num> were unable to be levelled`.
 
-    bl3-profile-edit profile.sav newprofile.sav --item-mayhem-max
+    ttwl-profile-edit profile.sav newprofile.sav --item-mayhem-max
 
 Alternatively, you can specify a specific Mayhem level with
 `--item-mayhem-levels`:
 
-    bl3-profile-edit profile.sav newprofile.sav --item-mayhem-levels 5
+    ttwl-profile-edit profile.sav newprofile.sav --item-mayhem-levels 5
 
 To remove Mayhem levels from weapons/grenades entirely, specify `0` for
 `--item-mayhem-levels`.
@@ -216,7 +216,7 @@ If for some reason you'd like to clear your profile of all found
 customizations, you can do so with `--clear-customizations`.  (This was
 honestly mostly just useful to myself when testing the app.)
 
-    bl3-profile-edit profile.sav newprofile.sav --clear-customizations
+    ttwl-profile-edit profile.sav newprofile.sav --clear-customizations
 
 ## Unlocks
 
@@ -225,15 +225,15 @@ specified using the `--unlock` argument.  You can specify this
 multiple times on the commandline, to unlock more than one thing
 at once, like so:
 
-    bl3-profile-edit profile.sav newprofile.sav --unlock lostloot --unlock bank
+    ttwl-profile-edit profile.sav newprofile.sav --unlock lostloot --unlock bank
 
 ### Lost Loot and Bank Capacity
 
 The `lostloot` and `bank` unlocks will give you the maximum number
 of SDUs for the Lost Loot machine and Bank, respectively:
 
-    bl3-profile-edit profile.sav newprofile.sav --unlock lostloot
-    bl3-profile-edit profile.sav newprofile.sav --unlock bank
+    ttwl-profile-edit profile.sav newprofile.sav --unlock lostloot
+    ttwl-profile-edit profile.sav newprofile.sav --unlock bank
 
 ### Customizations
 
@@ -243,14 +243,14 @@ as new content is released, this editor will have to be updated to
 include the new customizations.)  They can be individually unlocked
 with any of the following:
 
-    bl3-profile-edit profile.sav newprofile.sav --unlock skins
-    bl3-profile-edit profile.sav newprofile.sav --unlock heads
-    bl3-profile-edit profile.sav newprofile.sav --unlock emotes
+    ttwl-profile-edit profile.sav newprofile.sav --unlock skins
+    ttwl-profile-edit profile.sav newprofile.sav --unlock heads
+    ttwl-profile-edit profile.sav newprofile.sav --unlock emotes
 
 Alternatively, you can unlock *all* customizations all at once, by
 using the `customizations` unlock:
 
-    bl3-profile-edit profile.sav newprofile.sav --unlock customizations
+    ttwl-profile-edit profile.sav newprofile.sav --unlock customizations
 
 **Note:** DLC-locked customizations, such as the Gold Pack, or any
 customization specific to a story DLC, will remain unavailable even
@@ -262,16 +262,16 @@ though, the relevant cosmetics should show up as available immediately.
 You can also use `all` to unlock all the various `--unlock`
 options at once, without having to specify each one individually:
 
-    bl3-profile-edit profile.sav newprofile.sav --unlock all
+    ttwl-profile-edit profile.sav newprofile.sav --unlock all
 
 ## Import Bank Items
 
 The `-i`/`--import-items` option will let you import items into
 your bank, of the sort you can export using `-o items`.  Simply
 specify a text file as the argument to `-i` and it will load in
-any line starting with `BL3(` as an item into the savegame:
+any line starting with `TTWL(` as an item into the savegame:
 
-    bl3-profile-edit profile.sav newprofile.sav -i items.txt
+    ttwl-profile-edit profile.sav newprofile.sav -i items.txt
 
 Note that by default, the app will not allow Fabricators to be
 imported into the bank, since the player doesn't have a good way to
@@ -279,10 +279,10 @@ get rid of them.  You can tell the app to allow importing
 Fabricators anyway with the `--allow-fabricator` option (which has
 no use when not used along with `-i`/`--import-items`)
 
-    bl3-profile-edit profile.sav newprofile.sav -i items.txt --allow-fabricator
+    ttwl-profile-edit profile.sav newprofile.sav -i items.txt --allow-fabricator
 
 If the utility can't tell what an item is during import (which may
-happen if BL3 has been updated but this editor hasn't been updated
+happen if WL has been updated but this editor hasn't been updated
 yet), it will refuse to import the unknown items, unless
 `--allow-fabricator` is specified, since the unknown item could be
 a Fabricator.  Other edits and imports can still happen, however.
@@ -291,9 +291,9 @@ If you have items saved in a CSV file (such as one exported using
 `-o items --csv`), you can add the `--csv` argument to import items
 from the CSV:
 
-    bl3-profile-edit profile.sav newprofile.sav -i items.csv --csv
+    ttwl-profile-edit profile.sav newprofile.sav -i items.csv --csv
 
-When reading CSV files, any valid BL3 item code found by itself in
+When reading CSV files, any valid WL item code found by itself in
 a field in the CSV will be imported, so the CSV doesn't have to
 be in the exact same format as the ones generated by `-o items --csv`.
 
@@ -302,18 +302,18 @@ be in the exact same format as the ones generated by `-o items --csv`.
 If you've saved a profile in raw protobuf format (using the
 `-o protobuf` option, or otherwise), you may want to re-import it
 into the profile, perhaps after having edited it by hand.  This can
-be done with the separate utility `bl3-profile-import-protobuf`.  This
+be done with the separate utility `ttwl-profile-import-protobuf`.  This
 requires a `-p`/`--protobuf` argument to specify the file where
 the raw protobuf is stored, and a `-t`/`--to-filename` argument,
 which specifies the filename to import the protobufs into:
 
-    bl3-profile-import-protobuf -p edited.pbraw -t profile.sav
+    ttwl-profile-import-protobuf -p edited.pbraw -t profile.sav
 
 By default this will prompt for confirmation before actually
 overwriting the file, but you can use the `-c`/`--clobber` option
 to force it to overwrite without asking:
 
-    bl3-profile-import-protobuf -p edited.pbraw -t profile.sav -c
+    ttwl-profile-import-protobuf -p edited.pbraw -t profile.sav -c
 
 **NOTE:** This (and the JSON import) is the one place where these
 utilities *expect* to overwrite the file you're giving it.  In the
@@ -327,17 +327,17 @@ you.
 If you saved a profile in JSON format (using the `-o json` option),
 you may want to re-import it into the profile, perhaps after having
 edited it by hand.  This can be done with the separate utility
-`bl3-profile-import-json`.  This requires a `-j`/`--json` argument to
+`ttwl-profile-import-json`.  This requires a `-j`/`--json` argument to
 specify the file where the JSON is stored, and a `-t`/`--to-filename`
 argument, which specifies the filename to import the JSON into:
 
-    bl3-profile-import-json -j edited.json -t profile.sav
+    ttwl-profile-import-json -j edited.json -t profile.sav
 
 By default this will prompt for confirmation before actually
 overwriting the file, but you can use the `-c`/`--clobber` option
 to force it to overwrite without asking:
 
-    bl3-profile-import-json -j edited.json -t profile.sav -c
+    ttwl-profile-import-json -j edited.json -t profile.sav -c
 
 **NOTE:** This (and the protobuf import) is the one place where these
 utilities *expect* to overwrite the file you're giving it.  In the
@@ -348,12 +348,12 @@ you.
 
 # Profile Info Usage
 
-The `bl3-profile-info` script is extremely simple, and just dumps a bunch
+The `ttwl-profile-info` script is extremely simple, and just dumps a bunch
 of information about the specified savegame to the console.  If you
 specify the `-v`/`--verbose` option, it'll output a bunch more info
 than it ordinarily would, such as bank and lost loot contents:
 
-    bl3-save-info -v profile.sav
+    ttwl-profile-info -v profile.sav
 
 Instead of doing a global "verbose" option, you can instead choose
 to output just some of the extra information, though at the moment there's
@@ -365,4 +365,4 @@ The `-i`/`--items` argument will output your bank and Lost Loot machine
 contents, including item codes which could be put in a text file for
 later import:
 
-    bl3-profile-info -i profile.sav
+    ttwl-profile-info -i profile.sav
