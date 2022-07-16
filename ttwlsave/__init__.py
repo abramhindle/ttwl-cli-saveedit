@@ -154,35 +154,14 @@ class ProfileSDU(LabelEnum):
     BANK = ('Bank', '/Game/Pickups/SDU/SDU_Bank.SDU_Bank', 23)
 
 # Ammo
-(AMMO_AR, AMMO_GRENADE, AMMO_HEAVY, AMMO_PISTOL, AMMO_SMG, AMMO_SHOTGUN, AMMO_SNIPER) = range(7)
-ammo_to_eng = {
-        AMMO_AR: 'AR',
-        AMMO_GRENADE: 'Grenade',
-        AMMO_HEAVY: 'Heavy',
-        AMMO_PISTOL: 'Pistol',
-        AMMO_SMG: 'SMG',
-        AMMO_SHOTGUN: 'Shotgun',
-        AMMO_SNIPER: 'Sniper',
-        }
-ammoobj_to_ammo = {
-        '/Game/GameData/Weapons/Ammo/Resource_Ammo_AssaultRifle.Resource_Ammo_AssaultRifle': AMMO_AR,
-        '/Game/GameData/Weapons/Ammo/Resource_Ammo_Grenade.Resource_Ammo_Grenade': AMMO_GRENADE,
-        '/Game/GameData/Weapons/Ammo/Resource_Ammo_Heavy.Resource_Ammo_Heavy': AMMO_HEAVY,
-        '/Game/GameData/Weapons/Ammo/Resource_Ammo_Pistol.Resource_Ammo_Pistol': AMMO_PISTOL,
-        '/Game/GameData/Weapons/Ammo/Resource_Ammo_SMG.Resource_Ammo_SMG': AMMO_SMG,
-        '/Game/GameData/Weapons/Ammo/Resource_Ammo_Shotgun.Resource_Ammo_Shotgun': AMMO_SHOTGUN,
-        '/Game/GameData/Weapons/Ammo/Resource_Ammo_Sniper.Resource_Ammo_Sniper': AMMO_SNIPER,
-        }
-ammo_to_ammoobj = {v: k for k, v in ammoobj_to_ammo.items()}
-ammo_to_max = {
-        AMMO_AR: 1680,
-        AMMO_GRENADE: 13,
-        AMMO_HEAVY: 51,
-        AMMO_PISTOL: 1200,
-        AMMO_SMG: 2160,
-        AMMO_SHOTGUN: 280,
-        AMMO_SNIPER: 204,
-        }
+class Ammo(LabelEnum):
+    AR = ('AR', '/Game/GameData/Weapons/Ammo/Resource_Ammo_AssaultRifle.Resource_Ammo_AssaultRifle', 1680)
+    GRENADE = ('Grenade', '/Game/GameData/Weapons/Ammo/Resource_Ammo_Grenade.Resource_Ammo_Grenade', 13)
+    HEAVY = ('Heavy', '/Game/GameData/Weapons/Ammo/Resource_Ammo_Heavy.Resource_Ammo_Heavy', 51)
+    PISTOL = ('Pistol', '/Game/GameData/Weapons/Ammo/Resource_Ammo_Pistol.Resource_Ammo_Pistol', 1200)
+    SMG = ('SMG', '/Game/GameData/Weapons/Ammo/Resource_Ammo_SMG.Resource_Ammo_SMG', 2160)
+    SHOTGUN = ('Shotgun', '/Game/GameData/Weapons/Ammo/Resource_Ammo_Shotgun.Resource_Ammo_Shotgun', 280)
+    SNIPER = ('Sniper', '/Game/GameData/Weapons/Ammo/Resource_Ammo_Sniper.Resource_Ammo_Sniper', 204)
 
 # Challenges
 (ERIDIAN_ANALYZER,

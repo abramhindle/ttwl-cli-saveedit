@@ -1265,13 +1265,17 @@ class TTWLSave(object):
         """
         to_ret = {}
         for pool in self.save.resource_pools:
-            # In some cases, Eridium can show up as an ammo type.  Related to the
-            # Fabricator, presumably.  Anyway, just ignore it.
-            if 'Eridium' in pool.resource_path:
+            # `Resource_Ammo_Spell` shows up in here but isn't actually used; ignore it
+            if 'Resource_Ammo_Spell' in pool.resource_path:
                 continue
-            key = ammoobj_to_ammo.get(pool.resource_path,pool.resource_path)
-            if eng:
-                key = ammo_to_eng.get(key,key)
+            ammo = Ammo.has_value(pool.resource_path)
+            if ammo:
+                if eng:
+                    key = Ammo.get_label(pool.resource_path)
+                else:
+                    key = ammo.value
+            else:
+                key = pool.resource_path
             to_ret[key] = int(pool.amount)
         return to_ret
 
@@ -1292,9 +1296,9 @@ class TTWLSave(object):
         # Set all existing ammo pools to max (shouldn't have to worry about
         # pools not being in here)
         for pool in self.save.resource_pools:
-            if pool.resource_path in ammoobj_to_ammo:
-                ammo_key = ammoobj_to_ammo[pool.resource_path]
-                pool.amount = ammo_to_max[ammo_key]
+            ammo = Ammo.has_value(pool.resource_path)
+            if ammo:
+                pool.amount = ammo.num
 
     def get_all_challenges_raw(self):
         """
