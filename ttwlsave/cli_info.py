@@ -179,18 +179,14 @@ def main():
             # should be in ttwlsave.py itself, or at least some constants in __init__.py
             mission_set = set(completed_missions)
             importants = []
-            if 'Divine Retribution' in mission_set:
+            if 'Epilogue' in mission_set:
                 importants.append('Main Game')
-            if 'All Bets Off' in mission_set:
-                importants.append('DLC1 - Moxxi\'s Heist of the Handsome Jackpot')
-            if 'The Call of Gythian' in mission_set:
-                importants.append('DLC2 - Guns, Love, and Tentacles')
-            if 'Riding to Ruin' in mission_set:
-                importants.append('DLC3 - Bounty of Blood')
-            if 'Locus of Rage' in mission_set:
-                importants.append('DLC4 - Psycho Krieg and the Fantastic Fustercluck')
-            if "Mysteriouslier: Horror at Scryer's Crypt" in mission_set:
-                importants.append('DLC6 - Director\'s Cut')
+            if 'Defeated Chums: Difficulty 4' in mission_set:
+                importants.append('DLC1 - Coiled Captors')
+            if 'Defeated Imelda: Difficulty 4' in mission_set:
+                importants.append('DLC2 - Glutton\'s Gamble')
+            if 'Defeated Fyodor: Difficulty 4' in mission_set:
+                importants.append('DLC3 - Molten Mirrors')
             if len(importants) > 0:
                 print(' - Mission Milestones:')
                 for important in importants:
