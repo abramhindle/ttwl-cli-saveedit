@@ -187,10 +187,10 @@ copy back after editing), or even specify the full paths with the filenames.
 # Editor Usage
 
 For instructions on using the Savegame portions of the editor, see
-[README-saves.md](https://github.com/apocalyptech/bl3-cli-saveedit/blob/master/README-saves.md).
+[README-saves.md](https://github.com/apocalyptech/ttwl-cli-saveedit/blob/master/README-saves.md).
 
 FOr instructions on using the Profile portions of the editor, see
-[README-profile.md](https://github.com/apocalyptech/bl3-cli-saveedit/blob/master/README-profile.md).
+[README-profile.md](https://github.com/apocalyptech/ttwl-cli-saveedit/blob/master/README-profile.md).
 
 # TODO
 
