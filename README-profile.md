@@ -40,7 +40,6 @@ commands will be:
     - [Borderlands Science tokens](#borderlands-science-tokens)
   - [Bank Item Levels](#bank-item-levels)
   - [Bank Item Mayhem Levels](#bank-item-mayhem-levels)
-  - [Alphabetize Customizations](#alphabetize-customizations)
   - [Clear Customizations](#clear-customizations)
   - [Unlocks](#unlocks)
     - [Lost Loot and Bank Capacity](#lost-loot-and-bank-capacity)
@@ -310,16 +309,6 @@ Alternatively, you can specify a specific Mayhem level with
 To remove Mayhem levels from weapons/grenades entirely, specify `0` for
 `--item-mayhem-levels`.
 
-## Alphabetize Customizations
-
-Room Decorations, Weapon Trinkets, and Weapon Skins show up in the game
-in the order in which they were picked up, generally, which makes it
-sometimes hard to find the one you're looking for.  The `--alpha` option
-will rearrange the data so that they're in alphabetical order, so you'll
-have a nice ordered list to choose from:
-
-    bl3-profile-edit profile.sav newprofile.sav --alpha
-
 ## Clear Customizations
 
 If for some reason you'd like to clear your profile of all found
@@ -355,11 +344,7 @@ with any of the following:
 
     bl3-profile-edit profile.sav newprofile.sav --unlock skins
     bl3-profile-edit profile.sav newprofile.sav --unlock heads
-    bl3-profile-edit profile.sav newprofile.sav --unlock echothemes
     bl3-profile-edit profile.sav newprofile.sav --unlock emotes
-    bl3-profile-edit profile.sav newprofile.sav --unlock decos
-    bl3-profile-edit profile.sav newprofile.sav --unlock weaponskins
-    bl3-profile-edit profile.sav newprofile.sav --unlock trinkets
 
 Alternatively, you can unlock *all* customizations all at once, by
 using the `customizations` unlock:

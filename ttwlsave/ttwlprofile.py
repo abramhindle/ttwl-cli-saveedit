@@ -399,19 +399,6 @@ class TTWLProfile(object):
                 to_ret.add(cust.customization_asset_path)
         return to_ret
 
-    def get_cur_weapon_customizations(self, cust_set):
-        """
-        Returns a set of the currently-unlocked weapon customizations which
-        live in the given `cust_set`, composed of their in-game hashes.  (Both
-        trinkets and weapon skins live in the same data structure, which is why
-        we have this layer.)
-        """
-        to_ret = set()
-        for cust in self.prof.unlocked_inventory_customization_parts:
-            if cust.customization_part_hash in cust_set:
-                to_ret.add(cust.customization_part_hash)
-        return to_ret
-
     def unlock_customization_set(self, cust_set):
         """
         Unlocks the given set of customizations in the main customization
@@ -423,19 +410,6 @@ class TTWLProfile(object):
             self.prof.unlocked_customizations.append(OakShared_pb2.OakCustomizationSaveGameData(
                 is_new=True,
                 customization_asset_path=cust,
-                ))
-
-    def unlock_weapon_customization_set(self, cust_dict):
-        """
-        Unlocks the given set of weapon customizations, given a `cust_dict` whose
-        keys are the customization hashes.
-        """
-        current_custs = self.get_cur_weapon_customizations(cust_dict)
-        missing = set(cust_dict.keys()) - current_custs
-        for cust in missing:
-            self.prof.unlocked_inventory_customization_parts.append(OakShared_pb2.OakInventoryCustomizationPartInfo(
-                customization_part_hash=cust,
-                is_new=True,
                 ))
 
     def get_char_skins_total(self):
@@ -478,26 +452,6 @@ class TTWLProfile(object):
         """
         self.unlock_customization_set(profile_heads)
 
-    def get_echo_themes_total(self):
-        """
-        Returns the total number of ECHO themes that are possible to unlock.  Includes
-        the ECHO theme that is unlocked by default.
-        """
-        return len(profile_echothemes) + len(profile_echothemes_defaults)
-
-    def get_echo_themes(self):
-        """
-        Returns a set of the current ECHO themes which are unlocked.  Includes the
-        ECHO theme that is unlocked by default.
-        """
-        return self.get_cur_customizations(profile_echothemes) | profile_echothemes_defaults
-
-    def unlock_echo_themes(self):
-        """
-        Unlocks all ECHO Themes
-        """
-        self.unlock_customization_set(profile_echothemes)
-
     def get_emotes_total(self):
         """
         Returns the total number of emotes that are possible to unlock.  Includes the
@@ -518,80 +472,6 @@ class TTWLProfile(object):
         """
         self.unlock_customization_set(profile_emotes)
 
-    def get_room_decos_total(self):
-        """
-        Returns the total number of room decorations that are possible to unlock.
-        """
-        return len(profile_roomdeco_obj_to_eng)
-
-    def get_room_decos(self):
-        """
-        Returns a set of the current room decorations which are unlocked.
-        """
-        return set([d.decoration_item_asset_path for d in self.prof.unlocked_crew_quarters_decorations])
-
-    def unlock_room_decos(self):
-        """
-        Unlocks all room decorations
-        """
-        current_custs = self.get_room_decos()
-        missing = set(profile_roomdeco_obj_to_eng.keys()) - current_custs
-        for cust in missing:
-            self.prof.unlocked_crew_quarters_decorations.append(OakShared_pb2.CrewQuartersDecorationItemSaveGameData(
-                is_new=True,
-                decoration_item_asset_path=cust,
-                ))
-
-    def get_weapon_skins_total(self):
-        """
-        Returns the total number of weapon skins that are possible to unlock
-        """
-        return len(profile_weaponskins_obj_to_eng)
-
-    def get_weapon_skins(self, eng=False):
-        """
-        Returns a set of the current weapon skins which are unlocked.  By default
-        these will be the hashes used in the save file, but if `eng` is `True`, they
-        will be the english names of the skins.
-        """
-        if eng:
-            return set([
-                profile_weaponskins_hash_to_eng[h] for h in self.get_weapon_skins()
-                ])
-        else:
-            return self.get_cur_weapon_customizations(profile_weaponskins_hash_to_eng)
-
-    def unlock_weapon_skins(self):
-        """
-        Unlocks all weapon skins
-        """
-        self.unlock_weapon_customization_set(profile_weaponskins_hash_to_eng)
-
-    def get_weapon_trinkets_total(self):
-        """
-        Returns the total number of weapon trinkets that are possible to unlock
-        """
-        return len(profile_weapontrinkets_obj_to_eng)
-
-    def get_weapon_trinkets(self, eng=False):
-        """
-        Returns a set of the current weapon trinkets which are unlocked.  By default
-        these will be the hashes used in the save file, but if `eng` is `True`, they
-        will be the english names of the trinkets, if possible.
-        """
-        if eng:
-            return set([
-                profile_weapontrinkets_hash_to_eng[h] for h in self.get_weapon_trinkets()
-                ])
-        else:
-            return self.get_cur_weapon_customizations(profile_weapontrinkets_hash_to_eng)
-
-    def unlock_weapon_trinkets(self):
-        """
-        Unlocks all weapon trinkets
-        """
-        self.unlock_weapon_customization_set(profile_weapontrinkets_hash_to_eng)
-
     def clear_all_customizations(self):
         """
         Removes all unlocked customizations.
@@ -599,58 +479,6 @@ class TTWLProfile(object):
         # It didn't seem worth coding these individually, since multiple customization
         # types exist for most of these.  Whatever.
         del self.prof.unlocked_customizations[:]
-        del self.prof.unlocked_crew_quarters_decorations[:]
-        del self.prof.unlocked_inventory_customization_parts[:]
-
-    def alphabetize_cosmetics(self):
-        """
-        Room Decorations, Trinkets, and Weapon Skins just show up in the UI in the
-        same order that they were unlocked, which can be annoying.  This will make
-        all of those alphabetized so that they show up in a nice ordered list.
-        """
-
-        # First, decorations
-        cur_decos = {}
-        for d in self.prof.unlocked_crew_quarters_decorations:
-            cur_decos[d.decoration_item_asset_path] = d.is_new
-        new_order = []
-        for name, obj_path in sorted(profile_roomdeco_eng_to_obj.items(), key=lambda i: i[0].casefold()):
-            if obj_path in cur_decos:
-                new_order.append((obj_path, cur_decos[obj_path]))
-                del cur_decos[obj_path]
-        # Don't forget to add any in that we don't actually know about.  At the end is fine.
-        for obj_path, is_new in cur_decos.items():
-            new_order.append((obj_path, is_new))
-        # Now do the rearranging
-        del self.prof.unlocked_crew_quarters_decorations[:]
-        for obj_path, is_new in new_order:
-            self.prof.unlocked_crew_quarters_decorations.append(OakShared_pb2.CrewQuartersDecorationItemSaveGameData(
-                is_new=is_new,
-                decoration_item_asset_path=obj_path,
-                ))
-
-        # Then, weapon skins and trinkets
-        cur_custs = {}
-        for c in self.prof.unlocked_inventory_customization_parts:
-            cur_custs[c.customization_part_hash] = c.is_new
-        new_order = []
-        for name, hashval in sorted(profile_weaponskins_eng_to_hash.items(), key=lambda i: i[0].casefold()):
-            if hashval in cur_custs:
-                new_order.append((hashval, cur_custs[hashval]))
-                del cur_custs[hashval]
-        for name, hashval in sorted(profile_weapontrinkets_eng_to_hash.items(), key=lambda i: i[0].casefold()):
-            if hashval in cur_custs:
-                new_order.append((hashval, cur_custs[hashval]))
-                del cur_custs[hashval]
-        # Don't forget to add any in that we don't actually know about.  At the end is fine.
-        for hashval, is_new in cur_custs.items():
-            new_order.append((hashval, is_new))
-        del self.prof.unlocked_inventory_customization_parts[:]
-        for hashval, is_new in new_order:
-            self.prof.unlocked_inventory_customization_parts.append(OakShared_pb2.OakInventoryCustomizationPartInfo(
-                customization_part_hash=hashval,
-                is_new=is_new,
-                ))
 
     def _get_generic_keys(self, key_hash):
         """

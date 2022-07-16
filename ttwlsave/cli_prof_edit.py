@@ -215,17 +215,10 @@ def main():
             help='Remove all unlocked customizations',
             )
 
-    parser.add_argument('--alpha',
-            dest='alpha',
-            action='store_true',
-            help='Alphabetize unlocked room decorations, trinkets, and weapon skins',
-            )
-
     unlock_choices = [
             'lostloot', 'bank',
             'skins', 'heads',
-            'echothemes', 'emotes', 'decos',
-            'weaponskins', 'trinkets',
+            'emotes',
             'customizations',
             ]
     parser.add_argument('--unlock',
@@ -253,11 +246,7 @@ def main():
     elif 'customizations' in args.unlock:
         args.unlock['skins'] = True
         args.unlock['heads'] = True
-        args.unlock['echothemes'] = True
         args.unlock['emotes'] = True
-        args.unlock['decos'] = True
-        args.unlock['weaponskins'] = True
-        args.unlock['trinkets'] = True
 
     # Set max item level arg
     if args.item_levels_max:
@@ -342,7 +331,6 @@ def main():
         args.import_items,
         args.item_levels,
         args.clear_customizations,
-        args.alpha,
         args.item_mayhem_levels is not None,
         ])
 
@@ -504,41 +492,11 @@ def main():
                     print('   - Character Heads')
                 profile.unlock_char_heads()
 
-            # ECHO Themes
-            if 'echothemes' in args.unlock:
-                if not args.quiet:
-                    print('   - ECHO Themes')
-                profile.unlock_echo_themes()
-
             # Emotes
             if 'emotes' in args.unlock:
                 if not args.quiet:
                     print('   - Emotes')
                 profile.unlock_emotes()
-
-            # Room Decorations
-            if 'decos' in args.unlock:
-                if not args.quiet:
-                    print('   - Room Decorations')
-                profile.unlock_room_decos()
-
-            # Weapon Skins
-            if 'weaponskins' in args.unlock:
-                if not args.quiet:
-                    print('   - Weapon Skins')
-                profile.unlock_weapon_skins()
-
-            # Weapon Trinkets
-            if 'trinkets' in args.unlock:
-                if not args.quiet:
-                    print('   - Weapon Trinkets')
-                profile.unlock_weapon_trinkets()
-
-        # Customization Alphabetization
-        if args.alpha:
-            if not args.quiet:
-                print(' - Alphabetizing Room Decorations, Trinkets, and Weapon Skins')
-            profile.alphabetize_cosmetics()
 
         # Import Items
         if args.import_items:

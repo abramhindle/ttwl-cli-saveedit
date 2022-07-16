@@ -63,6 +63,61 @@ class LabelEnum(enum.Enum):
         else:
             return value
 
+# CRC32 table used to compute various inventory hashes in the profile.  Many
+# thanks to Gibbed, yet again, for supplying this!
+_hash_cust_crc32_table = [
+        0x00000000, 0x04C11DB7, 0x09823B6E, 0x0D4326D9, 0x130476DC, 0x17C56B6B, 0x1A864DB2, 0x1E475005,
+        0x2608EDB8, 0x22C9F00F, 0x2F8AD6D6, 0x2B4BCB61, 0x350C9B64, 0x31CD86D3, 0x3C8EA00A, 0x384FBDBD,
+        0x4C11DB70, 0x48D0C6C7, 0x4593E01E, 0x4152FDA9, 0x5F15ADAC, 0x5BD4B01B, 0x569796C2, 0x52568B75,
+        0x6A1936C8, 0x6ED82B7F, 0x639B0DA6, 0x675A1011, 0x791D4014, 0x7DDC5DA3, 0x709F7B7A, 0x745E66CD,
+        0x9823B6E0, 0x9CE2AB57, 0x91A18D8E, 0x95609039, 0x8B27C03C, 0x8FE6DD8B, 0x82A5FB52, 0x8664E6E5,
+        0xBE2B5B58, 0xBAEA46EF, 0xB7A96036, 0xB3687D81, 0xAD2F2D84, 0xA9EE3033, 0xA4AD16EA, 0xA06C0B5D,
+        0xD4326D90, 0xD0F37027, 0xDDB056FE, 0xD9714B49, 0xC7361B4C, 0xC3F706FB, 0xCEB42022, 0xCA753D95,
+        0xF23A8028, 0xF6FB9D9F, 0xFBB8BB46, 0xFF79A6F1, 0xE13EF6F4, 0xE5FFEB43, 0xE8BCCD9A, 0xEC7DD02D,
+        0x34867077, 0x30476DC0, 0x3D044B19, 0x39C556AE, 0x278206AB, 0x23431B1C, 0x2E003DC5, 0x2AC12072,
+        0x128E9DCF, 0x164F8078, 0x1B0CA6A1, 0x1FCDBB16, 0x018AEB13, 0x054BF6A4, 0x0808D07D, 0x0CC9CDCA,
+        0x7897AB07, 0x7C56B6B0, 0x71159069, 0x75D48DDE, 0x6B93DDDB, 0x6F52C06C, 0x6211E6B5, 0x66D0FB02,
+        0x5E9F46BF, 0x5A5E5B08, 0x571D7DD1, 0x53DC6066, 0x4D9B3063, 0x495A2DD4, 0x44190B0D, 0x40D816BA,
+        0xACA5C697, 0xA864DB20, 0xA527FDF9, 0xA1E6E04E, 0xBFA1B04B, 0xBB60ADFC, 0xB6238B25, 0xB2E29692,
+        0x8AAD2B2F, 0x8E6C3698, 0x832F1041, 0x87EE0DF6, 0x99A95DF3, 0x9D684044, 0x902B669D, 0x94EA7B2A,
+        0xE0B41DE7, 0xE4750050, 0xE9362689, 0xEDF73B3E, 0xF3B06B3B, 0xF771768C, 0xFA325055, 0xFEF34DE2,
+        0xC6BCF05F, 0xC27DEDE8, 0xCF3ECB31, 0xCBFFD686, 0xD5B88683, 0xD1799B34, 0xDC3ABDED, 0xD8FBA05A,
+        0x690CE0EE, 0x6DCDFD59, 0x608EDB80, 0x644FC637, 0x7A089632, 0x7EC98B85, 0x738AAD5C, 0x774BB0EB,
+        0x4F040D56, 0x4BC510E1, 0x46863638, 0x42472B8F, 0x5C007B8A, 0x58C1663D, 0x558240E4, 0x51435D53,
+        0x251D3B9E, 0x21DC2629, 0x2C9F00F0, 0x285E1D47, 0x36194D42, 0x32D850F5, 0x3F9B762C, 0x3B5A6B9B,
+        0x0315D626, 0x07D4CB91, 0x0A97ED48, 0x0E56F0FF, 0x1011A0FA, 0x14D0BD4D, 0x19939B94, 0x1D528623,
+        0xF12F560E, 0xF5EE4BB9, 0xF8AD6D60, 0xFC6C70D7, 0xE22B20D2, 0xE6EA3D65, 0xEBA91BBC, 0xEF68060B,
+        0xD727BBB6, 0xD3E6A601, 0xDEA580D8, 0xDA649D6F, 0xC423CD6A, 0xC0E2D0DD, 0xCDA1F604, 0xC960EBB3,
+        0xBD3E8D7E, 0xB9FF90C9, 0xB4BCB610, 0xB07DABA7, 0xAE3AFBA2, 0xAAFBE615, 0xA7B8C0CC, 0xA379DD7B,
+        0x9B3660C6, 0x9FF77D71, 0x92B45BA8, 0x9675461F, 0x8832161A, 0x8CF30BAD, 0x81B02D74, 0x857130C3,
+        0x5D8A9099, 0x594B8D2E, 0x5408ABF7, 0x50C9B640, 0x4E8EE645, 0x4A4FFBF2, 0x470CDD2B, 0x43CDC09C,
+        0x7B827D21, 0x7F436096, 0x7200464F, 0x76C15BF8, 0x68860BFD, 0x6C47164A, 0x61043093, 0x65C52D24,
+        0x119B4BE9, 0x155A565E, 0x18197087, 0x1CD86D30, 0x029F3D35, 0x065E2082, 0x0B1D065B, 0x0FDC1BEC,
+        0x3793A651, 0x3352BBE6, 0x3E119D3F, 0x3AD08088, 0x2497D08D, 0x2056CD3A, 0x2D15EBE3, 0x29D4F654,
+        0xC5A92679, 0xC1683BCE, 0xCC2B1D17, 0xC8EA00A0, 0xD6AD50A5, 0xD26C4D12, 0xDF2F6BCB, 0xDBEE767C,
+        0xE3A1CBC1, 0xE760D676, 0xEA23F0AF, 0xEEE2ED18, 0xF0A5BD1D, 0xF464A0AA, 0xF9278673, 0xFDE69BC4,
+        0x89B8FD09, 0x8D79E0BE, 0x803AC667, 0x84FBDBD0, 0x9ABC8BD5, 0x9E7D9662, 0x933EB0BB, 0x97FFAD0C,
+        0xAFB010B1, 0xAB710D06, 0xA6322BDF, 0xA2F33668, 0xBCB4666D, 0xB8757BDA, 0xB5365D03, 0xB1F740B4,
+        ]
+
+def inventory_path_hash(object_path):
+    """
+    Computes the hashes used in the profile for weapon customizations and the skeleton key
+    count.  Possibly used for other things, too.  Many thanks to Gibbed, yet again, for this!
+    """
+    global _hash_cust_crc32_table
+    if '.' not in object_path:
+        object_path = '{}.{}'.format(object_path, object_path.split('/')[-1])
+
+    # TODO: Gibbed was under the impression that these were checksummed in
+    # UTF-16, but the hashes all match for me when using latin1/utf-8.
+    object_full = object_path.upper().encode('latin1')
+    crc32 = 0
+    for char in object_full:
+        crc32 = (_hash_cust_crc32_table[(crc32 ^ (char >> 0)) & 0xFF] ^ (crc32 >> 8)) & 0xFFFFFFFF
+        crc32 = (_hash_cust_crc32_table[(crc32 ^ (char >> 8)) & 0xFF] ^ (crc32 >> 8)) & 0xFFFFFFFF
+    return crc32
+
 # Classes
 (BRRZERKER, CLAWBRINGER, GRAVEBORN, SPELLSHOT, SPOREWARDEN, STABBOMANCER) = range(6)
 class_to_eng = {
@@ -952,108 +1007,6 @@ profile_heads_defaults = set([
     '/Game/PlayerCharacters/_Customizations/SirenBrawler/Heads/CustomHead_Siren_Default.CustomHead_Siren_Default',
     ])
 
-# Profile customizations - ECHO themes
-profile_echothemes = set([
-    '/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_79.ECHOTheme_79',
-    '/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_DLC4_01.ECHOTheme_DLC4_01',
-    '/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_DLC4_02.ECHOTheme_DLC4_02',
-    '/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_DLC4_03.ECHOTheme_DLC4_03',
-    '/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_DLC4_04.ECHOTheme_DLC4_04',
-    '/Game/PatchDLC/BloodyHarvest/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_11.ECHOTheme_11',
-    '/Game/PatchDLC/Customizations/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_37.ECHOTheme_37',
-    '/Game/PatchDLC/Dandelion/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_36.ECHOTheme_36',
-    '/Game/PatchDLC/Dandelion/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_64.ECHOTheme_64',
-    '/Game/PatchDLC/Dandelion/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_65.ECHOTheme_65',
-    '/Game/PatchDLC/Dandelion/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_66.ECHOTheme_66',
-    '/Game/PatchDLC/Event2/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_40.ECHOTheme_40',
-    '/Game/PatchDLC/Event2/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_44.ECHOTheme_44',
-    '/Game/PatchDLC/EventVDay/PlayerCharacters/_Shared/ECHODevice/EchoTheme_Valentines_01.EchoTheme_Valentines_01',
-    '/Game/PatchDLC/EventVDay/PlayerCharacters/_Shared/ECHODevice/EchoTheme_Valentines_02.EchoTheme_Valentines_02',
-    '/Game/PatchDLC/EventVDay/TwitchDrops/PlayerCharacters/_Shared/ECHODevice/ECHOTheme_46.ECHOTheme_46',
-    '/Game/PatchDLC/Geranium/Customizations/EchoTheme/ECHOTheme_73.ECHOTheme_73',
-    '/Game/PatchDLC/Geranium/Customizations/EchoTheme/ECHOTheme_74.ECHOTheme_74',
-    '/Game/PatchDLC/Geranium/Customizations/EchoTheme/ECHOTheme_75.ECHOTheme_75',
-    '/Game/PatchDLC/Geranium/Customizations/EchoTheme/ECHOTheme_76.ECHOTheme_76',
-    '/Game/PatchDLC/Hibiscus/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_DLC2_01.ECHOTheme_DLC2_01',
-    '/Game/PatchDLC/Hibiscus/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_DLC2_02.ECHOTheme_DLC2_02',
-    '/Game/PatchDLC/Hibiscus/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_DLC2_03.ECHOTheme_DLC2_03',
-    '/Game/PatchDLC/Hibiscus/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_DLC2_04.ECHOTheme_DLC2_04',
-    '/Game/PatchDLC/Ixora/Customizations/ECHOTheme/ECHOTheme_50.ECHOTheme_50',
-    '/Game/PatchDLC/Ixora/Customizations/ECHOTheme/ECHOTheme_52.ECHOTheme_52',
-    '/Game/PatchDLC/Ixora/Customizations/ECHOTheme/ECHOTheme_57a.ECHOTheme_57a',
-    '/Game/PatchDLC/Ixora/Customizations/ECHOTheme/ECHOTheme_58.ECHOTheme_58',
-    '/Game/PatchDLC/Raid1/Customizations/EchoDevice/ECHOTheme_38.ECHOTheme_38',
-    '/Game/PatchDLC/Takedown2/PlayerCharacters/_Customizations/EchoDevice/EchoTheme_Takedown2.EchoTheme_Takedown2',
-    '/Game/PatchDLC/VaultCard/Customizations/EchoDevice/ECHOTheme_VC1_1.ECHOTheme_VC1_1',
-    '/Game/PatchDLC/VaultCard/Customizations/EchoDevice/ECHOTheme_VC1_2.ECHOTheme_VC1_2',
-    '/Game/PatchDLC/VaultCard/Customizations/EchoDevice/ECHOTheme_VC1_3.ECHOTheme_VC1_3',
-    '/Game/PatchDLC/VaultCard/Customizations/EchoDevice/ECHOTheme_VC1_4.ECHOTheme_VC1_4',
-    '/Game/PatchDLC/VaultCard2/Customizations/EchoDevice/ECHOTheme_VC2_1.ECHOTheme_VC2_1',
-    '/Game/PatchDLC/VaultCard2/Customizations/EchoDevice/ECHOTheme_VC2_2.ECHOTheme_VC2_2',
-    '/Game/PatchDLC/VaultCard2/Customizations/EchoDevice/ECHOTheme_VC2_3.ECHOTheme_VC2_3',
-    '/Game/PatchDLC/VaultCard2/Customizations/EchoDevice/ECHOTheme_VC2_4.ECHOTheme_VC2_4',
-    '/Game/PatchDLC/VaultCard2/Customizations/EchoDevice/ECHOTheme_VC2_5.ECHOTheme_VC2_5',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_39.ECHOTheme_39',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_41.ECHOTheme_41',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_42.ECHOTheme_42',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_43.ECHOTheme_43',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_47.ECHOTheme_47',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_48.ECHOTheme_48',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_49.ECHOTheme_49',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_51.ECHOTheme_51',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_53.ECHOTheme_53',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_54.ECHOTheme_54',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_55.ECHOTheme_55',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_56.ECHOTheme_56',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_59.ECHOTheme_59',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_61.ECHOTheme_61',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_62.ECHOTheme_62',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_77.ECHOTheme_77',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_80.ECHOTheme_80',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_Poop.ECHOTheme_Poop',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_VC3_1.ECHOTheme_VC3_1',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_VC3_2.ECHOTheme_VC3_2',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_VC3_3.ECHOTheme_VC3_3',
-    '/Game/PatchDLC/VaultCard3/Customizations/EchoDevice/ECHOTheme_VC3_4.ECHOTheme_VC3_4',
-    '/Game/PatchDLC/VaultCard3/PlayerCharacters/Beastmaster/EchoDevice/ECHOTheme_25.ECHOTheme_25',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_01.ECHOTheme_01',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_02.ECHOTheme_02',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_03.ECHOTheme_03',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_04.ECHOTheme_04',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_05.ECHOTheme_05',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_06.ECHOTheme_06',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_07.ECHOTheme_07',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_08.ECHOTheme_08',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_09.ECHOTheme_09',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_10.ECHOTheme_10',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_12.ECHOTheme_12',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_13.ECHOTheme_13',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_14.ECHOTheme_14',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_15.ECHOTheme_15',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_16.ECHOTheme_16',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_17.ECHOTheme_17',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_18.ECHOTheme_18',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_19.ECHOTheme_19',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_20.ECHOTheme_20',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_21.ECHOTheme_21',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_22.ECHOTheme_22',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_23.ECHOTheme_23',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_24.ECHOTheme_24',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_26.ECHOTheme_26',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_27.ECHOTheme_27',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_28.ECHOTheme_28',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_29.ECHOTheme_29',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_30.ECHOTheme_30',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_31.ECHOTheme_31',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_32.ECHOTheme_32',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_33.ECHOTheme_33',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_34.ECHOTheme_34',
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_35.ECHOTheme_35',
-    ])
-profile_echothemes_defaults = set([
-    '/Game/PlayerCharacters/_Customizations/EchoDevice/ECHOTheme_Default.ECHOTheme_Default',
-    ])
-
 # Profile customizations - Emotes
 profile_emotes = set([
     '/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/Emotes/Beastmaster/CustomEmote_Beastmaster_DLC4_01.CustomEmote_Beastmaster_DLC4_01',
@@ -1159,320 +1112,6 @@ profile_emotes_defaults = set([
     '/Game/PlayerCharacters/_Customizations/SirenBrawler/Emotes/CustomEmote_Siren_03_Point.CustomEmote_Siren_03_Point',
     '/Game/PlayerCharacters/_Customizations/SirenBrawler/Emotes/CustomEmote_Siren_04_Laugh.CustomEmote_Siren_04_Laugh',
     ])
-
-# Profile customizations - Room Decorations
-# We're handling these a bit differently so that our util can re-order them in
-# alphabetical order.
-profile_roomdeco_obj_to_eng = {
-        '/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/RoomDeco/RoomDeco_DLC4_01_Orbs.RoomDeco_DLC4_01_Orbs': "Memory Orbs",
-        '/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/RoomDeco/RoomDeco_DLC4_02_Trophy.RoomDeco_DLC4_02_Trophy': "Psychoreaver Trophy",
-        '/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/RoomDeco/RoomDeco_DLC4_03_Axe.RoomDeco_DLC4_03_Axe': "Golden Buzz-axe",
-        '/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/RoomDeco/RoomDeco_DLC4_04_Moon.RoomDeco_DLC4_04_Moon': "Krieg's Moon",
-        '/Game/PatchDLC/Alisma/PlayerCharacters/_Customizations/RoomDeco/RoomDeco_DLC4_05_Mask.RoomDeco_DLC4_05_Mask': "Krieg's Mask",
-        '/Game/PatchDLC/Dandelion/Customizations/RoomDeco/RoomDeco_DLC1_1.RoomDeco_DLC1_1': "Neon Peach",
-        '/Game/PatchDLC/Dandelion/Customizations/RoomDeco/RoomDeco_DLC1_2.RoomDeco_DLC1_2': "Casino Banner",
-        '/Game/PatchDLC/Dandelion/Customizations/RoomDeco/RoomDeco_DLC1_3.RoomDeco_DLC1_3': "Handsome Jackpot",
-        '/Game/PatchDLC/Dandelion/Customizations/RoomDeco/RoomDeco_DLC1_4.RoomDeco_DLC1_4': "Saxophone",
-        '/Game/PatchDLC/Dandelion/Customizations/RoomDeco/RoomDeco_DLC1_5.RoomDeco_DLC1_5': "Jack Plaque",
-        '/Game/PatchDLC/Dandelion/Customizations/RoomDeco/RoomDeco_DLC1_6.RoomDeco_DLC1_6': "Jack Hologram",
-        '/Game/PatchDLC/Event2/Pickups/RoomDecoration/RoomDecoration_Event2_2.RoomDecoration_Event2_2': "Framed Tenderizer",
-        '/Game/PatchDLC/Event2/Pickups/RoomDecoration/RoomDecoration_Event2_3.RoomDecoration_Event2_3': 'Framed Firewall',
-        '/Game/PatchDLC/Geranium/Customizations/RoomDeco/RoomDecoration_Geranium_2.RoomDecoration_Geranium_2': "Bellik Trophy",
-        '/Game/PatchDLC/Geranium/Customizations/RoomDeco/RoomDecoration_Geranium_3.RoomDecoration_Geranium_3': "High Noon Clock",
-        '/Game/PatchDLC/Geranium/Customizations/RoomDeco/RoomDecoration_Geranium_4.RoomDecoration_Geranium_4': "Saloon Sign",
-        '/Game/PatchDLC/Geranium/Customizations/RoomDeco/RoomDecoration_Geranium_5.RoomDecoration_Geranium_5': "Ruiner Tapestry",
-        '/Game/PatchDLC/Geranium/Customizations/RoomDeco/RoomDecoration_Geranium_6.RoomDecoration_Geranium_6': "Rampage of the Gorgonoth Poster",
-        '/Game/PatchDLC/Geranium/Customizations/RoomDeco/RoomDecoration_Geranium_7.RoomDecoration_Geranium_7': "Seven Smugglers Poster",
-        '/Game/PatchDLC/Geranium/Customizations/RoomDeco/RoomDecoration_Geranium_IO_1.RoomDecoration_Geranium_IO_1': "Old Guitar",
-        '/Game/PatchDLC/Geranium/Customizations/RoomDeco/RoomDecoration_Geranium_IO_2.RoomDecoration_Geranium_IO_2': "Chemistry Set",
-        '/Game/PatchDLC/Geranium/Customizations/RoomDeco/RoomDecoration_Geranium_IO_3.RoomDecoration_Geranium_IO_3': "Core Lamp",
-        '/Game/PatchDLC/Geranium/Customizations/RoomDeco/RoomDecoration_KeyToCity.RoomDecoration_KeyToCity': "Key to the City",
-        '/Game/PatchDLC/Hibiscus/Customizations/RoomDeco/RoomDeco_DLC2_1.RoomDeco_DLC2_1': "Lunatic Shield",
-        '/Game/PatchDLC/Hibiscus/Customizations/RoomDeco/RoomDeco_DLC2_2.RoomDeco_DLC2_2': "Private Eye",
-        '/Game/PatchDLC/Hibiscus/Customizations/RoomDeco/RoomDeco_DLC2_3.RoomDeco_DLC2_3': "The Lodge Poster",
-        '/Game/PatchDLC/Hibiscus/Customizations/RoomDeco/RoomDeco_DLC2_4.RoomDeco_DLC2_4': "Just Married Poster",
-        '/Game/PatchDLC/Hibiscus/Customizations/RoomDeco/RoomDeco_DLC2_5.RoomDeco_DLC2_5': "Dahl Bonded Blueprints",
-        '/Game/PatchDLC/Hibiscus/Customizations/RoomDeco/RoomDeco_DLC2_6.RoomDeco_DLC2_6': "Talking Fish",
-        '/Game/PatchDLC/Hibiscus/Customizations/RoomDeco/RoomDeco_DLC2_7.RoomDeco_DLC2_7': "Warrior Horn",
-        '/Game/PatchDLC/Hibiscus/Customizations/RoomDeco/RoomDeco_DLC2_8.RoomDeco_DLC2_8': "Framed Portal",
-        '/Game/PatchDLC/Raid1/Customizations/RoomDeco/RoomDeco_Raid1_1.RoomDeco_Raid1_1': "Wotan's Head",
-        '/Game/PatchDLC/Takedown2/InteractiveObjects/PlayerQuarters/RoomDeco_Takedown2.RoomDeco_Takedown2': "The Martyr's Head",
-        '/Game/PatchDLC/VaultCard/Customizations/RoomDeco/RoomDecoration_VC1_1.RoomDecoration_VC1_1': "Roland and Tina Photo",
-        '/Game/PatchDLC/VaultCard/Customizations/RoomDeco/RoomDecoration_VC1_2.RoomDecoration_VC1_2': "Maya's Book",
-        '/Game/PatchDLC/VaultCard/Customizations/RoomDeco/RoomDecoration_VC1_3.RoomDecoration_VC1_3': "Bloodwing Statue",
-        '/Game/PatchDLC/VaultCard2/Customizations/RoomDeco/RoomDecoration_VC2_1.RoomDecoration_VC2_1': "Dead Fish",
-        '/Game/PatchDLC/VaultCard2/Customizations/RoomDeco/RoomDecoration_VC2_2.RoomDecoration_VC2_2': "Fyrestone",
-        '/Game/PatchDLC/VaultCard3/Customizations/RoomDeco/RoomDecoration_VC3_1.RoomDecoration_VC3_1': "Dimitri Hoppodopolous",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_10.RoomDecoration_10': "Skag Skull",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_11.RoomDecoration_11': "Life Preserver",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_12.RoomDecoration_12': "Bug Zapper",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_13.RoomDecoration_13': "Buzzsaw Blade",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_15.RoomDecoration_15': "Jakobs Poster",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_16.RoomDecoration_16': "Methane Monitor",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_17.RoomDecoration_17': "Trophy Fish",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_18.RoomDecoration_18': "Salvation",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_19.RoomDecoration_19': "Holy",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_20.RoomDecoration_20': "HBC Poster 1",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_21.RoomDecoration_21': "HBC Poster 2",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_22.RoomDecoration_22': "HBC Poster 3",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_23.RoomDecoration_23': "HBC Poster 4",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_24.RoomDecoration_24': "HBC Poster 5",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_25.RoomDecoration_25': "HBC Poster 6",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_26.RoomDecoration_26': "Vegan",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_27.RoomDecoration_27': "Live Streaming",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_28.RoomDecoration_28': "Storm Brewin'",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_29.RoomDecoration_29': "Decorative Bomb",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_30.RoomDecoration_30': "Jack Mask",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_31.RoomDecoration_31': "Hand Clock",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_32.RoomDecoration_32': "Three Fingers",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_33.RoomDecoration_33': "R0ADK1L",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_34.RoomDecoration_34': "5KAGB8",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_35.RoomDecoration_35': "5P8NKM3",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_36.RoomDecoration_36': "Skag Attack",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_37.RoomDecoration_37': "Mounted Ratch",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_38.RoomDecoration_38': "Mounted Skag",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_39.RoomDecoration_39': "Mounted Spiderant",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_4.RoomDecoration_4': "Bandit Tire",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_40.RoomDecoration_40': "Service Bot Console",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_41.RoomDecoration_41': "Safety First",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_42.RoomDecoration_42': "Hard Hat",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_43.RoomDecoration_43': "Dip Road",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_44.RoomDecoration_44': "Mouthpiece Speaker",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_45.RoomDecoration_45': "Rocketeer Mask",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_46.RoomDecoration_46': "COV Bat",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_47.RoomDecoration_47': "Psycho Mask",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_48.RoomDecoration_48': "COV Hammer",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_49.RoomDecoration_49': "COV Cleaver",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_5.RoomDecoration_5': "Moxxxi's Bar",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_50.RoomDecoration_50': "COV Buzzaxe",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_51.RoomDecoration_51': "COV Engine Club",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_52.RoomDecoration_52': "Neon Heart",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_55.RoomDecoration_55': "Neon Lips",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_56.RoomDecoration_56': "COV Sword",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_57.RoomDecoration_57': "COV Wrench",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_58.RoomDecoration_58': "Mouthpiece Mask",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_59.RoomDecoration_59': "Western Portrait 1",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_6.RoomDecoration_6': "Pandoracorn",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_60.RoomDecoration_60': "Killavolt's Shield",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_61.RoomDecoration_61': "Framed Landsape",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_62.RoomDecoration_62': "Framed Duchess",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_63.RoomDecoration_63': "Western Portrait 2",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_64.RoomDecoration_64': "Trooper Shield",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_65.RoomDecoration_65': "The Big 3",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_66.RoomDecoration_66': "Trooper Disc",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_67.RoomDecoration_67': "Use Protection",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_7.RoomDecoration_7': "Troy Graffiti",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_8.RoomDecoration_8': "Tyreen Graffiti",
-        '/Game/Pickups/RoomDecoration/RoomDecoration_9.RoomDecoration_9': "Dynasty Diner",
-        # Not including this one 'cause it's bugged - won't even show up, even if unlocked.
-        #'/Game/PatchDLC/Geranium/Customizations/RoomDeco/RoomDeco_DLC3_1.RoomDeco_DLC3_1': "DLC3 RoomDeco",
-        }
-profile_roomdeco_eng_to_obj = {v: k for k, v in profile_roomdeco_obj_to_eng.items()}
-
-# CRC32 table used to compute weapon customization hashes in the profile.  Many
-# thanks to Gibbed, yet again, for supplying this!
-_weapon_cust_crc32_table = [
-        0x00000000, 0x04C11DB7, 0x09823B6E, 0x0D4326D9, 0x130476DC, 0x17C56B6B, 0x1A864DB2, 0x1E475005,
-        0x2608EDB8, 0x22C9F00F, 0x2F8AD6D6, 0x2B4BCB61, 0x350C9B64, 0x31CD86D3, 0x3C8EA00A, 0x384FBDBD,
-        0x4C11DB70, 0x48D0C6C7, 0x4593E01E, 0x4152FDA9, 0x5F15ADAC, 0x5BD4B01B, 0x569796C2, 0x52568B75,
-        0x6A1936C8, 0x6ED82B7F, 0x639B0DA6, 0x675A1011, 0x791D4014, 0x7DDC5DA3, 0x709F7B7A, 0x745E66CD,
-        0x9823B6E0, 0x9CE2AB57, 0x91A18D8E, 0x95609039, 0x8B27C03C, 0x8FE6DD8B, 0x82A5FB52, 0x8664E6E5,
-        0xBE2B5B58, 0xBAEA46EF, 0xB7A96036, 0xB3687D81, 0xAD2F2D84, 0xA9EE3033, 0xA4AD16EA, 0xA06C0B5D,
-        0xD4326D90, 0xD0F37027, 0xDDB056FE, 0xD9714B49, 0xC7361B4C, 0xC3F706FB, 0xCEB42022, 0xCA753D95,
-        0xF23A8028, 0xF6FB9D9F, 0xFBB8BB46, 0xFF79A6F1, 0xE13EF6F4, 0xE5FFEB43, 0xE8BCCD9A, 0xEC7DD02D,
-        0x34867077, 0x30476DC0, 0x3D044B19, 0x39C556AE, 0x278206AB, 0x23431B1C, 0x2E003DC5, 0x2AC12072,
-        0x128E9DCF, 0x164F8078, 0x1B0CA6A1, 0x1FCDBB16, 0x018AEB13, 0x054BF6A4, 0x0808D07D, 0x0CC9CDCA,
-        0x7897AB07, 0x7C56B6B0, 0x71159069, 0x75D48DDE, 0x6B93DDDB, 0x6F52C06C, 0x6211E6B5, 0x66D0FB02,
-        0x5E9F46BF, 0x5A5E5B08, 0x571D7DD1, 0x53DC6066, 0x4D9B3063, 0x495A2DD4, 0x44190B0D, 0x40D816BA,
-        0xACA5C697, 0xA864DB20, 0xA527FDF9, 0xA1E6E04E, 0xBFA1B04B, 0xBB60ADFC, 0xB6238B25, 0xB2E29692,
-        0x8AAD2B2F, 0x8E6C3698, 0x832F1041, 0x87EE0DF6, 0x99A95DF3, 0x9D684044, 0x902B669D, 0x94EA7B2A,
-        0xE0B41DE7, 0xE4750050, 0xE9362689, 0xEDF73B3E, 0xF3B06B3B, 0xF771768C, 0xFA325055, 0xFEF34DE2,
-        0xC6BCF05F, 0xC27DEDE8, 0xCF3ECB31, 0xCBFFD686, 0xD5B88683, 0xD1799B34, 0xDC3ABDED, 0xD8FBA05A,
-        0x690CE0EE, 0x6DCDFD59, 0x608EDB80, 0x644FC637, 0x7A089632, 0x7EC98B85, 0x738AAD5C, 0x774BB0EB,
-        0x4F040D56, 0x4BC510E1, 0x46863638, 0x42472B8F, 0x5C007B8A, 0x58C1663D, 0x558240E4, 0x51435D53,
-        0x251D3B9E, 0x21DC2629, 0x2C9F00F0, 0x285E1D47, 0x36194D42, 0x32D850F5, 0x3F9B762C, 0x3B5A6B9B,
-        0x0315D626, 0x07D4CB91, 0x0A97ED48, 0x0E56F0FF, 0x1011A0FA, 0x14D0BD4D, 0x19939B94, 0x1D528623,
-        0xF12F560E, 0xF5EE4BB9, 0xF8AD6D60, 0xFC6C70D7, 0xE22B20D2, 0xE6EA3D65, 0xEBA91BBC, 0xEF68060B,
-        0xD727BBB6, 0xD3E6A601, 0xDEA580D8, 0xDA649D6F, 0xC423CD6A, 0xC0E2D0DD, 0xCDA1F604, 0xC960EBB3,
-        0xBD3E8D7E, 0xB9FF90C9, 0xB4BCB610, 0xB07DABA7, 0xAE3AFBA2, 0xAAFBE615, 0xA7B8C0CC, 0xA379DD7B,
-        0x9B3660C6, 0x9FF77D71, 0x92B45BA8, 0x9675461F, 0x8832161A, 0x8CF30BAD, 0x81B02D74, 0x857130C3,
-        0x5D8A9099, 0x594B8D2E, 0x5408ABF7, 0x50C9B640, 0x4E8EE645, 0x4A4FFBF2, 0x470CDD2B, 0x43CDC09C,
-        0x7B827D21, 0x7F436096, 0x7200464F, 0x76C15BF8, 0x68860BFD, 0x6C47164A, 0x61043093, 0x65C52D24,
-        0x119B4BE9, 0x155A565E, 0x18197087, 0x1CD86D30, 0x029F3D35, 0x065E2082, 0x0B1D065B, 0x0FDC1BEC,
-        0x3793A651, 0x3352BBE6, 0x3E119D3F, 0x3AD08088, 0x2497D08D, 0x2056CD3A, 0x2D15EBE3, 0x29D4F654,
-        0xC5A92679, 0xC1683BCE, 0xCC2B1D17, 0xC8EA00A0, 0xD6AD50A5, 0xD26C4D12, 0xDF2F6BCB, 0xDBEE767C,
-        0xE3A1CBC1, 0xE760D676, 0xEA23F0AF, 0xEEE2ED18, 0xF0A5BD1D, 0xF464A0AA, 0xF9278673, 0xFDE69BC4,
-        0x89B8FD09, 0x8D79E0BE, 0x803AC667, 0x84FBDBD0, 0x9ABC8BD5, 0x9E7D9662, 0x933EB0BB, 0x97FFAD0C,
-        0xAFB010B1, 0xAB710D06, 0xA6322BDF, 0xA2F33668, 0xBCB4666D, 0xB8757BDA, 0xB5365D03, 0xB1F740B4,
-        ]
-
-def inventory_path_hash(object_path):
-    """
-    Computes the hashes used in the profile for weapon customizations and the skeleton key
-    count.  Possibly used for other things, too.  Many thanks to Gibbed, yet again, for this!
-    """
-    global _weapon_cust_crc32_table
-    if '.' not in object_path:
-        object_path = '{}.{}'.format(object_path, object_path.split('/')[-1])
-
-    # TODO: Gibbed was under the impression that these were checksummed in
-    # UTF-16, but the hashes all match for me when using latin1/utf-8.
-    object_full = object_path.upper().encode('latin1')
-    crc32 = 0
-    for char in object_full:
-        crc32 = (_weapon_cust_crc32_table[(crc32 ^ (char >> 0)) & 0xFF] ^ (crc32 >> 8)) & 0xFFFFFFFF
-        crc32 = (_weapon_cust_crc32_table[(crc32 ^ (char >> 8)) & 0xFF] ^ (crc32 >> 8)) & 0xFFFFFFFF
-    return crc32
-
-def weapon_cust_paths_to_hash(obj_to_eng):
-    """
-    Computes the hashes used in the profile, for weapon customizations (skins+trinkets).
-    """
-    to_ret = {}
-    for (object_path, eng) in obj_to_eng.items():
-        to_ret[inventory_path_hash(object_path)] = eng
-    return to_ret
-
-# Profile customizations - Weapon Skins
-profile_weaponskins_obj_to_eng = {
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_1.WeaponSkin_1': "Burnished Steele",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_10.WeaponSkin_10': "Ink and Kill",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_11.WeaponSkin_11': "It's Poop!",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_12.WeaponSkin_12': "Painbow",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_13.WeaponSkin_13': "Crepuscule",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_14.WeaponSkin_14': "Skelebones",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_15.WeaponSkin_15': "Black Dragon",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_16.WeaponSkin_16': "Extraspectral",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_17.WeaponSkin_17': "Dandy Lion",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_18.WeaponSkin_18': "Maliwannabe",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_19.WeaponSkin_19': "Fire and Ash",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_2.WeaponSkin_2': "Thunderhead",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_20.WeaponSkin_20': "Blueberry Limeade",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_21.WeaponSkin_21': "Goldie Locks and Loads",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_22.WeaponSkin_22': "Gearbox Prime",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_23.WeaponSkin_23': "Retro Blaster",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_24.WeaponSkin_24': "Butt Dazzle",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_25.WeaponSkin_25': "Super Oaker",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_3.WeaponSkin_3': "Psychodelic",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_4.WeaponSkin_4': "Deep Nebula",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_5.WeaponSkin_5': "Dead Set",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_6.WeaponSkin_6': "Hot Blooded",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_7.WeaponSkin_7': "Red Sands",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_8.WeaponSkin_8': "Gun-fetti",
-        '/Game/Gear/WeaponSkins/_Design/SkinParts/WeaponSkin_9.WeaponSkin_9': "Leather and Regret",
-        '/Game/PatchDLC/BloodyHarvest/Gear/Weapons/WeaponSkins/WeaponSkin_BloodyHarvest_01.WeaponSkin_BloodyHarvest_01': "Ghoul Metal Grey",
-        '/Game/PatchDLC/BloodyHarvest/Gear/Weapons/WeaponSkins/WeaponSkin_BloodyHarvest_02.WeaponSkin_BloodyHarvest_02': "Porphyrophobia",
-        '/Game/PatchDLC/Event2/Gear/_Design/WeaponSkins/WeaponSkin_Event2_2.WeaponSkin_Event2_2': "Digital Horizons",
-        '/Game/PatchDLC/VaultCard/Customizations/WeaponSkin/WeaponSkin_VC1_1.WeaponSkin_VC1_1': "Phaselocked and Loaded",
-        '/Game/PatchDLC/VaultCard/Customizations/WeaponSkin/WeaponSkin_VC1_2.WeaponSkin_VC1_2': "Scoot and Loot",
-        '/Game/PatchDLC/VaultCard/Customizations/WeaponSkin/WeaponSkin_VC1_3.WeaponSkin_VC1_3': "Runic Relic",
-        '/Game/PatchDLC/VaultCard2/Gear/_Design/WeaponSkins/WeaponSkin_VC2_1.WeaponSkin_VC2_1': "Homecoming",
-        '/Game/PatchDLC/VaultCard3/Gear/_Design/WeaponSkins/WeaponSkin_VC3_1.WeaponSkin_VC3_1': "Rune and Gun",
-        '/Game/PatchDLC/VaultCard3/Gear/_Design/WeaponSkins/WeaponSkin_VC3_2.WeaponSkin_VC3_2': "Arms and Armor",
-        '/Game/PatchDLC/VaultCard3/Gear/_Design/WeaponSkins/WeaponSkin_VC3_3.WeaponSkin_VC3_3': "Rainbows and Gun Drops",
-        # Not including this one because it's quite obviously unfinished, and identical to Burnished Steele
-        #'/Game/PatchDLC/Geranium/Customizations/WeaponSkin/WeaponSkin_DLC3_1.WeaponSkin_DLC3_1': "DLC3 WeaponSkin",
-        }
-profile_weaponskins_hash_to_eng = weapon_cust_paths_to_hash(profile_weaponskins_obj_to_eng)
-profile_weaponskins_eng_to_hash = {v: k for k, v in profile_weaponskins_hash_to_eng.items()}
-
-# Profile customizations - Weapon Trinkets
-profile_weapontrinkets_obj_to_eng = {
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_10.WeaponTrinket_10': "Super General Claptrap",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_11.WeaponTrinket_11': "Keep Your Eye Out",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_12.WeaponTrinket_12': "Ellie's Power Flower",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_13.WeaponTrinket_13': "Sign of the Hawk",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_14.WeaponTrinket_14': "Beast Bowl",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_15.WeaponTrinket_15': "AnarChic",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_16.WeaponTrinket_16': "Guardian's Lament",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_17.WeaponTrinket_17': "H Marks the Spot",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_18.WeaponTrinket_18': "Cloak and Swagger",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_19.WeaponTrinket_19': "Jack's Off",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_2.WeaponTrinket_2': "Hat Trick",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_20.WeaponTrinket_20': "Stink Eye",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_21.WeaponTrinket_21': "Siren's Mark",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_22.WeaponTrinket_22': "Drop It",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_24.WeaponTrinket_24': "Dedication to Capitalism",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_25.WeaponTrinket_25': "Deadeye Decal",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_26.WeaponTrinket_26': "Born to Kill",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_27.WeaponTrinket_27': "No, You're Crazy",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_28.WeaponTrinket_28': "Itsy Bitsy Rakky Hive",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_29.WeaponTrinket_29': "Buckle Up",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_3.WeaponTrinket_3': "Queen of Hearts",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_30.WeaponTrinket_30': "Rhys's Piece",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_31.WeaponTrinket_31': "Last Ride",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_32.WeaponTrinket_32': "Lil' Chomper",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_33.WeaponTrinket_33': "Just In Case",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_34.WeaponTrinket_34': "Kaboom Bunny",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_35.WeaponTrinket_35': "Frakkin' Toaster",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_37.WeaponTrinket_37': "God-King's Bling",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_38.WeaponTrinket_38': "Hunter's Patch",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_39.WeaponTrinket_39': "On the Hunt",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_4.WeaponTrinket_4': "Earn Your Stripes",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_40.WeaponTrinket_40': "Wittle Warrior",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_41.WeaponTrinket_41': "Null and V0id",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_42.WeaponTrinket_42': "One Army",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_43.WeaponTrinket_43': "Who Needs Gods?",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_44.WeaponTrinket_44': "Explosives Enthusiast",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_45.WeaponTrinket_45': "When In Doubt, Chuck It",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_46.WeaponTrinket_46': "Turtle Up",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_47.WeaponTrinket_47': "Switch Hitter",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_48.WeaponTrinket_48': "One Shot",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_49.WeaponTrinket_49': "Track and Destroy",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_5.WeaponTrinket_5': "Goodnight Kiss",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_50.WeaponTrinket_50': "Adapt and Overcome",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_51.WeaponTrinket_51': "Gold Tier",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_52.WeaponTrinket_52': "Neon Skelly",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_53.WeaponTrinket_53': "Diamond Ponytail",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_54.WeaponTrinket_54': "Gearbox Fan",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_57.WeaponTrinket_57': "Vault Insider VIP",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_58.WeaponTrinket_58': "For Funsies",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_6.WeaponTrinket_6': "Book of the Storm",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_7.WeaponTrinket_7': "Splorghuld, the Flesh-Slayer",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_8.WeaponTrinket_8': "Action Axton",
-        '/Game/Gear/WeaponTrinkets/_Design/TrinketParts/WeaponTrinket_9.WeaponTrinket_9': "Hoops Dreams",
-        '/Game/PatchDLC/Alisma/Gear/WeaponTrinkets/_Shared/Trinket_League_BloodyHarvest_2020.Trinket_League_BloodyHarvest_2020': "A Shrinking Feeling",
-        '/Game/PatchDLC/Alisma/Gear/WeaponTrinkets/Trinket_DLC4_Trinket_01.Trinket_DLC4_Trinket_01': "Divergent Thinking",
-        '/Game/PatchDLC/Alisma/Gear/WeaponTrinkets/Trinket_DLC4_Trinket_02.Trinket_DLC4_Trinket_02': "King's Knight",
-        '/Game/PatchDLC/BloodyHarvest/Gear/Weapons/WeaponTrinkets/_Shared/Trinket_League_BloodyHarvest_1.Trinket_League_BloodyHarvest_1': "Shrunk 'n Dead",
-        '/Game/PatchDLC/Customizations/Gear/Weapons/WeaponTrinkets/WeaponTrinket_59.WeaponTrinket_59': "Caster Blaster",
-        '/Game/PatchDLC/Dandelion/Gear/WeaponTrinkets/_Shared/Trinket_Dandelion_01_JackGoldenMask.Trinket_Dandelion_01_JackGoldenMask': "Nothing Gold Can Stay",
-        '/Game/PatchDLC/Dandelion/Gear/WeaponTrinkets/_Shared/Trinket_Dandelion_02_Mimic.Trinket_Dandelion_02_Mimic': "Slot Shot",
-        '/Game/PatchDLC/Dandelion/Gear/WeaponTrinkets/_Shared/Trinket_MercenaryDay_01_CandyCane.Trinket_MercenaryDay_01_CandyCane': "Mercenary Day Ornament",
-        '/Game/PatchDLC/Event2/Gear/_Design/WeaponTrinkets/WeaponTrinket_Cartels_1.WeaponTrinket_Cartels_1': "Retro Outrunner",
-        '/Game/PatchDLC/Event2/Gear/_Design/WeaponTrinkets/WeaponTrinket_Cartels_2021.WeaponTrinket_Cartels_2021': "Pandora Sunset",
-        '/Game/PatchDLC/EventVDay/Gear/Weapon/WeaponTrinkets/_Shared/Trinket_League_VDay_1.Trinket_League_VDay_1': "Cosmic Romance",
-        '/Game/PatchDLC/EventVDay/Gear/Weapon/WeaponTrinkets/_Shared/Trinket_League_VDay_2.Trinket_League_VDay_2': "Tentacle Ventricles",
-        '/Game/PatchDLC/EventVDay/TwitchDrops/Gear/Weapon/WeaponTrinkets/_Shared/Trinket_Twitch.Trinket_Twitch': "Pain Freeze",
-        '/Game/PatchDLC/Geranium/Customizations/WeaponTrinket/WeaponTrinket_DLC3_1.WeaponTrinket_DLC3_1': "Devil Tooth",
-        '/Game/PatchDLC/Geranium/Customizations/WeaponTrinket/WeaponTrinket_DLC3_2.WeaponTrinket_DLC3_2': "Battle Driver",
-        '/Game/PatchDLC/Hibiscus/Gear/WeaponTrinkets/_Shared/Trinket_Hibiscus_01_Squidly.Trinket_Hibiscus_01_Squidly': "Tactical Tentacle",
-        '/Game/PatchDLC/Hibiscus/Gear/WeaponTrinkets/_Shared/Trinket_Hibiscus_02_Necrocookmicon.Trinket_Hibiscus_02_Necrocookmicon': "Nibblenomicon",
-        '/Game/PatchDLC/Ixora/Gear/Weapons/WeaponTrinkets/_Design/WeaponTrinket_GearUp.WeaponTrinket_GearUp': "Dahl Tags",
-        '/Game/PatchDLC/Steam/Gear/WeaponTrinkets/WeaponTrinket_SteamPunk.WeaponTrinket_SteamPunk': "Vapor Hoodlum",
-        '/Game/PatchDLC/VaultCard/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC1_1.WeaponTrinket_VC1_1': "Ascension",
-        '/Game/PatchDLC/VaultCard/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC1_2.WeaponTrinket_VC1_2': "Tinker's Trinket",
-        '/Game/PatchDLC/VaultCard/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC1_3.WeaponTrinket_VC1_3': "Deploy and Destroy",
-        '/Game/PatchDLC/VaultCard/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC1_4.WeaponTrinket_VC1_4': "De Leon's Lash",
-        '/Game/PatchDLC/VaultCard2/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC2_1.WeaponTrinket_VC2_1': "Tchotchkey",
-        '/Game/PatchDLC/VaultCard2/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC2_2.WeaponTrinket_VC2_2': "Shooter's Shuttle",
-        '/Game/PatchDLC/VaultCard2/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC2_3.WeaponTrinket_VC2_3': "Relaxtrap",
-        '/Game/PatchDLC/VaultCard2/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC2_4.WeaponTrinket_VC2_4': "Tiny Vault",
-        '/Game/PatchDLC/VaultCard2/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC2_5.WeaponTrinket_VC2_5': "Dry Heat",
-        '/Game/PatchDLC/VaultCard2/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC2_6.WeaponTrinket_VC2_6': "Warm Welcome",
-        '/Game/PatchDLC/VaultCard3/Gear/_Design/WeaponTrinkets/WeaponTrinket_BattlePass_1.WeaponTrinket_BattlePass_1': "Loaded Crystal",
-        '/Game/PatchDLC/VaultCard3/Gear/_Design/WeaponTrinkets/WeaponTrinket_BattlePass_3.WeaponTrinket_BattlePass_3': "Saurian Skull",
-        '/Game/PatchDLC/VaultCard3/Gear/_Design/WeaponTrinkets/WeaponTrinket_BattlePass_4.WeaponTrinket_BattlePass_4': "Fing on a Ring",
-        '/Game/PatchDLC/VaultCard3/Gear/_Design/WeaponTrinkets/WeaponTrinket_BattlePass_5.WeaponTrinket_BattlePass_5': "Balll and Chain",
-        '/Game/PatchDLC/VaultCard3/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC3_1.WeaponTrinket_VC3_1': "Sneak Attack",
-        '/Game/PatchDLC/VaultCard3/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC3_2.WeaponTrinket_VC3_2': "Scepter of the Queen",
-        '/Game/PatchDLC/VaultCard3/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC3_3.WeaponTrinket_VC3_3': "Bubble Trouble",
-        '/Game/PatchDLC/VaultCard3/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC3_4.WeaponTrinket_VC3_4': "Dragonscale Shield",
-        '/Game/PatchDLC/VaultCard3/Gear/WeaponTrinkets/_Design/WeaponTrinket_VC3_5.WeaponTrinket_VC3_5': "Bunker Blaster",
-        '/Game/PatchDLC/VaultCard3/Gear/WeaponTrinkets/_Shared/Trinket_League_BloodyHarvest_2.Trinket_League_BloodyHarvest_2': "Fright Light",
-        }
-profile_weapontrinkets_hash_to_eng = weapon_cust_paths_to_hash(profile_weapontrinkets_obj_to_eng)
-profile_weapontrinkets_eng_to_hash = {v: k for k, v in profile_weapontrinkets_hash_to_eng.items()}
 
 # Skeleton Keys
 skeletonkey_category = '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_GoldenKey'
