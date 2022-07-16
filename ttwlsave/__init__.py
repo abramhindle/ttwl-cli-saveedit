@@ -1127,24 +1127,8 @@ profile_emotes_defaults = set([
     ])
 
 # Skeleton Keys
-skeletonkey_category = '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_GoldenKey'
-skeletonkey_hash = inventory_path_hash(skeletonkey_category)
-
-# Vault Card #1 Keys
-vaultcard1key_category = '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_VaultCard1Key'
-vaultcard1key_hash = inventory_path_hash(vaultcard1key_category)
-
-# Vault Card #2 Keys
-vaultcard2key_category = '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_VaultCard2Key'
-vaultcard2key_hash = inventory_path_hash(vaultcard2key_category)
-
-# Vault Card #3 Keys
-vaultcard3key_category = '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_VaultCard3Key'
-vaultcard3key_hash = inventory_path_hash(vaultcard3key_category)
-
-# Diamond Keys
-diamondkey_category = '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_DiamondKey'
-diamondkey_hash = inventory_path_hash(diamondkey_category)
+class Key(HashLabelEnum):
+    SKELETON = ('Skeleton Keys', '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_GoldenKey')
 
 # XP
 max_level = 40

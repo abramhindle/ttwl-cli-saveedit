@@ -58,15 +58,7 @@ def main():
     prof = TTWLProfile(args.filename)
 
     # Skeleton Keys
-    print('Keys:')
-    print(' - Skeleton Keys: {}'.format(prof.get_skeleton_keys()))
-    print(' - Diamond Keys: {}'.format(prof.get_diamond_keys()))
-    # print(' - Vault Card 1 Keys: {}'.format(prof.get_vaultcard1_keys()))
-    # print(' - Vault Card 1 Chests: {}'.format(prof.get_vaultcard1_chests()))
-    # print(' - Vault Card 2 Keys: {}'.format(prof.get_vaultcard2_keys()))
-    # print(' - Vault Card 2 Chests: {}'.format(prof.get_vaultcard2_chests()))
-    # print(' - Vault Card 3 Keys: {}'.format(prof.get_vaultcard3_keys()))
-    # print(' - Vault Card 3 Chests: {}'.format(prof.get_vaultcard3_chests()))
+    print('Skeleton Keys: {}'.format(prof.get_skeleton_keys()))
 
     # Guardian Rank
     # print('Guardian Rank: {}'.format(prof.get_guardian_rank()))
