@@ -10,3 +10,4 @@ bl3_cli_saveedit.egg-info
 build
 dist
 gh-pages
+savedir

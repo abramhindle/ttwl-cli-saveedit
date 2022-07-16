@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # vim: set expandtab tabstop=4 shiftwidth=4:
 
-# Copyright (c) 2020-2021 CJ Kucera (cj@apocalyptech.com)
+# Copyright (c) 2020-2022 CJ Kucera (cj@apocalyptech.com)
 # 
 # This software is provided 'as-is', without any express or implied warranty.
 # In no event will the authors be held liable for any damages arising from
@@ -25,18 +25,18 @@ import os
 import sys
 import argparse
 import ttwlsave
-from ttwlsave.bl3profile import BL3Profile
+from ttwlsave.ttwlprofile import TTWLProfile
 
 def main():
 
     # Set up args
     parser = argparse.ArgumentParser(
-            description='Import BL3 Profile JSON v{}'.format(ttwlsave.__version__),
+            description='Import WL Profile JSON v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-V', '--version',
             action='version',
-            version='BL3 CLI SaveEdit v{}'.format(ttwlsave.__version__),
+            version='WL CLI SaveEdit v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-j', '--json',
@@ -64,7 +64,7 @@ def main():
         raise Exception('Filename {} does not exist'.format(args.json))
 
     # Load the profile file
-    prof_file = BL3Profile(args.filename_to)
+    prof_file = TTWLProfile(args.filename_to)
 
     # Load the JSON file and import (so we know it's valid before
     # we ask for confirmation)

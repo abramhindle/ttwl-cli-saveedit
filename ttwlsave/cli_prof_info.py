@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # vim: set expandtab tabstop=4 shiftwidth=4:
 
-# Copyright (c) 2020-2021 CJ Kucera (cj@apocalyptech.com)
+# Copyright (c) 2020-2022 CJ Kucera (cj@apocalyptech.com)
 # 
 # This software is provided 'as-is', without any express or implied warranty.
 # In no event will the authors be held liable for any damages arising from
@@ -24,18 +24,18 @@
 import ttwlsave
 import argparse
 import itertools
-from ttwlsave.ttwlprofile import BL3Profile
+from ttwlsave.ttwlprofile import TTWLProfile
 
 def main():
 
     # Arguments
     parser = argparse.ArgumentParser(
-            description='Borderlands 3 Profile Info Dumper v{}'.format(ttwlsave.__version__),
+            description='Wonderlands Profile Info Dumper v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-V', '--version',
             action='version',
-            version='BL3 CLI SaveEdit v{}'.format(ttwlsave.__version__),
+            version='WL CLI SaveEdit v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-v', '--verbose',
@@ -55,7 +55,7 @@ def main():
     args = parser.parse_args()
 
     # Load the profile
-    prof = BL3Profile(args.filename)
+    prof = TTWLProfile(args.filename)
 
     # Skeleton Keys
     print('Keys:')

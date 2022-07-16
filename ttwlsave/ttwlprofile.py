@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # vim: set expandtab tabstop=4 shiftwidth=4:
 
-# Copyright (c) 2020-2021 CJ Kucera (cj@apocalyptech.com)
+# Copyright (c) 2020-2022 CJ Kucera (cj@apocalyptech.com)
 # 
 # This software is provided 'as-is', without any express or implied warranty.
 # In no event will the authors be held liable for any damages arising from
@@ -21,7 +21,7 @@
 # 
 # 3. This notice may not be removed or altered from any source distribution.
 
-# The encryption/decryption stanzas in BL3Profile.__init__
+# The encryption/decryption stanzas in TTWLProfile.__init__
 # were helpfully provided by Gibbed (rick 'at' gibbed 'dot' us), so many
 # thanks for that!  https://gist.github.com/gibbed/b6a93f74c575ce99b42c3b629ac1856a
 #
@@ -64,7 +64,7 @@ class BL3ProfItem(datalib.WLSerial):
         #if self.index >= 0:
         #    self.container[self.index] = self.serial
 
-class BL3Profile(object):
+class TTWLProfile(object):
     """
     Wrapper around the protobuf object for a BL3 profile file.
 
@@ -143,10 +143,10 @@ class BL3Profile(object):
             # Decrypt
             for i in range(len(data)-1, -1, -1):
                 if i < 32:
-                    b = BL3Profile._prefix_magic[i]
+                    b = TTWLProfile._prefix_magic[i]
                 else:
                     b = data[i - 32]
-                b ^= BL3Profile._xor_magic[i % 32]
+                b ^= TTWLProfile._xor_magic[i % 32]
                 data[i] ^= b
 
             # Make sure that was all there was
@@ -289,9 +289,10 @@ class BL3Profile(object):
         """
         to_ret = {}
         for psdu in self.prof.profile_sdu_list:
-            key = psduobj_to_psdu[psdu.sdu_data_path]
             if eng:
-                key = psdu_to_eng[key]
+                key = ProfileSDU.get_label(psdu.sdu_data_path)
+            else:
+                key = ProfileSDU(psdu.sdu_data_path)
             to_ret[key] = psdu.sdu_level
         return to_ret
 
@@ -306,12 +307,13 @@ class BL3Profile(object):
         giving more information to users.
         """
         to_ret = {}
-        for psdu in self.prof.profile_sdu_list:
-            key = psduobj_to_psdu[psdu.sdu_data_path]
-            max_sdus = psdu_to_max[key]
+        for psdu_proto in self.prof.profile_sdu_list:
+            psdu = ProfileSDU(psdu_proto.sdu_data_path)
             if eng:
-                key = psdu_to_eng[key]
-            to_ret[key] = (psdu.sdu_level, max_sdus)
+                key = ProfileSDU.get_label(psdu_proto.sdu_data_path)
+            else:
+                key = psdu.value
+            to_ret[key] = (psdu_proto.sdu_level, psdu.num)
         return to_ret
 
     def get_sdu(self, sdu):
@@ -328,22 +330,22 @@ class BL3Profile(object):
         Sets the specified SDUs (or all SDUs that we know about) to be at the max level
         """
         if sdulist is None:
-            all_sdus = set(psdu_to_eng.keys())
+            all_sdus = set(ProfileSDU)
         else:
             all_sdus = set(sdulist)
 
         # Set all existing SDUs to max
-        for psdu in self.prof.profile_sdu_list:
-            sdu_key = psduobj_to_psdu[psdu.sdu_data_path]
-            if sdu_key in all_sdus:
-                all_sdus.remove(sdu_key)
-                psdu.sdu_level = psdu_to_max[sdu_key]
+        for psdu_proto in self.prof.profile_sdu_list:
+            psdu = ProfileSDU(psdu_proto.sdu_data_path)
+            if psdu in all_sdus:
+                all_sdus.remote(psdu)
+                psdu_proto.sdu_level = psdu.num
 
         # If we're missing any, add them.
         for psdu in all_sdus:
             self.prof.profile_sdu_list.append(OakShared_pb2.OakSDUSaveGameData(
-                sdu_data_path=psdu_to_psduobj[psdu],
-                sdu_level=psdu_to_max[psdu],
+                sdu_data_path=psdu.value,
+                sdu_level=psdu.num,
                 ))
 
     def create_new_item(self, item_serial):

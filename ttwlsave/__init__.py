@@ -1,5 +1,5 @@
 
-# Copyright (c) 2020-2021 CJ Kucera (cj@apocalyptech.com)
+# Copyright (c) 2020-2022 CJ Kucera (cj@apocalyptech.com)
 # 
 # This software is provided 'as-is', without any express or implied warranty.
 # In no event will the authors be held liable for any damages arising from
@@ -28,14 +28,16 @@ import enum
 
 class LabelEnum(enum.Enum):
     """
-    An enum whose members have a label in addition to the value.  For our
-    purposes, the value is going to be the object name.
+    An enum whose members have a label in addition to the value.  Optionally,
+    can also include a number value, which might represent the maximum available
+    or somesuch.  For our purposes, the value is going to be the object name.
     """
 
-    def __new__(cls, label, value):
+    def __new__(cls, label, value, num=None):
         obj = object.__new__(cls)
         obj.label = label
         obj._value_ = value
+        obj.num = num
         return obj
 
     @classmethod
@@ -127,55 +129,29 @@ class InvSlot(LabelEnum):
     AMULET = ('Amulet', '/Game/Gear/Amulets/_Shared/_Design/A_Data/InvSlot_Amulet.InvSlot_Amulet')
 
 # SDUs
-(SDU_BACKPACK, SDU_AR, SDU_PISTOL, SDU_SNIPER, SDU_SHOTGUN, SDU_GRENADE, SDU_SMG, SDU_HEAVY) = range(8)
-ammo_sdus = [SDU_AR, SDU_PISTOL, SDU_SNIPER, SDU_SHOTGUN, SDU_GRENADE, SDU_SMG, SDU_HEAVY]
-sdu_to_eng = {
-        SDU_BACKPACK: 'Backpack',
-        SDU_AR: 'AR',
-        SDU_PISTOL: 'Pistol',
-        SDU_SNIPER: 'Sniper',
-        SDU_SHOTGUN: 'Shotgun',
-        SDU_GRENADE: 'Grenade',
-        SDU_SMG: 'SMG',
-        SDU_HEAVY: 'Heavy',
-        }
-sduobj_to_sdu = {
-        '/Game/Pickups/SDU/SDU_Backpack.SDU_Backpack': SDU_BACKPACK,
-        '/Game/Pickups/SDU/SDU_AssaultRifle.SDU_AssaultRifle': SDU_AR,
-        '/Game/Pickups/SDU/SDU_Pistol.SDU_Pistol': SDU_PISTOL,
-        '/Game/Pickups/SDU/SDU_SniperRifle.SDU_SniperRifle': SDU_SNIPER,
-        '/Game/Pickups/SDU/SDU_Shotgun.SDU_Shotgun': SDU_SHOTGUN,
-        '/Game/Pickups/SDU/SDU_Grenade.SDU_Grenade': SDU_GRENADE,
-        '/Game/Pickups/SDU/SDU_SMG.SDU_SMG': SDU_SMG,
-        '/Game/Pickups/SDU/SDU_Heavy.SDU_Heavy': SDU_HEAVY,
-        }
-sdu_to_sduobj = {v: k for k, v in sduobj_to_sdu.items()}
-sdu_to_max = {
-        SDU_BACKPACK: 13,
-        SDU_AR: 10,
-        SDU_PISTOL: 10,
-        SDU_SNIPER: 13,
-        SDU_SHOTGUN: 10,
-        SDU_GRENADE: 10,
-        SDU_SMG: 10,
-        SDU_HEAVY: 13,
-        }
+class SDU(LabelEnum):
+    BACKPACK = ('Backpack', '/Game/Pickups/SDU/SDU_Backpack.SDU_Backpack', 13)
+    AR = ('AR', '/Game/Pickups/SDU/SDU_AssaultRifle.SDU_AssaultRifle', 10)
+    PISTOL = ('Pistol', '/Game/Pickups/SDU/SDU_Pistol.SDU_Pistol', 10)
+    SNIPER = ('Sniper', '/Game/Pickups/SDU/SDU_SniperRifle.SDU_SniperRifle', 13)
+    SHOTGUN = ('Shotgun', '/Game/Pickups/SDU/SDU_Shotgun.SDU_Shotgun', 10)
+    GRENADE = ('Grenade', '/Game/Pickups/SDU/SDU_Grenade.SDU_Grenade', 10)
+    SMG = ('SMG', '/Game/Pickups/SDU/SDU_SMG.SDU_SMG', 10)
+    HEAVY = ('Heavy', '/Game/Pickups/SDU/SDU_Heavy.SDU_Heavy', 13)
+ammo_sdus = [
+        SDU.AR,
+        SDU.PISTOL,
+        SDU.SNIPER,
+        SDU.SHOTGUN,
+        SDU.GRENADE,
+        SDU.SMG,
+        SDU.HEAVY,
+        ]
 
 # Profile SDUs
-(PSDU_LOSTLOOT, PSDU_BANK) = range(2)
-psdu_to_eng = {
-        PSDU_LOSTLOOT: 'Lost Loot',
-        PSDU_BANK: 'Bank',
-        }
-psduobj_to_psdu = {
-        '/Game/Pickups/SDU/SDU_LostLoot.SDU_LostLoot': PSDU_LOSTLOOT,
-        '/Game/Pickups/SDU/SDU_Bank.SDU_Bank': PSDU_BANK,
-        }
-psdu_to_psduobj = {v: k for k, v in psduobj_to_psdu.items()}
-psdu_to_max = {
-        PSDU_LOSTLOOT: 8,
-        PSDU_BANK: 23,
-        }
+class ProfileSDU(LabelEnum):
+    LOSTLOOT = ('Lost Loot', '/Game/Pickups/SDU/SDU_LostLoot.SDU_LostLoot', 8)
+    BANK = ('Bank', '/Game/Pickups/SDU/SDU_Bank.SDU_Bank', 23)
 
 # Ammo
 (AMMO_AR, AMMO_GRENADE, AMMO_HEAVY, AMMO_PISTOL, AMMO_SMG, AMMO_SHOTGUN, AMMO_SNIPER) = range(7)

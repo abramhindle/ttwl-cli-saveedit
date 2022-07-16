@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # vim: set expandtab tabstop=4 shiftwidth=4:
 
-# Copyright (c) 2020-2021 CJ Kucera (cj@apocalyptech.com)
+# Copyright (c) 2020-2022 CJ Kucera (cj@apocalyptech.com)
 # 
 # This software is provided 'as-is', without any express or implied warranty.
 # In no event will the authors be held liable for any damages arising from
@@ -108,6 +108,7 @@ class WLEquipSlot(object):
 
     @staticmethod
     def create(index, obj_name, enabled=True):
+        # TODO: test this
         return WLEquipSlot(OakSave_pb2.EquippedInventorySaveGameData(
             inventory_list_index=index,
             enabled=enabled,
@@ -985,6 +986,8 @@ class TTWLSave(object):
         for (key, equipslot) in self.equipslots.items():
             if eng:
                 key = equipslot.label
+            else:
+                key = key.value
             if equipslot.get_inventory_idx() >= 0:
                 to_ret[key] = self.items[equipslot.get_inventory_idx()]
             else:
@@ -1123,8 +1126,9 @@ class TTWLSave(object):
                 self.equipslots[slot].set_inventory_idx(new_index)
 
             # If we didn't find a slot, create it (I don't *think* this should ever happen?)
+            # TODO: test this
             if not found_slot:
-                equipslot = BL3EquipSlot.create(new_index, slot_obj)
+                equipslot = WLEquipSlot.create(new_index, slot_obj)
                 self.save.equipped_inventory_list.append(equipslot.protobuf)
                 self.equipslots[slot] = equipslot
 
@@ -1195,9 +1199,10 @@ class TTWLSave(object):
         """
         to_ret = {}
         for sdu in self.save.sdu_list:
-            key = sduobj_to_sdu[sdu.sdu_data_path]
             if eng:
-                key = sdu_to_eng[key]
+                key = SDU.get_label(sdu.sdu_data_path)
+            else:
+                key = SDU(sdu.sdu_data_path)
             to_ret[key] = sdu.sdu_level
         return to_ret
 
@@ -1212,12 +1217,13 @@ class TTWLSave(object):
         giving more information to users.
         """
         to_ret = {}
-        for sdu in self.save.sdu_list:
-            key = sduobj_to_sdu[sdu.sdu_data_path]
-            max_sdus = sdu_to_max[key]
+        for sdu_proto in self.save.sdu_list:
+            sdu = SDU(sdu_proto.sdu_data_path)
             if eng:
-                key = sdu_to_eng[key]
-            to_ret[key] = (sdu.sdu_level, max_sdus)
+                key = SDU.get_label(sdu_proto.sdu_data_path)
+            else:
+                key = sdu.value
+            to_ret[key] = (sdu_proto.sdu_level, sdu.num)
         return to_ret
 
     def get_sdu(self, sdu):
@@ -1234,22 +1240,22 @@ class TTWLSave(object):
         Sets the specified SDUs (or all SDUs that we know about) to be at the max level
         """
         if sdulist is None:
-            all_sdus = set(sdu_to_eng.keys())
+            all_sdus = set(SDU)
         else:
             all_sdus = set(sdulist)
 
         # Set all existing SDUs to max
-        for sdu in self.save.sdu_list:
-            sdu_key = sduobj_to_sdu[sdu.sdu_data_path]
-            if sdu_key in all_sdus:
-                all_sdus.remove(sdu_key)
-                sdu.sdu_level = sdu_to_max[sdu_key]
+        for sdu_proto in self.save.sdu_list:
+            sdu = SDU(sdu_proto.sdu_data_path)
+            if sdu in all_sdus:
+                all_sdus.remove(sdu)
+                sdu_proto.sdu_level = sdu.num
 
         # If we're missing any, add them.
         for sdu in all_sdus:
             self.save.sdu_list.append(OakShared_pb2.OakSDUSaveGameData(
-                sdu_data_path=sdu_to_sduobj[sdu],
-                sdu_level=sdu_to_max[sdu],
+                sdu_data_path=sdu.value,
+                sdu_level=sdu.num,
                 ))
 
     def get_ammo_counts(self, eng=False):

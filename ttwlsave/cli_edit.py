@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # vim: set expandtab tabstop=4 shiftwidth=4:
 
-# Copyright (c) 2020-2021 CJ Kucera (cj@apocalyptech.com)
+# Copyright (c) 2020-2022 CJ Kucera (cj@apocalyptech.com)
 # 
 # This software is provided 'as-is', without any express or implied warranty.
 # In no event will the authors be held liable for any damages arising from
@@ -27,7 +27,7 @@ import ttwlsave
 import argparse
 from . import cli_common
 from . import plot_missions
-from ttwlsave import InvSlot
+from ttwlsave import InvSlot, SDU
 from ttwlsave.ttwlsave import TTWLSave
 
 def main():
@@ -524,7 +524,7 @@ def main():
             if 'backpack' in args.unlock:
                 if not args.quiet:
                     print('   - Backpack SDUs')
-                save.set_max_sdus([ttwlsave.SDU_BACKPACK])
+                save.set_max_sdus([SDU.BACKPACK])
             # AH: No eridian
             # # Eridian Analyzer
             # if 'analyzer' in args.unlock:

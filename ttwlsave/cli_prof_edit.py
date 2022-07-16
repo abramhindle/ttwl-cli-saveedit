@@ -26,7 +26,8 @@ import sys
 import ttwlsave
 import argparse
 from . import cli_common
-from ttwlsave.ttwlprofile import BL3Profile
+from ttwlsave import ProfileSDU
+from ttwlsave.ttwlprofile import TTWLProfile
 
 def main():
 
@@ -315,7 +316,7 @@ def main():
     # Now load the profile
     if not args.quiet:
         print('Loading {}'.format(args.input_filename))
-    profile = BL3Profile(args.input_filename)
+    profile = TTWLProfile(args.input_filename)
     if not args.quiet:
         print('')
 
@@ -483,13 +484,13 @@ def main():
             if 'lostloot' in args.unlock:
                 if not args.quiet:
                     print('   - Lost Loot SDUs')
-                profile.set_max_sdus([ttwlsave.PSDU_LOSTLOOT])
+                profile.set_max_sdus([ProfileSDU.LOSTLOOT])
 
             # Bank
             if 'bank' in args.unlock:
                 if not args.quiet:
                     print('   - Bank SDUs')
-                profile.set_max_sdus([ttwlsave.PSDU_BANK])
+                profile.set_max_sdus([ProfileSDU.BANK])
 
             # Skins
             if 'skins' in args.unlock:
