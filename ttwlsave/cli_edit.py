@@ -189,8 +189,6 @@ def main():
             'ammo', 'backpack',
             'analyzer', 'resonator',
             'equipslots',
-            'tvhm',
-            'vehicles', 'vehicleskins',
             'cubepuzzle',
             ]
     parser.add_argument('--unlock',
@@ -199,24 +197,7 @@ def main():
             default={},
             help='Game features to unlock',
             )
-    # AH: disabling NO TVHM
-    # tvhmgroup = parser.add_mutually_exclusive_group()
-    # 
-    # tvhmgroup.add_argument('--copy-nvhm',
-    #         action='store_true',
-    #         help='Copies NVHM/Normal state to TVHM',
-    #         )
-    # 
-    # tvhmgroup.add_argument('--copy-tvhm',
-    #         action='store_true',
-    #         help='Copies TVHM state to NVHM/Normal',
-    #         )
-    # 
-    # tvhmgroup.add_argument('--unfinish-nvhm',
-    #         dest='unfinish_nvhm',
-    #         action='store_true',
-    #         help='"Un-finishes" the game: remove all TVHM data and set Playthrough 1 to Not Completed',
-    #         )
+
     parser.add_argument('--unfinish-missions',
             dest='unfinish_missions',
             action='store_true',
@@ -309,10 +290,6 @@ def main():
     # Expand any of our "all" unlock actions
     if 'all' in args.unlock:
         args.unlock = {k: True for k in unlock_choices}
-    # AH: No TVHM
-    # # Make sure we're not trying to clear and unlock THVM at the same time
-    # if 'tvhm' in args.unlock and args.unfinish_nvhm:
-    #     raise argparse.ArgumentTypeError('Cannot both unlock TVHM and un-finish NVHM')
 
     # Set max level arg
     if args.level_max:
@@ -363,19 +340,7 @@ def main():
     save = TTWLSave(args.input_filename)
     if not args.quiet:
         print('')
-    # AH: More TVHM disable
-    # # Some argument interactions we should check on
-    # if args.copy_nvhm:
-    #     if save.get_playthroughs_completed() < 1:
-    #         if 'tvhm' not in args.unlock:
-    #             args.unlock['tvhm'] = True
-    # AH: NO TVHM
-    # # If we've been told to copy TVHM state to NVHM, make sure we have TVHM data.
-    # # TODO: need to check this out
-    # if args.copy_tvhm:
-    #     if save.get_playthroughs_completed() < 1:
-    #         raise argparse.ArgumentTypeError('TVHM State not found to copy in {}'.format(args.input_filename))
-    #  
+
     # Check to see if we have any changes to make
     have_changes = any([
         args.name,
@@ -389,8 +354,6 @@ def main():
         args.moon_orbs is not None,
         args.souls is not None,
         len(args.unlock) > 0,
-        # args.copy_nvhm,
-        # args.copy_tvhm,
         args.import_items,
         args.items_to_char,
         args.item_levels,
@@ -565,34 +528,6 @@ def main():
                     InvSlot.AMULET,
                     ])
 
-            # AH: No vehicles 
-            # # Vehicles
-            # if 'vehicles' in args.unlock:
-            #     if not args.quiet:
-            #         print('   - Vehicles (and parts)')
-            #     save.unlock_vehicle_chassis()
-            #     save.unlock_vehicle_parts()
-            #     if not args.quiet and not save.has_vehicle_chassis(ttwlsave.jetbeast_main_chassis):
-            #         print('     - NOTE: The default Jetbeast chassis will be unlocked automatically by the game')
-            # 
-            # # Vehicle Skins
-            # if 'vehicleskins' in args.unlock:
-            #     if not args.quiet:
-            #         print('   - Vehicle Skins')
-            #     save.unlock_vehicle_skins()
-            # 
-            # # TVHM
-            # if 'tvhm' in args.unlock:
-            #     if not args.quiet:
-            #         print('   - TVHM')
-            #     save.set_playthroughs_completed(1)
-            # 
-            # # Eridian Cube puzzle
-            # if 'cubepuzzle' in args.unlock:
-            #     if not args.quiet:
-            #         print('   - Eridian Cube Puzzle')
-            #     save.unlock_cube_puzzle()
-
         # Import Items
         if args.import_items:
             cli_common.import_items(args.import_items,
@@ -638,22 +573,6 @@ def main():
                     args.item_mayhem_levels,
                     quiet=args.quiet,
                     )
-        # AH: There is no NVHM
-        # # Copying NVHM/TVHM state (or otherwise fiddle with playthroughs)
-        # if args.copy_nvhm:
-        #     if not args.quiet:
-        #         print(' - Copying NVHM state to TVHM')
-        #     save.copy_playthrough_data()
-        # elif args.copy_tvhm:
-        #     if not args.quiet:
-        #         print(' - Copying TVHM state to NVHM')
-        #     save.copy_playthrough_data(from_pt=1, to_pt=0)
-        # elif args.unfinish_nvhm:
-        #     if not args.quiet:
-        #         print(' - Un-finishing NVHM state entirely')
-        #     # ... or clearing TVHM state entirely.
-        #     save.set_playthroughs_completed(0)
-        #     save.clear_playthrough_data(1)
 
         if args.unfinish_missions:
             if not args.quiet:

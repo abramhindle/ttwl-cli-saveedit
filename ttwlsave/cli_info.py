@@ -291,16 +291,5 @@ def main():
                 challenge.completed_progress_level,
                 ))
 
-    # Vehicle unlocks
-    print('Unlocked Vehicle Parts:')
-    for vehicle, chassis_count in save.get_vehicle_chassis_counts().items():
-        eng = ttwlsave.vehicle_to_eng[vehicle]
-        print(' - {} - Chassis (wheels): {}/{}, Parts: {}/{}, Skins: {}/{}'.format(
-            eng,
-            chassis_count, len(ttwlsave.vehicle_chassis[vehicle]),
-            save.get_vehicle_part_count(vehicle), len(ttwlsave.vehicle_parts[vehicle]),
-            save.get_vehicle_skin_count(vehicle), len(ttwlsave.vehicle_skins[vehicle]),
-            ))
-
 if __name__ == '__main__':
     main()

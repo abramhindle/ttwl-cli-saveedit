@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # vim: set expandtab tabstop=4 shiftwidth=4:
 
-# Copyright (c) 2020-2021 CJ Kucera (cj@apocalyptech.com)
+# Copyright (c) 2020-2022 CJ Kucera (cj@apocalyptech.com)
 # 
 # This software is provided 'as-is', without any express or implied warranty.
 # In no event will the authors be held liable for any damages arising from
@@ -31,12 +31,12 @@ def main():
 
     # Set up args
     parser = argparse.ArgumentParser(
-            description='Process Mod-Testing Borderlands 3 Archive Savegames v{}'.format(ttwlsave.__version__),
+            description='Process Mod-Testing Wonderlands Archive Savegames v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-V', '--version',
             action='version',
-            version='BL3 CLI SaveEdit v{}'.format(ttwlsave.__version__),
+            version='WL CLI SaveEdit v{}'.format(ttwlsave.__version__),
             )
 
     group = parser.add_mutually_exclusive_group()
@@ -147,7 +147,7 @@ def main():
 
             # Write out the row
             print('<tr class="row{}">'.format((files_written + row_offset) % 2), file=idf)
-            print('<td class="filename"><a href="bl3/{}">{}</a></td>'.format(base_filename, base_filename), file=idf)
+            print('<td class="filename"><a href="wl/{}">{}</a></td>'.format(base_filename, base_filename), file=idf)
             print('<td class="in_map">{}</td>'.format(save.get_pt_last_map(0, True)), file=idf)
             missions = save.get_pt_active_mission_list(0, True)
             if len(missions) == 0:
@@ -162,7 +162,7 @@ def main():
             print('</tr>', file=idf)
 
         # May as well force the name, while we're at it
-        save.set_char_name("BL3 Savegame Archive")
+        save.set_char_name("WL Savegame Archive")
 
         # Max XP
         save.set_level(ttwlsave.max_level)
@@ -179,15 +179,8 @@ def main():
         # Unlock PT2
         # (In the original runthrough which I've already checked in, I'd accidentally set
         # this to 2.  Whoops!  Doesn't seem to matter, so whatever.)
+        # TODO: eh???
         save.set_playthroughs_completed(1)
-
-        # Remove our bogus third playthrough, if we're processing a file which happens
-        # to still have that (thanks to our faux pas, above)
-        if save.get_max_playthrough_with_data() > 1:
-            save.clear_playthrough_data(2)
-
-        # Copy mission/FT/location/mayhem status from PT1 to PT2
-        save.copy_playthrough_data()
 
         # Inventory - force our testing gear
         # Gear data just taken from my modtest char.  Level 57 Mayhem 10, though

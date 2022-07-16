@@ -25,11 +25,6 @@ commands will be:
     - [Minimizing Guardian Rank](#minimizing-guardian-rank)
     - [Guardian Rank Rewards](#guardian-rank-rewards)
     - [Guardian Rank Tokens](#guardian-rank-tokens)
-  - [Borderlands Science](#borderlands-science)
-    - [Maximizing Borderlands Science Progression](#maximizing-borderlands-science-progression)
-    - [Resetting Borderlands Science Progression](#resetting-borderlands-science-progression)
-    - [Removing active Borderlands Science boosts](#removing-active-borderlands-science-boosts)
-    - [Borderlands Science tokens](#borderlands-science-tokens)
   - [Bank Item Levels](#bank-item-levels)
   - [Bank Item Mayhem Levels](#bank-item-mayhem-levels)
   - [Clear Customizations](#clear-customizations)
@@ -184,38 +179,6 @@ The number of available Guardian Rank tokens can be set using the
 
 This argument will also update your main Guardian Rank number to be an
 appropriate value, given the number of rewards and available tokens.
-
-## Borderlands Science
-
-There are a few functions available to help managing Borderlands Science.
-
-### Maximizing Borderlands Science Progression
-
-By using `--max-borderlands-science` you can maximize progression, unlocking
-True Tannis and skipping the tutorial.
-
-    bl3-profile-edit profile.sav newprofile.sav --max-borderlands-science
-
-### Resetting Borderlands Science Progression
-
-You can also reset borderlands science progression using `--reset-borderlands-science`.
-This will put you back at no puzzles solved, with the tutorial incomplete.
-
-    bl3-profile-edit profile.sav newprofile.sav --reset-borderlands-science
-
-### Removing active Borderlands Science boosts
-
-You can remove any active Borderlands Science boosts using
-`--remove_borderlands_science_boosts`.
-
-    bl3-profile-edit profile.sav newprofile.sav --remove_borderlands_science_boosts
-
-### Borderlands Science tokens
-
-The number of available Borderlands Science tokens can be set using the
-`--borderlands-science-tokens` argument:
-
-    bl3-profile-edit profile.sav newprofile.sav --borderlands-science-tokens 10000
 
 ## Bank Item Levels
 

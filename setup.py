@@ -61,10 +61,6 @@ setup(
                 'ttwl-save-import-protobuf = ttwlsave.cli_import_protobuf:main',
                 'ttwl-save-import-json = ttwlsave.cli_import_json:main',
                 'ttwl-process-archive-saves = ttwlsave.cli_archive:main',
-                # Actually, gonna omit this one.  Without transferring a lot of other data,
-                # this can make things a bit weird, and at that point you may as well just
-                # copy the savegame and alter other bits about it.
-                #'ttwl-save-copy-pt = ttwlsave.cli_copy_pt:main',
 
                 # Profile-related scripts
                 'ttwl-profile-edit = ttwlsave.cli_prof_edit:main',

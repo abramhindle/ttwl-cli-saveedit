@@ -38,14 +38,8 @@ commands will be:
     - [Eridian Resonator](#eridian-resonator)
     - [Eridian Analyzer](#eridian-analyzer)
     - [Equipment Slots](#equipment-slots)
-    - [Vehicles](#vehicles)
-    - [Vehicle Skins](#vehicle-skins)
-    - [TVHM](#tvhm)
     - [Eridian Cube Puzzle](#eridian-cube-puzzle)
     - [All Unlocks at Once](#all-unlocks-at-once)
-  - [Copy Playthrough States](#copy-playthrough-states)
-    - [NVHM to TVHM](#nvhm-to-tvhm)
-    - [TVHM to NVHM](#tvhm-to-nvhm)
   - ["Un-Finish" NVHM](#un-finish-nvhm)
   - [Import Items](#import-items)
 - [Importing Raw Protobufs](#importing-raw-protobufs)
@@ -356,29 +350,6 @@ since that's skill/class-based.
 
     bl3-save-edit old.sav new.sav --unlock equipslots
 
-### Vehicles
-
-You can use the `vehicles` unlock to unlock all vehicles and
-vehicle parts.  Note that this does *not* prematurely unlock the
-Catch-A-Ride system.  You will still have to at least complete
-the story mission with Ellie which unlocks those, to have access
-to the vehicles.
-
-    bl3-save-edit old.sav new.sav --unlock vehicles
-
-### Vehicle Skins
-
-You can use `vehicleskins` to unlock all vehicle skins, for all
-vehicle types.
-
-    bl3-save-edit old.sav new.sav --unlock vehicleskins
-
-### TVHM
-
-You can use the `tvhm` unlock to unlock TVHM mode early:
-
-    bl3-save-edit old.sav new.sav --unlock tvhm
-
 ### Eridian Cube Puzzle
 
 The Eridian Cube puzzle in Desolation's Edge (on Nekrotafeyo) is
@@ -393,40 +364,6 @@ You can also use `all` to unlock all the various `--unlock`
 options at once, without having to specify each one individually:
 
     bl3-save-edit old.sav new.sav --unlock all
-
-## Copy Playthrough States
-
-### NVHM to TVHM
-
-The `--copy-nvhm` argument can be used to copy mission status,
-unlocked Fast Travels, Mayhem Mode, and Last Map Visited from Normal
-mode (NVHM) to TVHM, so your character in TVHM will be at basically
-the exact same game state as in Normal.
-
-    bl3-save-edit old.sav new.sav --copy-nvhm
-
-### TVHM to NVHM
-
-The `--copy-tvhm` argument can be used to copy mission status,
-unlocked Fast Travels, Mayhem Mode, and Last Map Visited from TVHM
-to Normal mode (NVHM), so your character in Normal will be at basically
-the exact same game state as in TVHM.
-
-    bl3-save-edit old.sav new.sav --copy-tvhm
-
-## "Un-Finish" NVHM
-
-Alternatively, you can use the `--unfinish-nvhm` argument to
-completely discard all TVHM data, and set the game state so that
-NVHM was never finished.  Note that this does *not* reset any
-mission status, so if you've already legitimately finished NVHM
-in the savegame, you won't be able to re-unlock it in-game (though
-`--unlock tvhm` or `--copy-nvhm` could still be used to unlock).
-This is primarily useful just if you wanted to undo a `--copy-nvhm`
-run, or for myself when testing things out using saves from my
-[BL3 Savegame Archive](http://apocalyptech.com/games/bl-saves/bl3.php).
-
-    bl3-save-edit old.sav new.sav --unfinish-nvhm
 
 ## Import Items
 
