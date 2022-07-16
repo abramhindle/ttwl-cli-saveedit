@@ -27,7 +27,7 @@ commands will be:
   - [Character Level](#character-level)
   - [Mayhem Level](#mayhem-level)
   - [Mayhem Random Seed](#mayhem-random-seed)
-  - [Currency (Money, Moon Orbs, and Souls)](#currency-money-and-moon-orbs-and-souls)
+  - [Currency (Money, Moon Orbs, and Souls)](#currency-money-moon-orbs-and-souls)
   - [Mission Deletion](#mission-deletion)
   - [Seasonal Event Status](#seasonal-event-status)
   - [Item Levels](#item-levels)
