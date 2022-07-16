@@ -232,18 +232,14 @@ class Ammo(LabelEnum):
     SNIPER = ('Sniper', '/Game/GameData/Weapons/Ammo/Resource_Ammo_Sniper.Resource_Ammo_Sniper', 204)
 
 # Challenges
-(ERIDIAN_ANALYZER,
-        ERIDIAN_RESONATOR,
-        MAYHEM,
+(MAYHEM,
         CHAL_ARTIFACT,
         COM_BEASTMASTER,
         COM_GUNNER,
         COM_OPERATIVE,
         COM_SIREN,
-        ) = range(8)
+        ) = range(6)
 challenge_to_eng = {
-        ERIDIAN_ANALYZER: 'Eridian Analyzer',
-        ERIDIAN_RESONATOR: 'Eridian Resonator',
         MAYHEM: 'Mayhem Mode',
         CHAL_ARTIFACT: 'Artifact Slot',
         COM_BEASTMASTER: 'Beastmaster COM Slot',
@@ -258,8 +254,6 @@ challenge_char_lock = {
         #COM_SIREN: SIREN,
         }
 challengeobj_to_challenge = {
-        '/Game/GameData/Challenges/Account/Challenge_VaultReward_Analyzer.Challenge_VaultReward_Analyzer_C': ERIDIAN_ANALYZER,
-        '/Game/GameData/Challenges/Account/Challenge_VaultReward_Resonator.Challenge_VaultReward_Resonator_C': ERIDIAN_RESONATOR,
         '/Game/GameData/Challenges/Account/Challenge_VaultReward_Mayhem.Challenge_VaultReward_Mayhem_C': MAYHEM,
         '/Game/GameData/Challenges/Account/Challenge_VaultReward_ArtifactSlot.Challenge_VaultReward_ArtifactSlot_C': CHAL_ARTIFACT,
         '/Game/GameData/Challenges/Character/Beastmaster/BP_Challenge_Beastmaster_ClassMod.BP_Challenge_Beastmaster_ClassMod_C': COM_BEASTMASTER,

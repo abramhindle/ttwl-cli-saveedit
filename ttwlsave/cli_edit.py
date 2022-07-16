@@ -187,7 +187,6 @@ def main():
 
     unlock_choices = [
             'ammo', 'backpack',
-            'analyzer', 'resonator',
             'equipslots',
             ]
     parser.add_argument('--unlock',
@@ -494,18 +493,6 @@ def main():
                 if not args.quiet:
                     print('   - Backpack SDUs')
                 save.set_max_sdus([SDU.BACKPACK])
-            # AH: No eridian
-            # # Eridian Analyzer
-            # if 'analyzer' in args.unlock:
-            #     if not args.quiet:
-            #         print('   - Eridian Analyzer')
-            #     save.unlock_challenge(ttwlsave.ERIDIAN_ANALYZER)
-            # 
-            # # Eridian Resonator
-            # if 'resonator' in args.unlock:
-            #     if not args.quiet:
-            #         print('   - Eridian Resonator')
-            #     save.unlock_challenge(ttwlsave.ERIDIAN_RESONATOR)
 
             # Equipment Slots
             if 'equipslots' in args.unlock:

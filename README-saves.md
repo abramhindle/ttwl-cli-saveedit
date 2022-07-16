@@ -34,8 +34,6 @@ commands will be:
   - [Item Mayhem Levels](#item-mayhem-levels)
   - [Unlocks](#unlocks)
     - [Ammo/Backpack Unlocks](#ammobackpack-unlocks)
-    - [Eridian Resonator](#eridian-resonator)
-    - [Eridian Analyzer](#eridian-analyzer)
     - [Equipment Slots](#equipment-slots)
     - [All Unlocks at Once](#all-unlocks-at-once)
   - ["Un-Finish" NVHM](#un-finish-nvhm)
@@ -303,22 +301,6 @@ The `ammo` SDU unlock will also fill your ammo reserves.
 
     bl3-save-edit old.sav new.sav --unlock ammo
     bl3-save-edit old.sav new.sav --unlock backpack
-
-### Eridian Resonator
-
-The `resonator` unlock is what allows you to crack open Eridium
-deposits throughout the game.  You ordinarily receive this as a
-reward for the plot mission "Beneath the Meridian."
-
-    bl3-save-edit old.sav new.sav --unlock resonator
-
-### Eridian Analyzer
-
-Likewise, the `analyzer` unlock is what allows you to decode
-the Eridian writings scattered throughout BL3.  You ordinarily
-receive this ability during the plot mission "The Great Vault."
-
-    bl3-save-edit old.sav new.sav --unlock analyzer
 
 ### Equipment Slots
 
