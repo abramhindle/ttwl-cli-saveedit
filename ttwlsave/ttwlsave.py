@@ -1331,60 +1331,6 @@ class TTWLSave(object):
         self.save.guardian_rank_character_data.new_guardian_experience = 0
         self.save.guardian_rank_character_data.is_rank_system_enabled = False
 
-    def unlock_cube_puzzle(self):
-        """
-        Unlocks the Eridian Cube puzzle in Desolation's Edge, so it can be redeemed again.
-        """
-        # First up, in the game stats (I think this is actually unnecessary, but eh)
-        found_idx = None
-        for idx, stat in enumerate(self.save.game_stats_data):
-            if stat.stat_path == cube_puzzle_stat:
-                found_idx = idx
-                break
-        if found_idx is not None:
-            del self.save.game_stats_data[found_idx]
-
-        # Now in the challenges list (this is what *actually* works)
-        for chal in self.save.challenge_data:
-            if len(chal.stat_instance_state) > 0 and chal.stat_instance_state[0].challenge_stat_path == cube_puzzle_stat:
-                chal.completed_count = 0
-                chal.currently_completed = False
-                chal.completed_progress_level = 0
-                chal.stat_instance_state[0].current_stat_value = 0
-
-    def clear_takedown_discovery(self):
-        """
-        Marks the Takedown Discovery missions as completed, for all currently-available
-        playthroughs, so you can not be bothered with them on chars you don't intend to
-        take into a Takedown.
-        """
-        for pt in self.save.mission_playthroughs_data:
-            # First, complete the missions if they're already present
-            mission_seen = set()
-            for mission in pt.mission_list:
-                if mission.mission_class_path in takedown_missions:
-                    (_, objectives) = takedown_missions[mission.mission_class_path]
-                    mission_seen.add(mission.mission_class_path)
-                    mission.status = MissionState.MS_Complete
-                    del mission.objectives_progress[:]
-                    mission.objectives_progress.extend(objectives)
-                    mission.kickoff_played = True
-                    mission.has_been_viewed_in_log = True
-
-            # Now, if we didn't find one of 'em, inject it
-            for mission_path, (objectiveset, objectives) in takedown_missions.items():
-                if mission_path not in mission_seen:
-                    pt.mission_list.append(OakSave_pb2.MissionStatusPlayerSaveGameData(
-                        status=MissionState.MS_Complete,
-                        objectives_progress=objectives,
-                        mission_class_path=mission_path,
-                        active_objective_set_path=objectiveset,
-                        kickoff_played=True,
-                        has_been_viewed_in_log=True,
-                        dlc_package_id=0,
-                        league_instance=0,
-                        ))
-
     def finish_game(self):
         """
         Marks the Final Missions as completed, for all currently-available

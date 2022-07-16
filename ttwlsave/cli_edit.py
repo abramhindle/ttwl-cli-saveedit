@@ -189,7 +189,6 @@ def main():
             'ammo', 'backpack',
             'analyzer', 'resonator',
             'equipslots',
-            'cubepuzzle',
             ]
     parser.add_argument('--unlock',
             action=cli_common.DictAction,
@@ -444,12 +443,6 @@ def main():
                 print(' - Setting Souls to: {:,}'.format(args.souls))
             save.set_souls(args.souls)
 
-        # AH: No Takedowns
-        # # Clearing Takedown Discovery
-        # if args.clear_takedowns:
-        #     if not args.quiet:
-        #         print(' - Clearing Takedown Discovery missions')
-        #     save.clear_takedown_discovery()
         # AH: Temporarily disabling this
         # # Deleting missions
         # for label, pt, arg in [

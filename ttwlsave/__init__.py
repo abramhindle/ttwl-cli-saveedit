@@ -1067,19 +1067,6 @@ guardian_rank_rewards = set([
     '/Game/PatchDLC/Hibiscus/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_ElementalDamage.GuardianReward_ElementalDamage',
     ])
 
-# Eridian Cube Puzzle stat
-cube_puzzle_stat = '/Game/PlayerCharacters/_Shared/_Design/Stats/GameSystem/Stat_GameSystem_BeachCubeSolved.Stat_GameSystem_BeachCubeSolved'
-
-# Takedown Discovery missions
-takedown_missions = {
-        '/Game/PatchDLC/Raid1/Missions/Mission_Raid1Intro.Mission_Raid1Intro_C': (
-            '/Game/PatchDLC/Raid1/Missions/Mission_Raid1Intro.Set_MissionEnd_ObjectiveSet',
-            [1, 0, 0, 1, 0]),
-        '/Game/PatchDLC/Takedown2/Missions/Side/Mission_Takedown2_Intro.Mission_Takedown2_Intro_C': (
-            '/Game/PatchDLC/Takedown2/Missions/Side/Mission_Takedown2_Intro.Set_MissionEnd_ObjectiveSet',
-            [1, 0, 0, 1, 0]),
-        }
-
 # Mission names
 #
 # For most missions, the following find statement will generate this list:

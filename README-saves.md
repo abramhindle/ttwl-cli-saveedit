@@ -28,7 +28,6 @@ commands will be:
   - [Mayhem Level](#mayhem-level)
   - [Mayhem Random Seed](#mayhem-random-seed)
   - [Currency (Money, Moon Orbs, and Souls)](#currency-money-and-moon-orbs-and-souls)
-  - [Takedown Discovery Missions](#takedown-discovery-missions)
   - [Mission Deletion](#mission-deletion)
   - [Seasonal Event Status](#seasonal-event-status)
   - [Item Levels](#item-levels)
@@ -38,7 +37,6 @@ commands will be:
     - [Eridian Resonator](#eridian-resonator)
     - [Eridian Analyzer](#eridian-analyzer)
     - [Equipment Slots](#equipment-slots)
-    - [Eridian Cube Puzzle](#eridian-cube-puzzle)
     - [All Unlocks at Once](#all-unlocks-at-once)
   - ["Un-Finish" NVHM](#un-finish-nvhm)
   - [Import Items](#import-items)
@@ -214,25 +212,6 @@ Orbs is 16,000.  This utility will let you set values higher than that,
 but doing so isn't recommended.  There doesn't seem to be a defined
 maximum for Souls.
 
-## Takedown Discovery Missions
-
-You can clear out the two Takedown Discovery missions using the
-`--clear-takedowns` argument, if you have a character who you don't
-ever plan to do Takedowns with, but want those mission-pickup notifications
-gone, without going through the hassle of travelling to the Takedown
-maps yourself:
-
-    bl3-save-edit old.sav new.sav --clear-takedowns
-
-Note that if you decide to do the Takedowns later, you'll have to pilot
-Sanctuary over to their pickup points before they'll appear in your
-Fast Travel menu; this argument doesn't unlock the Fast Travel locations
-itself.
-
-Obviously it doesn't take long to just do the Discovery missions yourself;
-you can always just fail out of the Takedown itself by fast-travelling out
-of the map, but this option would save you a minute or two, anyway.
-
 ## Mission Deletion
 
 If you ever have a sidemission lock up, or just want to repeat a side
@@ -349,14 +328,6 @@ and amulet).  This will *not* unlock the second spell slot,
 since that's skill/class-based.
 
     bl3-save-edit old.sav new.sav --unlock equipslots
-
-### Eridian Cube Puzzle
-
-The Eridian Cube puzzle in Desolation's Edge (on Nekrotafeyo) is
-ordinarily only doable once per savegame.  The `cubepuzzle`
-unlock will let you complete it more than once:
-
-    bl3-save-edit old.sav new.sav --unlock cubepuzzle
 
 ### All Unlocks at Once
 
