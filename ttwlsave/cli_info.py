@@ -88,11 +88,11 @@ def main():
     print('Player Secondary Class: {}'.format(save.get_secondary_class(True)))
 
     # Companion Names
-    petnames = save.get_pet_names(True)
-    if len(petnames) > 0:
+    companion_names = save.get_companion_names(True)
+    if len(companion_names) > 0:
         print('Companion Names:')
-        for (pet_type, pet_name) in petnames.items():
-            print('- {} Name: {}'.format(pet_type, pet_name))
+        for (c_type, c_name) in companion_names.items():
+            print(' - {} Name: {}'.format(c_type.label, c_name))
 
     # XP/Level
     print('XP: {}'.format(save.get_xp()))

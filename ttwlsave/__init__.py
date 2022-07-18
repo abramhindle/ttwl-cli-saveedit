@@ -160,20 +160,12 @@ classobj_to_class = {
         #'/Game/PlayerCharacters/SirenBrawler/PlayerClassId_Siren.PlayerClassId_Siren': SIREN,
         }
 
-# Pets
-(LICH, WYVERN, MUSHROOM) = range(3)
-pet_to_eng = {
-        LICH: 'Demi-Lich',
-        WYVERN: 'Wyvern',
-        MUSHROOM: 'Mushroom',
-        }
-petkey_to_pet = {
-        'petnicknamelich': LICH,
-        # TODO: just guessing at these two
-        'petnicknamewyvern': WYVERN,
-        'petnicknamemushroom': MUSHROOM,
-        }
-pet_to_petkey = {v: k for k, v in petkey_to_pet.items()}
+# Companions
+class Companion(LabelEnum):
+    LICH = ('Demi-Lich', 'petnicknamelich')
+    # TODO: just guessing at these two, still.
+    WYVERN = ('Wyvern', 'petnicknamewyvern')
+    MUSHROOM = ('Mushroom', 'petnicknamemushroom')
 
 # Currencies
 class Currency(HashLabelEnum):

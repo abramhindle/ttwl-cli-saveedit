@@ -355,26 +355,29 @@ class TTWLSave(object):
         """
         self.save.save_game_id = new_id
 
-    def get_pet_names(self, eng=False):
+    def get_companion_names(self, eng=False):
         """
-        Returns a dict mapping pet types to pet names, if any are defined.  The pet type
-        key is a constant by default, or an English label if `eng` is `True`
+        Returns a dict mapping companion types to companion names, if any
+        are defined.  The companion type key is a constant by default, or
+        an English label if `eng` is `True`
         """
         ret = {}
         for name in self.save.nickname_mappings:
-            key = petkey_to_pet.get(name.key.lower(),name.key.lower())
-            if eng:
-                key = pet_to_eng.get(key,key)
+            companion = Companion.has_value(name.key.lower())
+            if companion:
+                key = companion
+            else:
+                key = name.key.lower()
             ret[key] = name.value
         return ret
 
-    def get_pet_name(self, pet_type):
+    def get_companion_name(self, companion_type):
         """
-        Returns the pet name matching the given type constant
+        Returns the companion name matching the given type constant
         """
-        pet_names = self.get_pet_names()
-        if pet_type in pet_names:
-            return pet_names[pet_type]
+        companion_names = self.get_companion_names()
+        if companion_type in companion_names:
+            return companion_names[companion_type]
         return None
 
     def get_class(self, eng=False):
