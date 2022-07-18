@@ -81,7 +81,6 @@ def main():
             )
 
     parser.add_argument('--save-game-id',
-            dest='save_game_id',
             type=int,
             help='Set the save game slot ID (possibly not actually ever needed)',
             )
@@ -107,7 +106,6 @@ def main():
             )
 
     levelgroup.add_argument('--level-max',
-            dest='level_max',
             action='store_true',
             help='Set the character to max level ({})'.format(ttwlsave.max_level),
             )
@@ -115,12 +113,10 @@ def main():
     itemlevelgroup = parser.add_mutually_exclusive_group()
 
     itemlevelgroup.add_argument('--items-to-char',
-            dest='items_to_char',
             action='store_true',
             help='Set all inventory items to the level of the character')
 
     itemlevelgroup.add_argument('--item-levels',
-            dest='item_levels',
             type=int,
             help='Set all inventory items to the specified level')
 
@@ -167,25 +163,21 @@ def main():
             )
 
     parser.add_argument('--unfinish-missions',
-            dest='unfinish_missions',
             action='store_true',
             help='"Un-finishes" the game: remove all Playthrough 0 to Not Completed',
             )
 
     parser.add_argument('--fake-tvhm',
-            dest='fake_tvhm',
             action='store_true',
             help='"Un-finishes" the missions but finishes the game',
             )
 
     parser.add_argument('-i', '--import-items',
-            dest='import_items',
             type=str,
             help='Import items from file',
             )
 
     parser.add_argument('--allow-fabricator',
-            dest='allow_fabricator',
             action='store_true',
             help='Allow importing Fabricator when importing items from file',
             )

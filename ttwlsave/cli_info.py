@@ -50,7 +50,6 @@ def main():
             )
 
     parser.add_argument('--all-missions',
-            dest='all_missions',
             action='store_true',
             help='Show all missions')
 
@@ -59,12 +58,10 @@ def main():
             help='Display raw mission paths when reporting on missions')
 
     parser.add_argument('--all-challenges',
-            dest='all_challenges',
             action='store_true',
             help='Show all challenges')
 
     parser.add_argument('--fast-travel',
-            dest='fast_travel',
             action='store_true',
             help='Show all unlocked Fast Travel stations')
 

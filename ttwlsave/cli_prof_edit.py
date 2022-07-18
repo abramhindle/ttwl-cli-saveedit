@@ -76,7 +76,6 @@ def main():
     # Now the actual arguments
 
     parser.add_argument('--skeleton-keys',
-            dest='skeleton_keys',
             type=int,
             help='Number of Skeleton Keys in the profile',
             )
@@ -86,25 +85,21 @@ def main():
     # one, so I'm not bothering.
 
     parser.add_argument('--zero-guardian-rank',
-            dest='zero_guardian_rank',
             action='store_true',
             help='Zero out profile Guardian Rank',
             )
 
     parser.add_argument('--min-guardian-rank',
-            dest='min_guardian_rank',
             action='store_true',
             help='Set Guardian Rank to minimum required to prevent overwriting by saves',
             )
 
     parser.add_argument('--guardian-rank-rewards',
-            dest='guardian_rank_rewards',
             type=int,
             help='Set Guardian Rank rewards to the specified number of tokens each',
             )
 
     parser.add_argument('--guardian-rank-tokens',
-            dest='guardian_rank_tokens',
             type=int,
             help="Number of available Guardian Rank tokens",
             )
@@ -112,12 +107,10 @@ def main():
     itemlevelgroup = parser.add_mutually_exclusive_group()
 
     itemlevelgroup.add_argument('--item-levels-max',
-            dest='item_levels_max',
             action='store_true',
             help='Set all bank items to max level')
 
     itemlevelgroup.add_argument('--item-levels',
-            dest='item_levels',
             type=int,
             help='Set all bank items to the specified level')
 
@@ -132,19 +125,16 @@ def main():
                 )
 
     parser.add_argument('-i', '--import-items',
-            dest='import_items',
             type=str,
             help='Import items from file',
             )
 
     parser.add_argument('--allow-fabricator',
-            dest='allow_fabricator',
             action='store_true',
             help='Allow importing Fabricator when importing items from file',
             )
 
     parser.add_argument('--clear-customizations',
-            dest='clear_customizations',
             action='store_true',
             help='Remove all unlocked customizations',
             )
