@@ -138,27 +138,13 @@ class HashLabelEnum(LabelEnum):
         return obj
 
 # Classes
-(BRRZERKER, CLAWBRINGER, GRAVEBORN, SPELLSHOT, SPOREWARDEN, STABBOMANCER) = range(6)
-class_to_eng = {
-        BRRZERKER: 'Brr-Zerker',
-        CLAWBRINGER: 'Clawbringer',
-        GRAVEBORN: 'Graveborn',
-        SPELLSHOT: 'Spellshot',
-        SPOREWARDEN: 'Spore Warden',
-        STABBOMANCER: 'Stabbomancer',
-        }
-classobj_to_class = {
-        '/Game/PlayerCharacters/Barbarian/_Shared/_Design/SkillTree/AbilityTree_Branch_Barbarian.AbilityTree_Branch_Barbarian': BRRZERKER,
-        '/Game/PlayerCharacters/GunMage/_Shared/_Design/SkillTree/AbilityTree_Branch_GunMage.AbilityTree_Branch_GunMage': SPELLSHOT,
-        '/Game/PlayerCharacters/KnightOfTheClaw/_Shared/_Design/SkillTree/AbilityTree_Branch_DragonCleric.AbilityTree_Branch_DragonCleric': CLAWBRINGER,
-        '/Game/PlayerCharacters/Necromancer/_Shared/_Design/SkillTree/AbilityTree_Branch_Necromancer.AbilityTree_Branch_Necromancer': GRAVEBORN,
-        '/Game/PlayerCharacters/Ranger/_Shared/_Design/SkillTree/AbilityTree_Branch_Ranger.AbilityTree_Branch_Ranger': SPOREWARDEN,
-        '/Game/PlayerCharacters/Rogue/_Shared/_Design/SkillTree/AbilityTree_Branch_Rogue.AbilityTree_Branch_Rogue': STABBOMANCER,
-        #'/Game/PlayerCharacters/Beastmaster/PlayerClassId_Beastmaster.PlayerClassId_Beastmaster': BEASTMASTER,
-        #'/Game/PlayerCharacters/Gunner/PlayerClassId_Gunner.PlayerClassId_Gunner': GUNNER,
-        #'/Game/PlayerCharacters/Operative/PlayerClassId_Operative.PlayerClassId_Operative': OPERATIVE,
-        #'/Game/PlayerCharacters/SirenBrawler/PlayerClassId_Siren.PlayerClassId_Siren': SIREN,
-        }
+class CharClass(LabelEnum):
+    BRRZERKER = ('Brr-Zerker', '/Game/PlayerCharacters/Barbarian/_Shared/_Design/SkillTree/AbilityTree_Branch_Barbarian.AbilityTree_Branch_Barbarian')
+    CLAWBRINGER = ('Clawbringer', '/Game/PlayerCharacters/KnightOfTheClaw/_Shared/_Design/SkillTree/AbilityTree_Branch_DragonCleric.AbilityTree_Branch_DragonCleric')
+    GRAVEBORN = ('Graveborn', '/Game/PlayerCharacters/Necromancer/_Shared/_Design/SkillTree/AbilityTree_Branch_Necromancer.AbilityTree_Branch_Necromancer')
+    SPELLSHOT = ('Spellshot', '/Game/PlayerCharacters/GunMage/_Shared/_Design/SkillTree/AbilityTree_Branch_GunMage.AbilityTree_Branch_GunMage')
+    SPOREWARDEN = ('Spore Warden', '/Game/PlayerCharacters/Ranger/_Shared/_Design/SkillTree/AbilityTree_Branch_Ranger.AbilityTree_Branch_Ranger')
+    STABBOMANCER = ('Stabbomancer', '/Game/PlayerCharacters/Rogue/_Shared/_Design/SkillTree/AbilityTree_Branch_Rogue.AbilityTree_Branch_Rogue')
 
 # Companions
 class Companion(LabelEnum):

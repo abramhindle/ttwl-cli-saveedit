@@ -380,37 +380,40 @@ class TTWLSave(object):
             return companion_names[companion_type]
         return None
 
-    def get_class(self, eng=False):
+    def _get_class(self, class_path, eng=False):
         """
-        Returns the class of this character.  By default it will be a constant,
-        but if `eng` is `True` it will be an English label instead.
+        Gets a character class given the specified `class_path`.  By
+        default the return value will be a CharClass instance, but if
+        `eng` is `True`, the value will be the English name of the class
+        instead.  If the class path isn't known to us, it will be
+        returned back.
         """
-        classval = classobj_to_class.get(self.save.player_class_data.player_class_path,self.save.player_class_data.player_class_path)
-        if eng:
-            return class_to_eng.get(classval,classval)
-        return classval
+        classval = CharClass.has_value(class_path)
+        if classval:
+            if eng:
+                return classval.label
+            else:
+                return classval
+        else:
+            return class_path
 
     def get_primary_class(self, eng=False):
         """
-        Returns the class of this character.  By default it will be a constant,
-        but if `eng` is `True` it will be an English label instead.
+        Returns the primary class of this character.  By default the return
+        value will be a CharClass instance, but if `eng` is `True`, the value
+        will be the English name of the class instead.  If the class path isn't
+        known to us, it will be returned back.
         """
-        primary = self.save.ability_data.dual_class_save_data.primary_branch_path
-        classval = classobj_to_class.get( primary, primary )
-        if eng:
-            return class_to_eng.get(classval,classval)
-        return classval
+        return self._get_class(self.save.ability_data.dual_class_save_data.primary_branch_path, eng=eng)
+
     def get_secondary_class(self, eng=False):
         """
-        Returns the class of this character.  By default it will be a constant,
-        but if `eng` is `True` it will be an English label instead.
+        Returns the secondary class of this character.  By default the return
+        value will be a CharClass instance, but if `eng` is `True`, the value
+        will be the English name of the class instead.  If the class path isn't
+        known to us, it will be returned back.
         """
-        primary = self.save.ability_data.dual_class_save_data.slotted_secondary_branch_path
-        classval = classobj_to_class.get( primary, primary )
-        if eng:
-            return class_to_eng.get(classval,classval)
-        return classval
-
+        return self._get_class(self.save.ability_data.dual_class_save_data.slotted_secondary_branch_path, eng=eng)
 
     def get_xp(self):
         """
