@@ -27,7 +27,7 @@ import ttwlsave
 import argparse
 from . import cli_common
 from . import plot_missions
-from ttwlsave import InvSlot, SDU
+from ttwlsave import InvSlot, SDU, ChaosLevel
 from ttwlsave.ttwlsave import TTWLSave
 
 def main():
@@ -124,25 +124,15 @@ def main():
             type=int,
             help='Set all inventory items to the specified level')
 
-    itemlevelgroup.add_argument('--item-chaotic',
-            dest='item_chaotic',
-            action='store_true',
-            help='Set all inventory items to chaotic')
+    chaos_level_group=parser.add_mutually_exclusive_group()
 
-    itemlevelgroup.add_argument('--item-volatile',
-            dest='item_volatile',
-            action='store_true',
-            help='Set all inventory items to volatile')
-
-    itemlevelgroup.add_argument('--item-primordial',
-            dest='item_primordial',
-            action='store_true',
-            help='Set all inventory items to primordial')
-    # itemlevelgroup.add_argument('--item-ascended',
-    #         dest='item_ascended',
-    #         action='store_true',
-    #         help='Set all inventory items to ascended')
-
+    for level in ChaosLevel:
+        chaos_level_group.add_argument('--items-{}'.format(level.label.lower()),
+                dest='items_chaos_level',
+                action='store_const',
+                const=level,
+                help='Set all inventory item chaos levels to {}'.format(level.label),
+                )
     
     itemmayhemgroup = parser.add_mutually_exclusive_group()
 
@@ -355,10 +345,7 @@ def main():
         args.import_items,
         args.items_to_char,
         args.item_levels,
-        args.item_chaotic,
-        args.item_volatile,
-        args.item_primordial,
-        # args.item_ascended,
+        args.items_chaos_level is not None,
         #args.unfinish_nvhm,
         args.unfinish_missions,
         args.fake_tvhm,
@@ -508,7 +495,7 @@ def main():
                     InvSlot.AMULET,
                     ])
 
-        # Import Items
+        # Import Items (cli_common provides the console output)
         if args.import_items:
             cli_common.import_items(args.import_items,
                     save.create_new_item_encoded,
@@ -522,6 +509,7 @@ def main():
         # various of the actions above.  If we've been asked to up the level of
         # the character, we'll want items to follow suit, and if we've been asked
         # to change the level of items, we'll want to do it after the item import.
+        # (cli_common provides the console output)
         if args.items_to_char or args.item_levels:
             if args.items_to_char:
                 to_level = save.get_level()
@@ -532,20 +520,13 @@ def main():
                     quiet=args.quiet,
                     )
 
-        item_type_flags = [False,
-                           args.item_chaotic,
-                           args.item_volatile,
-                           args.item_primordial,
-                           # args.item_ascended,
-        ]
-        if True in item_type_flags:
-            value = [x[0] for x in enumerate(item_type_flags) if x[1]][0]
-            cli_common.update_item_type(save.get_items(),
-                    value,
+        # Setting item Chaos Levels (Chaotic, Volatile, etc...)
+        # (cli_common provides the console output)
+        if args.items_chaos_level is not None:
+            cli_common.update_chaos_level(save.get_items(),
+                    args.items_chaos_level,
                     quiet=args.quiet,
-            )
-
-
+                    )
             
         # Item Mayhem level
         if args.item_mayhem_levels is not None:

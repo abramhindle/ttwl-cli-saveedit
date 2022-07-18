@@ -31,6 +31,7 @@ commands will be:
   - [Mission Deletion](#mission-deletion)
   - [Seasonal Event Status](#seasonal-event-status)
   - [Item Levels](#item-levels)
+  - [Item Chaos Levels](#item-chaos-levels)
   - [Item Mayhem Levels](#item-mayhem-levels)
   - [Unlocks](#unlocks)
     - [Ammo/Backpack Unlocks](#ammobackpack-unlocks)
@@ -265,6 +266,20 @@ items/weapons will get that new level.  This can be done with
 Alternatively, you can set an explicit level using `--item-levels`
 
     ttwl-save-edit old.sav new.sav --item-levels 57
+
+## Item Chaos Levels
+
+Gear in Wonderlands can be set to one of a few "special" Chaos Levels,
+namely (in ascending level of power): Chaotic, Volatile, Primordial,
+and Ascended.  Ordinarily these levels can only be set while playing in Chaos
+Mode.  There are some arguments available to set all items in your inventory to
+the given Chaos Level, though, including removing the Chaos Level entirely:
+
+    ttwl-save-edit old.sav new.sav --items-regular
+    ttwl-save-edit old.sav new.sav --items-chaotic
+    ttwl-save-edit old.sav new.sav --items-volatile
+    ttwl-save-edit old.sav new.sav --items-primordial
+    ttwl-save-edit old.sav new.sav --items-ascended
 
 ## Item Mayhem Levels
 

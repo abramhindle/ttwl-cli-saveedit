@@ -23,6 +23,7 @@
 
 import csv
 import argparse
+from ttwlsave import ChaosLevel
 
 class DictAction(argparse.Action):
     """
@@ -111,19 +112,19 @@ def import_items(import_file, item_create_func, item_add_func, file_csv=False, a
             for row in reader:
                 for cell in row:
                     cell = cell.strip()
-                    if cell.lower().startswith('bl3(') and cell.endswith(')'):
+                    if cell.lower().startswith('ttwl(') and cell.endswith(')'):
                         serial_list.append(cell)
     else:
         # For text files, we need the entire line to *just* be a valid serial.
         with open(import_file) as df:
             for line in df:
                 itemline = line.strip()
-                if itemline.lower().startswith('bl3(') and itemline.endswith(')'):
+                if itemline.lower().startswith('ttwl(') and itemline.endswith(')'):
                     serial_list.append(itemline)
                 # Also, check to see if we might be a CSV after all, for reporting
                 # purposes.
                 if len(serial_list) == 0 and not looks_like_csv:
-                    if ',bl3(' in itemline.lower():
+                    if ',ttwl(' in itemline.lower():
                         looks_like_csv = True
 
     # If we didn't add any items, and the file looked like it might've been a CSV
@@ -193,26 +194,36 @@ def update_item_levels(items, to_level, quiet=False):
             remaining_txt,
             ))
 
-def update_item_type(items, to_item_type, quiet=False):
+def update_chaos_level(items, to_chaos_level, quiet=False):
     """
-    Given a list of `items`, update their base level to `level`.  If `quiet`
+    Given a list of `items`, update their chaos level to `to_chaos_level`.  If `quiet`
     is `True`, only errors will be printed.
     """
+    if type(to_chaos_level) == ChaosLevel:
+        level = to_chaos_level
+        to_chaos_level = level.value
+        label = level.label
+    else:
+        level = ChaosLevel(to_chaos_level)
+        if level:
+            label = level.label
+        else:
+            label = to_chaos_level
     num_items = len(items)
     if not quiet:
         if num_items == 1:
             plural = ''
         else:
             plural = 's'
-        print(' - Updating {} item{} to type {}'.format(
+        print(' - Updating {} item{} to chaos level {}'.format(
             num_items,
             plural,
-            to_item_type,
+            label,
             ))
     actually_updated = 0
     for item in items:
-        if item.item_type != to_item_type:
-            item.item_type = to_item_type
+        if item.chaos_level != to_chaos_level:
+            item.chaos_level = to_chaos_level
             actually_updated += 1
     if not quiet:
         remaining = num_items - actually_updated

@@ -36,10 +36,19 @@ from . import *
 from . import datalib
 from . import OakProfile_pb2, OakShared_pb2
 
-class BL3ProfItem(datalib.WLSerial):
+class LostLootItem(datalib.WLSerial):
     """
-    Pretty thin wrapper around the serial number for an item.  Mostly
-    just so we can keep track of what index it is in the profile.
+    Pretty thin wrapper around the serial number for an item found in the
+    Lost Loot machine.  Mostly just so we can keep track of what index it
+    is in the profile.
+
+    NOTE: This is technically relatively untested in Wonderlands -- the
+    Bank used to make use of this structure in BL3, but in WL it was
+    updated to use the same structure as player inventory, so that now
+    lives in `datalib.WLItem`.  We don't have any functions which alter
+    Lost Loot data, so really only reads have been tested.  This worked
+    fine for Bank data in BL3, though, so it *should* be all right, one
+    hopes.
     """
 
     def __init__(self, serial_number, container, index, datawrapper):
@@ -54,15 +63,15 @@ class BL3ProfItem(datalib.WLSerial):
         Creates a new item with the specified serial number, in the specified
         `container`
         """
-        return BL3ProfItem(serial_number, container, -1, datawrapper)
+        return LostLootItem(serial_number, container, -1, datawrapper)
 
     def _update_superclass_serial(self):
         """
         Action to take when our serial number gets updated.  In this case,
         overwriting our position in the containing list.
         """
-        #if self.index >= 0:
-        #    self.container[self.index] = self.serial
+        if self.index >= 0:
+            self.container[self.index] = self.serial
 
 class TTWLProfile(object):
     """
@@ -169,6 +178,13 @@ class TTWLProfile(object):
             self.prof.ParseFromString(data)
         except google.protobuf.message.DecodeError as e:
             raise Exception('Unable to parse profile (did you pass a savegame, instead?): {}'.format(e)) from None
+
+        # Do some data processing so that we can wrap things APIwise
+        # First: Bank
+        self.bank = [datalib.WLItem(i, self.datawrapper) for i in self.prof.bank_inventory_list]
+
+        # Next: Lost Loot
+        self.lost_loot = [LostLootItem(s, self.prof.lost_loot_inventory_list, idx, self.datawrapper) for idx, s in enumerate(self.prof.lost_loot_inventory_list)]
 
     def import_json(self, json_str):
         """
@@ -348,44 +364,75 @@ class TTWLProfile(object):
                 sdu_level=psdu.num,
                 ))
 
-    def create_new_item(self, item_serial):
+    def create_new_bank_item(self, item_serial):
         """
-        Creates a new item (as a BL3ProfItem object) from the given binary `item_serial`,
+        Creates a new item (as a WLItem object) from the given binary `item_serial`,
         which can later be added to our item bank list.
         """
 
-        # Create the item and return it
-        return BL3ProfItem.create(item_serial, self.prof.bank_inventory_list, self.datawrapper)
+        # Okay, I have no idea what this pickup_order_index attribute is about, but let's
+        # make sure it's unique anyway.  It might be related to ordering when picking
+        # up multiple items at once, which would probably make it more useful for auto-pick-up
+        # items like money and ammo...
+        max_pickup_order = 0
+        for item in self.bank:
+            if item.get_pickup_order_idx() > max_pickup_order:
+                max_pickup_order = item.get_pickup_order_idx()
 
-    def create_new_item_encoded(self, item_serial_b64):
+        # Create the item and return it
+        return datalib.WLItem.create(self.datawrapper,
+                serial_number=item_serial,
+                pickup_order_idx=max_pickup_order+1,
+                is_favorite=True,
+                )
+
+    def create_new_bank_item_encoded(self, item_serial_b64):
         """
-        Creates a new item (as a BL3ProfItem object) from the base64-encoded (and
-        "BL3()"-wrapped) `item_serial_b64`, which can later be added to our item
-        list.
+        Creates a new item (as a WLItem object) from the base64-encoded (and
+        "TTWL()"-wrapped) `item_serial_b64`, which can later be added to our bank.
         """
-        return self.create_new_item(datalib.WLSerial.decode_serial_base64(item_serial_b64))
+        return self.create_new_bank_item(datalib.WLSerial.decode_serial_base64(item_serial_b64))
 
     def get_lostloot_items(self):
         """
-        Returns a list of this profile's Lost Loot items, as BL3ProfItem objects.
+        Returns a list of this profile's Lost Loot items, as LostLootItem objects.
         """
-        return [BL3ProfItem(s, self.prof.lost_loot_inventory_list, idx, self.datawrapper) for idx, s in enumerate(self.prof.lost_loot_inventory_list)]
+        return self.lost_loot
 
     def get_bank_items(self):
         """
-        Returns a list of this profile's bank items, as BL3ProfItem objects.
+        Returns a list of this profile's bank items, as WLItem objects.
         """
-        return [BL3ProfItem(s, self.prof.bank_inventory_list, idx, self.datawrapper) for idx, s in enumerate(self.prof.bank_inventory_list)]
+        return self.bank
 
-    def add_bank_item(self, item_serial):
+    def add_new_bank_item(self, item_serial):
         """
-        Adds a new item to our item list using `item_serial`, which should either
-        be a `BL3ProfItem` object or a raw-data serial number.
+        Adds a new item to our bank using the binary `item_serial`.
+        Returns a tuple containing the new WLItem object itself, and its
+        new index in our bank list.
         """
-        if type(item_serial) == BL3ProfItem:
-            self.prof.bank_inventory_list.append(item_serial.get_serial_number())
-        else:
-            self.prof.bank_inventory_list.append(item_serial)
+        new_item = self.create_new_bank_item(item_serial)
+        return (new_item, self.add_bank_item(new_item))
+
+    def add_bank_item(self, new_item):
+        """
+        Adds a new `new_item` (WLItem object) to our bank.  Returns the item's
+        new index in the bank.
+        """
+
+        # Add the item to the protobuf
+        self.prof.bank_inventory_list.append(new_item.protobuf)
+
+        # The protobuf reference that we append to the protobuf list
+        # ends up *not* being the one that's actually used when we
+        # save, so if we want to be able to alter it later (say, below
+        # when levelling up items), we have to grab a fresh reference
+        # to it.
+        new_item.protobuf = self.prof.bank_inventory_list[-1]
+
+        # Now update our internal items list and return
+        self.bank.append(new_item)
+        return len(self.bank)-1
 
     def get_cur_customizations(self, cust_set):
         """

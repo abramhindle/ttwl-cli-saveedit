@@ -1506,11 +1506,10 @@ fts_to_map = {
         }
 
 
-# item type to english
-item_type_eng = {
-    0: "",
-    1: "Chaotic",
-    2: "Volatile",
-    3: "Primordial",
-#    4: "Ascended",
-}
+# Chaos Levels
+class ChaosLevel(LabelEnum):
+    REGULAR = ('Regular', 0)
+    CHAOTIC = ('Chaotic', 1)
+    VOLATILE = ('Volatile', 2)
+    PRIMORDIAL = ('Primordial', 3)
+    ASCENDED = ('Ascended', 4)

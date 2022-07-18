@@ -38,58 +38,6 @@ from . import OakSave_pb2, OakShared_pb2
 
 MissionState = OakSave_pb2.MissionStatusPlayerSaveGameData.MissionState
 
-class BL3Item(datalib.WLSerial):
-    """
-    Pretty thin wrapper around the protobuf object for an item.  We're
-    ignoring `development_save_data` entirely since it doesn't seem to
-    be present in actual savegames.
-
-    No idea what `pickup_order_index` is, though it might just have
-    something to do with the ordering when you're picking up multiple
-    things at once (in which case it's probably only really useful for
-    things like money and ammo).
-    """
-
-    def __init__(self, protobuf, datawrapper):
-        self.protobuf = protobuf
-        super().__init__(self.protobuf.item_serial_number, datawrapper)
-
-    @staticmethod
-    def create(datawrapper, serial_number, pickup_order_idx, skin_path='', is_seen=True, is_favorite=False, is_trash=False):
-        """
-        Creates a new item with the specified serial number, pickup_order_idx, and skin_path.
-        """
-
-        # Start constructing flags
-        flags = 0
-        if is_seen:
-            flags |= 0x1
-
-        # Favorite and Trash are mutually-exclusive
-        if is_favorite:
-            flags |= 0x2
-        elif is_trash:
-            flags |= 0x4
-
-        # Now do the creation
-        return BL3Item(OakShared_pb2.OakInventoryItemSaveGameData(
-                item_serial_number=serial_number,
-                pickup_order_index=pickup_order_idx,
-                flags=flags,
-                # AH: No weapon skins?
-                # weapon_skin_path=skin_path,
-                ), datawrapper)
-
-    def get_pickup_order_idx(self):
-        return self.protobuf.pickup_order_index
-
-    def _update_superclass_serial(self):
-        """
-        Action to take when our serial number gets updated.  In this case,
-        setting the serial back into the protobuf.
-        """
-        self.protobuf.item_serial_number = self.serial
-
 class WLEquipSlot(object):
     """
     Real simple wrapper for a WL equipment slot.
@@ -263,7 +211,7 @@ class TTWLSave(object):
 
         # Do some data processing so that we can wrap things APIwise
         # First: Items
-        self.items = [BL3Item(i, self.datawrapper) for i in self.save.inventory_items]
+        self.items = [datalib.WLItem(i, self.datawrapper) for i in self.save.inventory_items]
 
         # Next: Equip slots
         self.equipslots = {}
@@ -857,7 +805,7 @@ class TTWLSave(object):
 
     def get_items(self):
         """
-        Returns a list of the character's inventory items, as BL3Item objects.
+        Returns a list of the character's inventory items, as WLItem objects.
         """
         return self.items
 
@@ -926,7 +874,7 @@ class TTWLSave(object):
 
     def add_item(self, new_item):
         """
-        Adds a new `new_item` (BL3Item object) to our item list.  Returns the item's
+        Adds a new `new_item` (WLItem object) to our item list.  Returns the item's
         new index in our item list.
         """
 
@@ -960,7 +908,7 @@ class TTWLSave(object):
                 max_pickup_order = item.get_pickup_order_idx()
 
         # Create the item and return it
-        new_item = BL3Item.create(self.datawrapper,
+        new_item = datalib.WLItem.create(self.datawrapper,
                 serial_number=item_serial,
                 pickup_order_idx=max_pickup_order+1,
                 is_favorite=True,
@@ -977,7 +925,7 @@ class TTWLSave(object):
     def add_new_item(self, item_serial):
         """
         Adds a new item to our item list using the binary `item_serial`.
-        Returns a tuple containing the new BL3Item object itself, and its
+        Returns a tuple containing the new WLItem object itself, and its
         new index in our item list.
         """
         new_item = self.create_new_item(item_serial)
@@ -986,8 +934,8 @@ class TTWLSave(object):
     def add_new_item_encoded(self, item_serial_b64):
         """
         Adds a new item to our item list using the base64-encoded (and
-        "BL3()"-wrapped) `item_serial_b64`.  Returns a tuple containing the
-        new BL3Item object itself, and its new index in our item list.
+        "TTWL()"-wrapped) `item_serial_b64`.  Returns a tuple containing the
+        new WLItem object itself, and its new index in our item list.
         """
         return self.add_new_item(datalib.WLSerial.decode_serial_base64(item_serial_b64))
 

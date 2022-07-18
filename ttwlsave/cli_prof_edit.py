@@ -26,7 +26,7 @@ import sys
 import ttwlsave
 import argparse
 from . import cli_common
-from ttwlsave import ProfileSDU
+from ttwlsave import ProfileSDU, ChaosLevel
 from ttwlsave.ttwlprofile import TTWLProfile
 
 def main():
@@ -120,6 +120,16 @@ def main():
             dest='item_levels',
             type=int,
             help='Set all bank items to the specified level')
+
+    chaos_level_group=parser.add_mutually_exclusive_group()
+
+    for level in ChaosLevel:
+        chaos_level_group.add_argument('--items-{}'.format(level.label.lower()),
+                dest='items_chaos_level',
+                action='store_const',
+                const=level,
+                help='Set all bank item chaos levels to {}'.format(level.label),
+                )
 
     itemmayhemgroup = parser.add_mutually_exclusive_group()
 
@@ -242,6 +252,7 @@ def main():
         len(args.unlock) > 0,
         args.import_items,
         args.item_levels,
+        args.items_chaos_level is not None,
         args.clear_customizations,
         args.item_mayhem_levels is not None,
         ])
@@ -345,10 +356,10 @@ def main():
                     print('   - Emotes')
                 profile.unlock_emotes()
 
-        # Import Items
+        # Import Items (cli_common provides the console output)
         if args.import_items:
             cli_common.import_items(args.import_items,
-                    profile.create_new_item_encoded,
+                    profile.create_new_bank_item_encoded,
                     profile.add_bank_item,
                     file_csv=args.csv,
                     allow_fabricator=args.allow_fabricator,
@@ -358,9 +369,18 @@ def main():
         # Setting item levels.  Keep in mind that we'll want to do this *after*
         # various of the actions above.  If we've been asked to change the level
         # of items, we'll want to do it after the item import.
+        # (cli_common provides the console output)
         if args.item_levels:
             cli_common.update_item_levels(profile.get_bank_items(),
                     args.item_levels,
+                    quiet=args.quiet,
+                    )
+
+        # Setting item Chaos Levels (Chaotic, Volatile, etc...)
+        # (cli_common provides the console output)
+        if args.items_chaos_level is not None:
+            cli_common.update_chaos_level(profile.get_bank_items(),
+                    args.items_chaos_level,
                     quiet=args.quiet,
                     )
 

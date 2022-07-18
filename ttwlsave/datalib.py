@@ -31,6 +31,7 @@ import binascii
 import pkg_resources
 
 from . import *
+from . import OakShared_pb2
 
 class ArbitraryBits(object):
     """
@@ -161,7 +162,7 @@ class WLSerial(object):
         self._generic_parts = None
         self._additional_data = None
         self._num_customs = None
-        self._item_type = None
+        self._chaos_level = None
         
         # Call out to any superclass procedures here
         self._update_superclass_serial()
@@ -227,7 +228,7 @@ class WLSerial(object):
             #print(dir(serial))
             #print(f'ss:{serial.item_serial_number}')
             serial = serial.item_serial_number
-        assert(serial[0] in [3,4,5])
+        assert(serial[0] in {5})
         serial_version = serial[0]
 
         # Seed does need to be an unsigned int
@@ -398,31 +399,28 @@ class WLSerial(object):
                 self.parts_parsed = False
                 self.can_parse_parts = False
 
-            # If we're a v4 (or higher) serial, read in the number of times we've
-            # been re-rolled
+            # Read in the number of times we've been re-rolled
             if (len(bits.data) >= 8):
-                if self.serial_version >= 4:
-                    self._rerolled = bits.eat(8)
-                else:
-                    self._rerolled = 0
-            # AH: Not sure if we need this
-            # # And read in our remaining data.  If there's more than 7 bits
-            # # left, we've done something wrong, because it should only be
-            # # zero-padding after all the "real" data is in place.
-            # if len(bits.data) > 7:
-            #     self.parts_parsed = False
-            #     self.can_parse_parts = False
-            #     pass
-            # elif '1' in bits.data:
-            #     # This is supposed to only be zero-padding at the moment, if
-            #     # we see something else, abort
-            #     self.parts_parsed = False
-            #     self.can_parse_parts = False
-            # else:
-            #     # Okay, we're good!  Don't bother saving the remaining 0 bits.
-            #     pass
-            if len(bits.data) > 3:                
-                self._item_type = bits.eat(3)
+                self._rerolled = bits.eat(8)
+
+            # Enhancement / Chaos Level (? - not sure what to call this)
+            self._chaos_level = bits.eat(7)
+
+            # And read in our remaining data.  If there's more than 7 bits
+            # left, we've done something wrong, because it should only be
+            # zero-padding after all the "real" data is in place.
+            if len(bits.data) > 7:
+                self.parts_parsed = False
+                self.can_parse_parts = False
+                pass
+            elif '1' in bits.data:
+                # This is supposed to only be zero-padding at the moment, if
+                # we see something else, abort
+                self.parts_parsed = False
+                self.can_parse_parts = False
+            else:
+                # Okay, we're good!  Don't bother saving the remaining 0 bits.
+                pass
 
     def _deparse_serial(self):
         """
@@ -485,12 +483,11 @@ class WLSerial(object):
             # Then our number of customs (should always be zero)
             bits.append_value(self._num_customs, 4)
 
-            # Then, if we're a v4 serial, the number of times we've been rerolled
-            if self.serial_version >= 4:
-                bits.append_value(self._rerolled, 8)
-            # Then, if we're a v4 serial, the item_type
-            if self.serial_version >= 4:
-                bits.append_value(self._item_type, 3)
+            # Then the number of times we've been rerolled
+            bits.append_value(self._rerolled, 8)
+
+            # Then the chaos evel
+            bits.append_value(self._chaos_level, 7)
 
         else:
             # Otherwise, we can re-use our original remaining data
@@ -693,9 +690,9 @@ class WLSerial(object):
         # return!
         return True
 
-    def can_have_item_type(self):
+    def can_have_chaos_level(self):
         """
-        Returns `True` if this is an item type which can have a mayhem level,
+        Returns `True` if this is an item type which can have a chaos level,
         or `False` otherwise.  Will also return `False` if we're unable to
         parse parts for the item.
         """
@@ -703,41 +700,47 @@ class WLSerial(object):
             self._parse_serial()
             if not self.can_parse or not self.can_parse_parts:
                 return False
-        return self._item_type is not None
+        return self._chaos_level is not None
 
     @property
-    def item_type(self):
+    def chaos_level(self):
         """
-        Returns the current item_type 0 being basic, 1 being chaotic. 
-         and `None` signifying that
-        the item_type level could not be parsed
+        Returns the current chaos level (0 is basic, 1 is chaotic, etc),
+        or `None` signifying that the serial could not be parsed
         """
         if not self.parsed or not self.parts_parsed:
             self._parse_serial()
             if not self.can_parse or not self.can_parse_parts:
                 return None
-        return self._item_type
+        return self._chaos_level
 
     
-    @item_type.setter
-    def item_type(self, value):
+    @chaos_level.setter
+    def chaos_level(self, value):
         """
-        Sets the given item_type level on the item.  Returns `True` if we were
+        Sets the given chaos level level on the item.  Returns `True` if we were
         able to do so, or `False` if not.
         """
-        # The call to `can_have_mayhem` will parse the serial if possible,
+        # The call to `can_have_chaos_level` will parse the serial if possible,
         # so we'll be all set.
-        if not self.can_have_item_type():
+        if not self.can_have_chaos_level():
             return False
         # Don't forget to set this
         self.changed_parts = True
-        self._item_type = value
+        self._chaos_level = value
         # Re-serialize
         self._deparse_serial()
         self._update_superclass_serial()
         # return!
         return True
 
+
+    def get_chaos_level_eng(self):
+        level = ChaosLevel.has_value(self.chaos_level)
+        if level:
+            return level.label
+        else:
+            return None
     
     def set_anointment(self, anointment):
         """
@@ -792,10 +795,6 @@ class WLSerial(object):
 
         # return!
         return True
-
-    def get_item_type_eng(self):
-        it = self.item_type
-        return item_type_eng.get(it,it)
         
     def get_level_eng(self):
         """
@@ -808,14 +807,65 @@ class WLSerial(object):
             return 'unknown lvl'
         to_ret = 'level {}'.format(level)
 
-        # Then Mayhem
-        mayhem_level = self.mayhem_level
-        if mayhem_level is None:
-            return '{}, mayhem unknown'.format(to_ret)
-        elif mayhem_level > 0:
-            return '{}, mayhem {}'.format(to_ret, mayhem_level)
+        # Then Chaos Level
+        if self.chaos_level is None:
+            return '{}, chaos unknown'.format(to_ret)
+        elif self.chaos_level > 0:
+            return '{}, {}'.format(to_ret, self.get_chaos_level_eng())
         else:
             return to_ret
+
+class WLItem(WLSerial):
+    """
+    Pretty thin wrapper around the protobuf `OakInventoryItemSaveGameData`
+    object for an item, used by both the player inventory and the bank.
+    (Though not the Lost Loot machine!  That is just an array of raw
+    serials.)  We're ignoring `development_save_data` entirely since it
+    doesn't seem to be present in actual savegames.
+
+    No idea what `pickup_order_index` is, though it might just have
+    something to do with the ordering when you're picking up multiple
+    things at once (in which case it's probably only really useful for
+    things like money and ammo).
+    """
+
+    def __init__(self, protobuf, datawrapper):
+        self.protobuf = protobuf
+        super().__init__(self.protobuf.item_serial_number, datawrapper)
+
+    @staticmethod
+    def create(datawrapper, serial_number, pickup_order_idx, is_seen=True, is_favorite=False, is_trash=False):
+        """
+        Creates a new item with the specified serial number, and pickup_order_idx
+        """
+
+        # Start constructing flags
+        flags = 0
+        if is_seen:
+            flags |= 0x1
+
+        # Favorite and Trash are mutually-exclusive
+        if is_favorite:
+            flags |= 0x2
+        elif is_trash:
+            flags |= 0x4
+
+        # Now do the creation
+        return WLItem(OakShared_pb2.OakInventoryItemSaveGameData(
+                item_serial_number=serial_number,
+                pickup_order_index=pickup_order_idx,
+                flags=flags,
+                ), datawrapper)
+
+    def get_pickup_order_idx(self):
+        return self.protobuf.pickup_order_index
+
+    def _update_superclass_serial(self):
+        """
+        Action to take when our serial number gets updated.  In this case,
+        setting the serial back into the protobuf.
+        """
+        self.protobuf.item_serial_number = self.serial
 
 class InventorySerialDB(object):
     """
@@ -979,7 +1029,7 @@ class DataWrapper(object):
     Weird little metaclass which just has an instance of each of our file-backed
     data objects in here.  This way apps using it can just pass around a single
     object instance and take what they want, rather than having to carry around
-    multiple.  (For instance, BL3Item needs both InventorySerialDB and
+    multiple.  (For instance, WLItem needs both InventorySerialDB and
     BalanceToName, and we instantiate a fair number of those.)
     """
 

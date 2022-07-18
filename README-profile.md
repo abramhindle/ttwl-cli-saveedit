@@ -26,6 +26,7 @@ commands will be:
     - [Guardian Rank Rewards](#guardian-rank-rewards)
     - [Guardian Rank Tokens](#guardian-rank-tokens)
   - [Bank Item Levels](#bank-item-levels)
+  - [Bank Item Chaos Levels](#bank-item-chaos-levels)
   - [Bank Item Mayhem Levels](#bank-item-mayhem-levels)
   - [Clear Customizations](#clear-customizations)
   - [Unlocks](#unlocks)
@@ -191,6 +192,20 @@ max level in the game.  This can be done with `--item-levels-max`
 Alternatively, you can set an explicit level using `--item-levels`
 
     ttwl-profile-edit profile.sav newprofile.sav --item-levels 57
+
+## Bank Item Chaos Levels
+
+Gear in Wonderlands can be set to one of a few "special" Chaos Levels,
+namely (in ascending level of power): Chaotic, Volatile, Primordial,
+and Ascended.  Ordinarily these levels can only be set while playing in Chaos
+Mode.  There are some arguments available to set all items in your bank to
+the given Chaos Level, though, including removing the Chaos Level entirely:
+
+    ttwl-profile-edit profile.sav newprofile.sav --items-regular
+    ttwl-profile-edit profile.sav newprofile.sav --items-chaotic
+    ttwl-profile-edit profile.sav newprofile.sav --items-volatile
+    ttwl-profile-edit profile.sav newprofile.sav --items-primordial
+    ttwl-profile-edit profile.sav newprofile.sav --items-ascended
 
 ## Bank Item Mayhem Levels
 
