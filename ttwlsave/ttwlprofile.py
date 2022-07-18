@@ -389,7 +389,7 @@ class TTWLProfile(object):
     def create_new_bank_item_encoded(self, item_serial_b64):
         """
         Creates a new item (as a WLItem object) from the base64-encoded (and
-        "TTWL()"-wrapped) `item_serial_b64`, which can later be added to our bank.
+        "WL()"-wrapped) `item_serial_b64`, which can later be added to our bank.
         """
         return self.create_new_bank_item(datalib.WLSerial.decode_serial_base64(item_serial_b64))
 

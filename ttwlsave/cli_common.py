@@ -23,6 +23,7 @@
 
 import csv
 import argparse
+from . import datalib
 from ttwlsave import ChaosLevel
 
 class DictAction(argparse.Action):
@@ -103,6 +104,9 @@ def import_items(import_file, item_create_func, item_add_func, file_csv=False, a
 
     # Process the file to find serials
     looks_like_csv = False
+    csv_patterns = set([
+        f',{prefix}(' for prefix in datalib.WLSerial.code_prefixes
+        ])
     serial_list = []
     if file_csv:
         # For CSV files, we'll look for serial numbers in literally any cell
@@ -112,20 +116,22 @@ def import_items(import_file, item_create_func, item_add_func, file_csv=False, a
             for row in reader:
                 for cell in row:
                     cell = cell.strip()
-                    if cell.lower().startswith('ttwl(') and cell.endswith(')'):
+                    if datalib.WLSerial.get_inner_serial_base64(cell):
                         serial_list.append(cell)
     else:
         # For text files, we need the entire line to *just* be a valid serial.
         with open(import_file) as df:
             for line in df:
                 itemline = line.strip()
-                if itemline.lower().startswith('ttwl(') and itemline.endswith(')'):
+                if datalib.WLSerial.get_inner_serial_base64(itemline):
                     serial_list.append(itemline)
                 # Also, check to see if we might be a CSV after all, for reporting
                 # purposes.
                 if len(serial_list) == 0 and not looks_like_csv:
-                    if ',ttwl(' in itemline.lower():
-                        looks_like_csv = True
+                    itemline_lower = itemline.lower()
+                    for pattern in csv_patterns:
+                        if pattern in itemline_lower:
+                            looks_like_csv = True
 
     # If we didn't add any items, and the file looked like it might've been a CSV
     # (while being processed as a text file), report that to the user, just in case.

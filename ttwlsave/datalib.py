@@ -108,6 +108,18 @@ class WLSerial(object):
     numbers.
     """
 
+    # Supported item-code prefixes for importing
+    code_prefixes = {
+            # New standard "we" settled on, 2022-07-17
+            'wl',
+            # The original prefix Arwent used when releasing the first editor;
+            # the de facto standard for a few months.
+            'ttw',
+            # Not actually widely in-use, but this repo technically used it for
+            # awhile, thinking that it was the de facto standard (it was not).
+            'ttwl',
+            }
+
     def __init__(self, serial, datawrapper):
 
         self.datawrapper = datawrapper
@@ -591,17 +603,35 @@ class WLSerial(object):
         savegame.  Otherwise, it will use a seed of `0`, which will then be
         unencrypted.
         """
-        return 'TTWL({})'.format(base64.b64encode(self.get_serial_number(orig_seed)).decode('latin1'))
+        return 'WL({})'.format(base64.b64encode(self.get_serial_number(orig_seed)).decode('latin1'))
+
+    @staticmethod
+    def get_inner_serial_base64(serial):
+        """
+        Given a `WL()`-encoded serial, return the actual inner code without the
+        syntactic sugar around it.  Checks for a variety of valid prefixes,
+        rather than just `WL`.  Returns `None` if there was no valid prefix
+        found.
+        """
+        parts = serial.split('(')
+        if len(parts) != 2:
+            return None
+        if parts[0].lower() not in WLSerial.code_prefixes:
+            return None
+        if parts[1][-1] != ')':
+            return None
+        return parts[1][:-1]
 
     @staticmethod
     def decode_serial_base64(new_data):
         """
         Decodes a `WL()`-encoded item serial into a binary serial
         """
-        if not new_data.lower().startswith('ttwl(') or not new_data.endswith(')'):
+        inner_serial = WLSerial.get_inner_serial_base64(new_data)
+        if inner_serial:
+            return base64.b64decode(inner_serial)
+        else:
             raise Exception('Unknown item format: {}'.format(new_data))
-        encoded = new_data[4:-1]
-        return base64.b64decode(encoded)
 
     @property
     def mayhem_level(self):

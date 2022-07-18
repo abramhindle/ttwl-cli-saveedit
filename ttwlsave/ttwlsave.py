@@ -934,7 +934,7 @@ class TTWLSave(object):
     def add_new_item_encoded(self, item_serial_b64):
         """
         Adds a new item to our item list using the base64-encoded (and
-        "TTWL()"-wrapped) `item_serial_b64`.  Returns a tuple containing the
+        "WL()"-wrapped) `item_serial_b64`.  Returns a tuple containing the
         new WLItem object itself, and its new index in our item list.
         """
         return self.add_new_item(datalib.WLSerial.decode_serial_base64(item_serial_b64))
