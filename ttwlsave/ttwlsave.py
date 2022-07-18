@@ -1366,21 +1366,3 @@ class TTWLSave(object):
         for idx in reversed(indicies_to_del):
             del self.save.challenge_data[idx]
 
-    def clear_bloody_harvest(self):
-        """
-        Clears all Bloody Harvest challenge data
-        """
-        self.clear_challenge_prefix('/Game/PatchDLC/BloodyHarvest/')
-
-    def clear_broken_hearts(self):
-        """
-        Clears all Broken Hearts challenge data
-        """
-        self.clear_challenge_prefix('/Game/PatchDLC/EventVDay/')
-
-    def clear_cartels(self):
-        """
-        Clears all Revenge of the Cartels challenge data
-        """
-        self.clear_challenge_prefix('/Game/PatchDLC/Event2/')
-
