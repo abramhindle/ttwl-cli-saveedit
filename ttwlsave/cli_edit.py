@@ -446,12 +446,15 @@ def main():
                     quiet=args.quiet,
                     )
 
+        # Un-finish missions (TODO: test!)
         if args.unfinish_missions:
             if not args.quiet:
                 print(' - Un-finishing NVHM state entirely')
             # ... or clearing TVHM state entirely.
             save.set_playthroughs_completed(0)
-            save.clear_playthrough_data(0)
+            save.clear_playthrough_data()
+
+        # Fake "TVHM" (TODO: Test!)
         if args.fake_tvhm:
             if not args.quiet:
                 print(' - Un-finishing missions and marking the playthrough complete state entirely -- enables chaos mode')
@@ -462,7 +465,7 @@ def main():
             for mission in missions:
                 # print(mission)
                 if mission != "/Game/Missions/Plot/Mission_Plot11.Mission_Plot11_C":
-                    save.delete_mission(0,mission,allow_plot=True)
+                    save.delete_mission(mission, allow_plot=True)
             save.set_playthroughs_completed(1)
             save.finish_game()
         

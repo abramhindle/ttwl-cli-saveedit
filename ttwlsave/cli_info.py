@@ -83,15 +83,16 @@ def main():
     # Savegame GUID
     print('Savegame GUID: {}'.format(save.get_savegame_guid()))
 
-    # Pet Names
-    petnames = save.get_pet_names(True)
-    if len(petnames) > 0:
-        for (pet_type, pet_name) in petnames.items():
-            print(' - {} Name: {}'.format(pet_type, pet_name))
-
     # Class
     print('Player Primary Class: {}'.format(save.get_primary_class(True)))
     print('Player Secondary Class: {}'.format(save.get_secondary_class(True)))
+
+    # Companion Names
+    petnames = save.get_pet_names(True)
+    if len(petnames) > 0:
+        print('Companion Names:')
+        for (pet_type, pet_name) in petnames.items():
+            print('- {} Name: {}'.format(pet_type, pet_name))
 
     # XP/Level
     print('XP: {}'.format(save.get_xp()))
@@ -105,82 +106,72 @@ def main():
     print(' - Moon Orbs: {:,}'.format(save.get_moon_orbs()))
     print(' - Souls: {:,}'.format(save.get_souls()))
 
-    # Playthroughs
-    print('Playthroughs Completed: {}'.format(save.get_playthroughs_completed()))
-
     # Chaos Level
     print('Chaos Level: {} (unlocked: {})'.format(*save.get_chaos_level_with_max()))
 
-    # Playthrough-specific Data
-    for pt, (mapname,
-                stations,
-                active_missions,
-                active_missions_obj,
-                completed_missions,
-                completed_missions_obj,
-                ) in enumerate(itertools.zip_longest(
-            save.get_pt_last_maps(True),
-            save.get_pt_active_ft_station_lists(),
-            save.get_pt_active_mission_lists(True),
-            save.get_pt_active_mission_lists(),
-            save.get_pt_completed_mission_lists(True),
-            save.get_pt_completed_mission_lists(),
-            )):
+    ###
+    ### Playthrough Info!
+    ###
+    print('Playthrough Info:')
 
-        print('Playthrough {} Info:'.format(pt+1))
+    # Map
+    mapname = save.get_last_maps(True)
+    if mapname is not None:
+        print(' - In Map: {}'.format(save.get_last_maps(True)))
 
-        # Map
-        if mapname is not None:
-            print(' - In Map: {}'.format(mapname))
-
-        # FT Stations
-        if args.verbose or args.fast_travel:
-            if stations is not None:
-                if len(stations) == 0:
-                    print(' - No Active Fast Travel Stations')
-                else:
-                    print(' - Active Fast Travel Stations:'.format(pt+1))
-                    for station in stations:
-                        print('   - {}'.format(station))
-
-        # Missions
-        if active_missions is not None:
-            if len(active_missions) == 0:
-                print(' - No Active Missions')
+    # FT Stations
+    if args.verbose or args.fast_travel:
+        stations = save.get_active_ft_station_lists()
+        if stations is not None:
+            if len(stations) == 0:
+                print(' - No Active Fast Travel Stations')
             else:
-                print(' - Active Missions:')
-                for mission, obj_name in sorted(zip(active_missions, active_missions_obj)):
-                    print('   - {}'.format(mission))
-                    if args.mission_paths:
-                        print('     {}'.format(obj_name))
+                print(' - Active Fast Travel Stations:')
+                for station in stations:
+                    print('   - {}'.format(station))
 
-        # Completed mission count
-        if completed_missions is not None:
-            print(' - Missions completed: {}'.format(len(completed_missions)))
+    # Missions
+    active_missions = save.get_active_mission_lists(True)
+    active_missions_obj = save.get_active_mission_lists()
+    if active_missions is not None:
+        if len(active_missions) == 0:
+            print(' - No Active Missions')
+        else:
+            print(' - Active Missions:')
+            for mission, obj_name in sorted(zip(active_missions, active_missions_obj)):
+                print('   - {}'.format(mission))
+                if args.mission_paths:
+                    print('     {}'.format(obj_name))
 
-            # Show all missions if need be
-            if args.verbose or args.all_missions:
-                for mission, obj_name in sorted(zip(completed_missions, completed_missions_obj)):
-                    print('   - {}'.format(mission))
-                    if args.mission_paths:
-                        print('     {}'.format(obj_name))
+    # Completed mission count
+    completed_missions = save.get_completed_mission_lists(True)
+    completed_missions_obj = save.get_completed_mission_lists()
+    if completed_missions is not None:
+        print(' - Missions completed: {}'.format(len(completed_missions)))
 
-            # "Important" missions - I'm torn as to whether or not this kind of thing
-            # should be in ttwlsave.py itself, or at least some constants in __init__.py
-            mission_set = set(completed_missions)
-            importants = []
-            if 'Epilogue' in mission_set:
-                importants.append('Main Game')
-            if 'Defeated Chums: Difficulty 4' in mission_set:
-                importants.append('DLC1 - Coiled Captors')
-            if 'Defeated Imelda: Difficulty 4' in mission_set:
-                importants.append('DLC2 - Glutton\'s Gamble')
-            if 'Defeated Fyodor: Difficulty 4' in mission_set:
-                importants.append('DLC3 - Molten Mirrors')
-            if len(importants) > 0:
-                print(' - Mission Milestones:')
-                for important in importants:
-                    print('   - Finished: {}'.format(important))
+        # Show all missions if need be
+        if args.verbose or args.all_missions:
+            for mission, obj_name in sorted(zip(completed_missions, completed_missions_obj)):
+                print('   - {}'.format(mission))
+                if args.mission_paths:
+                    print('     {}'.format(obj_name))
+
+        # "Important" missions - I'm torn as to whether or not this kind of thing
+        # should be in ttwlsave.py itself, or at least some constants in __init__.py
+        mission_set = set(completed_missions)
+        importants = []
+        if 'Epilogue' in mission_set:
+            importants.append('Main Game')
+        if 'Defeated Chums: Difficulty 4' in mission_set:
+            importants.append('DLC1 - Coiled Captors')
+        if 'Defeated Imelda: Difficulty 4' in mission_set:
+            importants.append('DLC2 - Glutton\'s Gamble')
+        if 'Defeated Fyodor: Difficulty 4' in mission_set:
+            importants.append('DLC3 - Molten Mirrors')
+        if len(importants) > 0:
+            print(' - Mission Milestones:')
+            for important in importants:
+                print('   - Finished: {}'.format(important))
 
     # Inventory Slots that we care about
     print('Unlockable Inventory Slots:')

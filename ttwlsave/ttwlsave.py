@@ -525,7 +525,7 @@ class TTWLSave(object):
         if level > self.save.game_state_save_data_for_playthrough[0].mayhem_unlocked_level:
             self.save.game_state_save_data_for_playthrough[0].mayhem_unlocked_level = level
 
-    def clear_game_state_pt(self, playthrough):
+    def clear_game_state_pt(self, playthrough=0):
         """
         Clears out all game state data from the given `playthrough` (zero-indexed).  The
         `playthrough` given must be the *last* one in the list.
@@ -545,7 +545,7 @@ class TTWLSave(object):
         """
         return self.save.last_active_travel_station_for_playthrough
 
-    def get_pt_last_station(self, pt):
+    def get_pt_last_station(self, pt=0):
         """
         Returns the last station (fast travel, resurrection, level) the player
         has been near, for the given Playthrough (zero-indexed)
@@ -554,7 +554,7 @@ class TTWLSave(object):
             return self.save.last_active_travel_station_for_playthrough[pt]
         return None
 
-    def clear_last_station_pt(self, playthrough):
+    def clear_last_station_pt(self, playthrough=0):
         """
         Clears out all Last Station Visited data from the given `playthrough` (zero-indexed).  The
         `playthrough` given must be the *last* one in the list.
@@ -569,7 +569,7 @@ class TTWLSave(object):
 
     def get_pt_last_maps(self, eng=False):
         """
-        Returns a list maps which the player has been in, for each Playthrough.
+        Returns a list maps which the player is currently in, for each Playthrough.
         Maps will be their in-game IDs by default, or English names if `eng`
         is `True`
         """
@@ -594,7 +594,17 @@ class TTWLSave(object):
                     maps.append('(Unknown station: {})'.format(station))
         return maps
 
-    def get_pt_last_map(self, pt, eng=False):
+    def get_last_maps(self, eng=False):
+        """
+        Returns the map which the player has last been in.  Maps will be
+        their in-game IDs by default, or English names if `eng` is `True`.
+        At the moment WL only has a single playthrough, but we're wrapping it
+        like this so it's easier to revert, if GBX ever does add
+        TVHM-or-whatever.
+        """
+        return self.get_pt_last_maps(eng=eng)[0]
+
+    def get_pt_last_map(self, pt=0, eng=False):
         """
         Returns the last map the player has been in, for the specified
         Playthrough (zero-indexed).  The map will be its in-game ID by
@@ -630,7 +640,15 @@ class TTWLSave(object):
             to_ret.append([d.active_travel_station_name for d in data.active_travel_stations])
         return to_ret
 
-    def get_pt_active_ft_station_list(self, pt):
+    def get_active_ft_station_lists(self):
+        """
+        Returns a list of Fast travel station names active.  At the moment WL only has
+        a single playthrough, but we're wrapping it like this so it's easier to revert,
+        if GBX ever does add TVHM-or-whatever.
+        """
+        return self.get_pt_active_ft_station_lists()[0]
+
+    def get_pt_active_ft_station_list(self, pt=0):
         """
         Returns a list of Fast Travel station names active for the given
         Playthrough (zero-indexed)
@@ -640,7 +658,7 @@ class TTWLSave(object):
             return ptlist[pt]
         return None
 
-    def clear_active_ft_stations_pt(self, playthrough):
+    def clear_active_ft_stations_pt(self, playthrough=0):
         """
         Clears out all active Fast Travel data from the given `playthrough` (zero-indexed).  The
         `playthrough` given must be the *last* one in the list.
@@ -674,6 +692,17 @@ class TTWLSave(object):
             to_ret.append(active_missions)
         return to_ret
 
+    def get_mission_lists(self, mission_status, eng=False):
+        """
+        Returns a list of missions in the given `mission_status`.  Missions will
+        be in their object name by default, or their English names if `eng` is `True`.
+        At the moment WL only has a single playthrough, but we're wrapping it
+        like this so it's easier to revert, if GBX ever does add
+        TVHM-or-whatever.
+
+        """
+        return self.get_pt_mission_lists(mission_status, eng=eng)[0]
+
     def get_pt_active_mission_lists(self, eng=False):
         """
         Returns a list of active missions for each Playthrough.  Missions will
@@ -681,6 +710,16 @@ class TTWLSave(object):
         `True`.
         """
         return self.get_pt_mission_lists(MissionState.MS_Active, eng)
+
+    def get_active_mission_lists(self, eng=False):
+        """
+        Returns a list of active missions.  Missions will be in their object name
+        by default, or their English names if `eng` is `True`.
+        At the moment WL only has a single playthrough, but we're wrapping it
+        like this so it's easier to revert, if GBX ever does add
+        TVHM-or-whatever.
+        """
+        return self.get_pt_active_mission_lists(eng=eng)[0]
 
     def get_pt_completed_mission_lists(self, eng=False):
         """
@@ -690,7 +729,17 @@ class TTWLSave(object):
         """
         return self.get_pt_mission_lists(MissionState.MS_Complete, eng)
 
-    def get_pt_mission_list(self, pt, mission_status, eng=False):
+    def get_completed_mission_lists(self, eng=False):
+        """
+        Returns a list of completed missions.  Missions will be in their object name
+        by default, or their English names if `eng` is `True`.
+        At the moment WL only has a single playthrough, but we're wrapping it
+        like this so it's easier to revert, if GBX ever does add
+        TVHM-or-whatever.
+        """
+        return self.get_pt_completed_mission_lists(eng=eng)[0]
+
+    def get_pt_mission_list(self, mission_status, pt=0, eng=False):
         """
         Returns a list of missions in the given `mission_status`, for the given
         Playthrough (zero-indexed).  Missions will be in their object name
@@ -701,21 +750,21 @@ class TTWLSave(object):
             return missions[pt]
         return None
 
-    def get_pt_active_mission_list(self, pt, eng=False):
+    def get_pt_active_mission_list(self, pt=0, eng=False):
         """
         Returns a list of active missions for the given Playthrough (zero-indexed).
         Missions will be in their object name by default, or their English names
         if `eng` is `True`
         """
-        return self.get_pt_mission_list(pt, MissionState.MS_Active, eng)
+        return self.get_pt_mission_list(MissionState.MS_Active, pt, eng)
 
-    def get_pt_completed_mission_list(self, pt, eng=False):
+    def get_pt_completed_mission_list(self, pt=0, eng=False):
         """
         Returns a list of completed missions for the given Playthrough (zero-indexed).
         Missions will be in their object name by default, or their English names
         if `eng` is `True`
         """
-        return self.get_pt_mission_list(pt, MissionState.MS_Complete, eng)
+        return self.get_pt_mission_list(MissionState.MS_Complete, pt, eng)
 
     def get_pt_completed_mission_counts(self):
         """
@@ -726,7 +775,15 @@ class TTWLSave(object):
             to_ret.append(len(missions))
         return to_ret
 
-    def get_pt_completed_mission_count(self, pt):
+    def get_completed_mission_counts(self):
+        """
+        Returns a count of completed missions.  At the moment WL only has a
+        single playthrough, but we're wrapping it like this so it's easier to
+        revert, if GBX ever does add TVHM-or-whatever.
+        """
+        return self.get_pt_completed_mission_counts()[0]
+
+    def get_pt_completed_mission_count(self, pt=0):
         """
         Returns a count of completed mission object names for the given
         Playthrough (zero-indexed).
@@ -736,7 +793,7 @@ class TTWLSave(object):
             return counts[pt]
         return None
 
-    def clear_mission_pt(self, playthrough):
+    def clear_mission_pt(self, playthrough=0):
         """
         Clears out all mission data from the given `playthrough` (zero-indexed).  The
         `playthrough` given must be the *last* one in the list.
@@ -749,7 +806,7 @@ class TTWLSave(object):
                 ))
         self.save.mission_playthroughs_data.pop()
 
-    def clear_playthrough_data(self, playthrough):
+    def clear_playthrough_data(self, playthrough=0):
         """
         Clears out all data from the given `playthrough` (zero-indexed), including any higher
         playthroughs.  This is completely untested for clearing NVHM data, but is used by
@@ -1310,20 +1367,20 @@ class TTWLSave(object):
                         ))
 
                     
-    def finish_mission(self, pt, mission_name):
-        for pt in self.save.mission_playthroughs_data:
-            pt.mission_list.append(OakSave_pb2.MissionStatusPlayerSaveGameData(
-                status=MissionState.MS_Complete,
-                objectives_progress=objectives,
-                mission_class_path=mission_path,
-                active_objective_set_path=objectiveset,
-                kickoff_played=True,
-                has_been_viewed_in_log=True,
-                dlc_package_id=0,
-                league_instance=0,
-            ))
+    def finish_mission(self, mission_name, pt=0):
+        # TODO: docstring, test, better handling of `pt`
+        self.save.mission_playthroughs_data[pt].mission_list.append(OakSave_pb2.MissionStatusPlayerSaveGameData(
+            status=MissionState.MS_Complete,
+            objectives_progress=objectives,
+            mission_class_path=mission_path,
+            active_objective_set_path=objectiveset,
+            kickoff_played=True,
+            has_been_viewed_in_log=True,
+            dlc_package_id=0,
+            league_instance=0,
+        ))
 
-    def delete_mission(self, pt, mission_obj, allow_plot=False):
+    def delete_mission(self, mission_obj, pt=0, allow_plot=False):
         """
         Deletes the specified mission (with object path `mission_obj`), in the
         playthrough `pt` (0 = Normal/NVHM, 1 = TVHM) from the savegame entirely.
