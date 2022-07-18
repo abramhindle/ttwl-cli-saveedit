@@ -133,19 +133,6 @@ def main():
                 const=level,
                 help='Set all inventory item chaos levels to {}'.format(level.label),
                 )
-    
-    itemmayhemgroup = parser.add_mutually_exclusive_group()
-
-    itemmayhemgroup.add_argument('--item-mayhem-max',
-            dest='item_mayhem_max',
-            action='store_true',
-            help='Set all inventory items to the maximum Mayhem level ({})'.format(ttwlsave.mayhem_max))
-
-    itemmayhemgroup.add_argument('--item-mayhem-levels',
-            dest='item_mayhem_levels',
-            type=int,
-            choices=range(ttwlsave.mayhem_max+1),
-            help='Set all inventory items to the specified Mayhem level (0 to remove)')
 
     parser.add_argument('--mayhem',
             type=int,
@@ -283,10 +270,6 @@ def main():
     if args.level_max:
         args.level = ttwlsave.max_level
 
-    # Set max mayhem arg
-    if args.item_mayhem_max:
-        args.item_mayhem_levels = ttwlsave.mayhem_max
-
     # Check item level.  The max storeable in the serial number is 127, but the
     # effective limit in-game is 100, thanks to MaxGameStage attributes.  We
     # could use `ttwlsave.max_level` here, too, of course, but in the event that
@@ -349,7 +332,6 @@ def main():
         #args.unfinish_nvhm,
         args.unfinish_missions,
         args.fake_tvhm,
-        args.item_mayhem_levels is not None,
         # args.delete_pt1_mission is not None,
         # args.delete_pt2_mission is not None,
         # args.clear_bloody_harvest,
@@ -525,13 +507,6 @@ def main():
         if args.items_chaos_level is not None:
             cli_common.update_chaos_level(save.get_items(),
                     args.items_chaos_level,
-                    quiet=args.quiet,
-                    )
-            
-        # Item Mayhem level
-        if args.item_mayhem_levels is not None:
-            cli_common.update_item_mayhem_levels(save.get_items(),
-                    args.item_mayhem_levels,
                     quiet=args.quiet,
                     )
 

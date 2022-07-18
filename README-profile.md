@@ -27,7 +27,6 @@ commands will be:
     - [Guardian Rank Tokens](#guardian-rank-tokens)
   - [Bank Item Levels](#bank-item-levels)
   - [Bank Item Chaos Levels](#bank-item-chaos-levels)
-  - [Bank Item Mayhem Levels](#bank-item-mayhem-levels)
   - [Clear Customizations](#clear-customizations)
   - [Unlocks](#unlocks)
     - [Lost Loot and Bank Capacity](#lost-loot-and-bank-capacity)
@@ -206,24 +205,6 @@ the given Chaos Level, though, including removing the Chaos Level entirely:
     ttwl-profile-edit profile.sav newprofile.sav --items-volatile
     ttwl-profile-edit profile.sav newprofile.sav --items-primordial
     ttwl-profile-edit profile.sav newprofile.sav --items-ascended
-
-## Bank Item Mayhem Levels
-
-There are two arguments to set bank item mayhem levels.  The first is
-to set all weapons to the maximum mayhem level, which is currently 10,
-using `--item-mayhem-max`.  Note that currently only weapons and
-grenades can have Mayhem applied; other items will end up generating
-a message like `<num> were unable to be levelled`.
-
-    ttwl-profile-edit profile.sav newprofile.sav --item-mayhem-max
-
-Alternatively, you can specify a specific Mayhem level with
-`--item-mayhem-levels`:
-
-    ttwl-profile-edit profile.sav newprofile.sav --item-mayhem-levels 5
-
-To remove Mayhem levels from weapons/grenades entirely, specify `0` for
-`--item-mayhem-levels`.
 
 ## Clear Customizations
 

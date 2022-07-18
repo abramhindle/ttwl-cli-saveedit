@@ -980,21 +980,7 @@ required_xp_list = [
 max_supported_level = len(required_xp_list)
 
 # Mayhem parts
-mayhem_part_to_lvl = {
-        '/Game/PatchDLC/Mayhem2/Gear/Weapon/_Shared/_Design/MayhemParts/Part_WeaponMayhemLevel_01.Part_WeaponMayhemLevel_01': 1,
-        '/Game/PatchDLC/Mayhem2/Gear/Weapon/_Shared/_Design/MayhemParts/Part_WeaponMayhemLevel_02.Part_WeaponMayhemLevel_02': 2,
-        '/Game/PatchDLC/Mayhem2/Gear/Weapon/_Shared/_Design/MayhemParts/Part_WeaponMayhemLevel_03.Part_WeaponMayhemLevel_03': 3,
-        '/Game/PatchDLC/Mayhem2/Gear/Weapon/_Shared/_Design/MayhemParts/Part_WeaponMayhemLevel_04.Part_WeaponMayhemLevel_04': 4,
-        '/Game/PatchDLC/Mayhem2/Gear/Weapon/_Shared/_Design/MayhemParts/Part_WeaponMayhemLevel_05.Part_WeaponMayhemLevel_05': 5,
-        '/Game/PatchDLC/Mayhem2/Gear/Weapon/_Shared/_Design/MayhemParts/Part_WeaponMayhemLevel_06.Part_WeaponMayhemLevel_06': 6,
-        '/Game/PatchDLC/Mayhem2/Gear/Weapon/_Shared/_Design/MayhemParts/Part_WeaponMayhemLevel_07.Part_WeaponMayhemLevel_07': 7,
-        '/Game/PatchDLC/Mayhem2/Gear/Weapon/_Shared/_Design/MayhemParts/Part_WeaponMayhemLevel_08.Part_WeaponMayhemLevel_08': 8,
-        '/Game/PatchDLC/Mayhem2/Gear/Weapon/_Shared/_Design/MayhemParts/Part_WeaponMayhemLevel_09.Part_WeaponMayhemLevel_09': 9,
-        '/Game/PatchDLC/Mayhem2/Gear/Weapon/_Shared/_Design/MayhemParts/Part_WeaponMayhemLevel_10.Part_WeaponMayhemLevel_10': 10,
-        }
-mayhem_part_lower_to_lvl = {k.lower(): v for k, v in mayhem_part_to_lvl.items()}
-mayhem_lvl_to_part = {v: k for k, v in mayhem_part_to_lvl.items()}
-mayhem_max = max(mayhem_part_to_lvl.values())
+mayhem_max = 10
 
 # InvData types which can accept Mayhem parts
 # (may have to be more clever about this if non-guns start accepting *different* Mayhem parts)

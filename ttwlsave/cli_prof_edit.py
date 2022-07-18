@@ -131,19 +131,6 @@ def main():
                 help='Set all bank item chaos levels to {}'.format(level.label),
                 )
 
-    itemmayhemgroup = parser.add_mutually_exclusive_group()
-
-    itemmayhemgroup.add_argument('--item-mayhem-max',
-            dest='item_mayhem_max',
-            action='store_true',
-            help='Set all bank items to the maximum Mayhem level ({})'.format(ttwlsave.mayhem_max))
-
-    itemmayhemgroup.add_argument('--item-mayhem-levels',
-            dest='item_mayhem_levels',
-            type=int,
-            choices=range(ttwlsave.mayhem_max+1),
-            help='Set all bank items to the specified Mayhem level (0 to remove)')
-
     parser.add_argument('-i', '--import-items',
             dest='import_items',
             type=str,
@@ -199,10 +186,6 @@ def main():
     if args.item_levels_max:
         args.item_levels = ttwlsave.max_level
 
-    # Set max mayhem arg
-    if args.item_mayhem_max:
-        args.item_mayhem_levels = ttwlsave.mayhem_max
-
     # Check key counts; don't let them be below zero
     if args.skeleton_keys is not None and args.skeleton_keys < 0:
         raise argparse.ArgumentTypeError('Skeleton keys cannot be negative')
@@ -254,7 +237,6 @@ def main():
         args.item_levels,
         args.items_chaos_level is not None,
         args.clear_customizations,
-        args.item_mayhem_levels is not None,
         ])
 
     # Alert about Guardian Rank stuff
@@ -381,13 +363,6 @@ def main():
         if args.items_chaos_level is not None:
             cli_common.update_chaos_level(profile.get_bank_items(),
                     args.items_chaos_level,
-                    quiet=args.quiet,
-                    )
-
-        # Item Mayhem level
-        if args.item_mayhem_levels is not None:
-            cli_common.update_item_mayhem_levels(profile.get_bank_items(),
-                    args.item_mayhem_levels,
                     quiet=args.quiet,
                     )
 

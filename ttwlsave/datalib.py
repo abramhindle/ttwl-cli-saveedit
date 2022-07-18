@@ -390,7 +390,7 @@ class WLSerial(object):
                     self._part_invkey, bits, 6)
             # print((self._part_bits, self._parts))
             # print(len(bits.data))
-            # Read generics (anointments+mayhem)
+            # Read generics (enchantments)
             (self._generic_bits, self._generic_parts) = self._get_inv_db_header_part_repeated(
                     'InventoryGenericPartData', bits, 4)
 
@@ -438,7 +438,7 @@ class WLSerial(object):
         """
         De-parses a serial; used after we make changes to the data that gets
         pulled out during `_parse_serial`.  At the moment, that's both level
-        changes and mayhem level changes.  Will end up calling out to the
+        changes and chaos level changes.  Will end up calling out to the
         superclass's `_update_superclass_serial` to propagate the serial change
         to whatever containing structure needs it, and set the object to trigger a
         re-parse if anything else needs to read more.  That's probably overkill
@@ -633,40 +633,6 @@ class WLSerial(object):
         else:
             raise Exception('Unknown item format: {}'.format(new_data))
 
-    @property
-    def mayhem_level(self):
-        """
-        Returns the current Mayhem level of the item, with `0` signifying
-        that there is no Mayhem level present, and `None` signifying that
-        the Mayhem level could not be parsed (due to being unable to parse the
-        item parts)
-        """
-        if not self.parsed or not self.parts_parsed:
-            self._parse_serial()
-            if not self.can_parse or not self.can_parse_parts:
-                return None
-        # Given the presence of item editors, there could possibly be more
-        # than one Mayhem part present in a serial (though they don't seem
-        # to stack at all, so doing so would be pointless).  We'll just
-        # abort processing as soon as we find one, which I suspect is likely
-        # what the game does, too.
-        for part_name, part_idx in self._generic_parts:
-            if part_name.lower() in mayhem_part_lower_to_lvl:
-                return mayhem_part_lower_to_lvl[part_name.lower()]
-        return 0
-
-    def can_have_mayhem(self):
-        """
-        Returns `True` if this is an item type which can have a mayhem level,
-        or `False` otherwise.  Will also return `False` if we're unable to
-        parse parts for the item.
-        """
-        if not self.parsed or not self.parts_parsed:
-            self._parse_serial()
-            if not self.can_parse or not self.can_parse_parts:
-                return False
-        return self._invdata.lower() in mayhem_invdata_lower_types
-
     def can_have_anointment(self):
         """
         Returns `True` if this is an item type which can have an anointment,
@@ -678,47 +644,6 @@ class WLSerial(object):
             if not self.can_parse or not self.can_parse_parts:
                 return False
         return self._invdata.lower() in anointable_invdata_lower_types
-
-    @mayhem_level.setter
-    def mayhem_level(self, value):
-        """
-        Sets the given mayhem level on the item.  Returns `True` if we were
-        able to do so, or `False` if not.
-        """
-        # The call to `can_have_mayhem` will parse the serial if possible,
-        # so we'll be all set.
-        if not self.can_have_mayhem():
-            return False
-
-        # Don't forget to set this
-        self.changed_parts = True
-
-        # First grab a list of any non-Mayhem parts (should just be anoints)
-        new_parts = []
-        for idx, (part_name, part_idx) in enumerate(self._generic_parts):
-            if part_name.lower() not in mayhem_part_lower_to_lvl:
-                new_parts.append((part_name, part_idx))
-
-        # Now add our new one in
-        if value > 0:
-            new_mayhem_part = self.serial_db.get_part_index(
-                    'InventoryGenericPartData',
-                    mayhem_lvl_to_part[value],
-                    )
-            if new_mayhem_part is None:
-                return False
-            else:
-                new_parts.append((mayhem_lvl_to_part[value], new_mayhem_part))
-
-        # Aaaand assign our list of generic parts back
-        self._generic_parts = new_parts
-
-        # Re-serialize
-        self._deparse_serial()
-        self._update_superclass_serial()
-
-        # return!
-        return True
 
     def can_have_chaos_level(self):
         """
@@ -782,12 +707,12 @@ class WLSerial(object):
 
         This will overwrite any existing anointment part on the item in question.
 
-        TODO: This routine currently assumes that any Generic part that's *not* a
-        Mayhem Level part is an anointment, and will wipe those out before setting
-        the specified part.  As of November 2020 this should be a safe assumption,
-        but might not be in the future.  Should this functionality ever get exported
-        though a "proper" CLI arg, we should really import a list of legit
-        anointments to check against, just to assist in futureproofing.
+        TODO: This routine currently assumes that any existing Generic part is an
+        anointment, and will wipe those out before setting the specified part.
+        As of July 2022 this should be a safe assumption, but might not be in
+        the future.  Should this functionality ever get exported though a
+        "proper" CLI arg, we should really import a list of legit anointments
+        to check against, just to assist in futureproofing.
         """
 
         # Check for anointment part validity first thing, before we do anything
@@ -810,12 +735,6 @@ class WLSerial(object):
         # Start out with our new anointment part
         new_parts = [(anointment, new_anointment_part)]
 
-        # Now add in any existing Mayhem parts (should just be the one, but
-        # whatever)
-        for idx, (part_name, part_idx) in enumerate(self._generic_parts):
-            if part_name.lower() in mayhem_part_lower_to_lvl:
-                new_parts.append((part_name, part_idx))
-
         # Aaaand assign our list of generic parts back
         self._generic_parts = new_parts
 
@@ -828,7 +747,7 @@ class WLSerial(object):
         
     def get_level_eng(self):
         """
-        Returns an English representation of our level, including Mayhem level,
+        Returns an English representation of our level, including Chaos level,
         suitable for reporting to a user.
         """
         # First, regular level

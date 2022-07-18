@@ -194,8 +194,8 @@ def main():
         for item in save.get_items():
             if item.level != ttwlsave.max_level:
                 item.level = ttwlsave.max_level
-            if item.mayhem_level != ttwlsave.mayhem_max:
-                item.mayhem_level = ttwlsave.mayhem_max
+            if item.chaos_level != ttwlsave.ChaosLevel.ASCENDED.value:
+                item.chaos_level = ttwlsave.ChaosLevel.ASCENDED.value
 
         # Wipe guardian rank
         save.zero_guardian_rank()

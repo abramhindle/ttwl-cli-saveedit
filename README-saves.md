@@ -32,7 +32,6 @@ commands will be:
   - [Seasonal Event Status](#seasonal-event-status)
   - [Item Levels](#item-levels)
   - [Item Chaos Levels](#item-chaos-levels)
-  - [Item Mayhem Levels](#item-mayhem-levels)
   - [Unlocks](#unlocks)
     - [Ammo/Backpack Unlocks](#ammobackpack-unlocks)
     - [Equipment Slots](#equipment-slots)
@@ -280,24 +279,6 @@ the given Chaos Level, though, including removing the Chaos Level entirely:
     ttwl-save-edit old.sav new.sav --items-volatile
     ttwl-save-edit old.sav new.sav --items-primordial
     ttwl-save-edit old.sav new.sav --items-ascended
-
-## Item Mayhem Levels
-
-There are two arguments to set item mayhem levels.  The first is
-to set all weapons to the maximum mayhem level, which is currently 10,
-using `--item-mayhem-max`.  Note that currently only weapons and
-grenades can have Mayhem applied; other items will end up generating
-a message like `<num> were unable to be levelled`.
-
-    ttwl-save-edit old.sav new.sav --item-mayhem-max
-
-Alternatively, you can specify a specific Mayhem level with
-`--item-mayhem-levels`:
-
-    ttwl-save-edit old.sav new.sav --item-mayhem-levels 5
-
-To remove Mayhem levels from weapons/greandes entirely, specify `0` for
-`--item-mayhem-levels`.
 
 ## Unlocks
 
