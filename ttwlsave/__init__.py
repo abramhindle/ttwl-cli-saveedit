@@ -209,6 +209,14 @@ class Ammo(LabelEnum):
     SHOTGUN = ('Shotgun', '/Game/GameData/Weapons/Ammo/Resource_Ammo_Shotgun.Resource_Ammo_Shotgun', 280)
     SNIPER = ('Sniper', '/Game/GameData/Weapons/Ammo/Resource_Ammo_Sniper.Resource_Ammo_Sniper', 204)
 
+# Chaos Levels
+class ChaosLevel(LabelEnum):
+    REGULAR = ('Regular', 0)
+    CHAOTIC = ('Chaotic', 1)
+    VOLATILE = ('Volatile', 2)
+    PRIMORDIAL = ('Primordial', 3)
+    ASCENDED = ('Ascended', 4)
+
 # Challenges
 (CHAOS,
         CHAL_ARTIFACT,
@@ -1473,11 +1481,3 @@ fts_to_map = {
         '/game/patchdlc/indigo1/gamedata/fasttravel/leveltravelstations/lts_overworld_caravanhub.lts_overworld_caravanhub': 'Overworld_P',
         }
 
-
-# Chaos Levels
-class ChaosLevel(LabelEnum):
-    REGULAR = ('Regular', 0)
-    CHAOTIC = ('Chaotic', 1)
-    VOLATILE = ('Volatile', 2)
-    PRIMORDIAL = ('Primordial', 3)
-    ASCENDED = ('Ascended', 4)
