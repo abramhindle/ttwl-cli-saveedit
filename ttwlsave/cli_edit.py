@@ -177,11 +177,6 @@ def main():
             help='Import items from file',
             )
 
-    parser.add_argument('--allow-fabricator',
-            action='store_true',
-            help='Allow importing Fabricator when importing items from file',
-            )
-
     # parser.add_argument('--delete-pt1-mission',
     #         type=str,
     #         metavar='MISSIONPATH',
@@ -426,7 +421,6 @@ def main():
                     save.create_new_item_encoded,
                     save.add_item,
                     file_csv=args.csv,
-                    allow_fabricator=args.allow_fabricator,
                     quiet=args.quiet,
                     )
 

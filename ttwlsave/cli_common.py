@@ -86,17 +86,14 @@ def export_items_csv(items, export_file, quiet=False):
     if not quiet:
         print('Wrote {} items (in base64 format) to CSV file {}'.format(len(items), export_file))
 
-def import_items(import_file, item_create_func, item_add_func, file_csv=False, allow_fabricator=False, quiet=False):
+def import_items(import_file, item_create_func, item_add_func, file_csv=False, quiet=False):
     """
     Imports items from `import_file`.  `item_create_func` should point to
     a function used to create the item appropriately, and `item_add_func`
     should point to a function used to actually add the item into the
     appropriate container.  If `file_csv` is `True`, we will process the file
     as if it's a CSV, otherwise we'll process as if it's a "regular"
-    text file.  If `allow_fabricator` is `False` (the default),
-    this routine will refuse to import Fabricators, or any item which
-    can't be decoded (in case it's a Fabricator).  If `quiet` is `True`,
-    only error/warning output will be shown.
+    text file.  If `quiet` is `True`, only error/warning output will be shown.
     """
     if not quiet:
         print(' - Importing items from {}'.format(import_file))
@@ -141,14 +138,6 @@ def import_items(import_file, item_create_func, item_add_func, file_csv=False, a
     # Now loop through the serials and see if we should add them
     for serial in serial_list:
         new_item = item_create_func(serial)
-        if not allow_fabricator:
-            # Report these regardless of `quiet`
-            if not new_item.eng_name:
-                print('   - NOTICE: Skipping unknown item import because --allow-fabricator is not set')
-                continue
-            if new_item.balance_short.lower() == 'balance_eridian_fabricator':
-                print('   - NOTICE: Skipping Fabricator import because --allow-fabricator is not set')
-                continue
         item_add_func(new_item)
         if not quiet:
             if new_item.eng_name:

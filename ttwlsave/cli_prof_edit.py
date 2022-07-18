@@ -129,11 +129,6 @@ def main():
             help='Import items from file',
             )
 
-    parser.add_argument('--allow-fabricator',
-            action='store_true',
-            help='Allow importing Fabricator when importing items from file',
-            )
-
     parser.add_argument('--clear-customizations',
             action='store_true',
             help='Remove all unlocked customizations',
@@ -334,7 +329,6 @@ def main():
                     profile.create_new_bank_item_encoded,
                     profile.add_bank_item,
                     file_csv=args.csv,
-                    allow_fabricator=args.allow_fabricator,
                     quiet=args.quiet,
                     )
 
