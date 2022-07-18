@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # vim: set expandtab tabstop=4 shiftwidth=4:
 
-# Copyright (c) 2020-2021 CJ Kucera (cj@apocalyptech.com)
+# Copyright (c) 2020-2022 CJ Kucera (cj@apocalyptech.com)
 # 
 # This software is provided 'as-is', without any express or implied warranty.
 # In no event will the authors be held liable for any damages arising from
@@ -31,12 +31,12 @@ def main():
 
     # Arguments
     parser = argparse.ArgumentParser(
-            description='Borderlands 3 Savegame Info Dumper v{}'.format(ttwlsave.__version__),
+            description='Wonderlands Savegame Info Dumper v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-V', '--version',
             action='version',
-            version='BL3 CLI SaveEdit v{}'.format(ttwlsave.__version__),
+            version='WL CLI SaveEdit v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-v', '--verbose',

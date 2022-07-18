@@ -75,7 +75,7 @@ class LostLootItem(datalib.WLSerial):
 
 class TTWLProfile(object):
     """
-    Wrapper around the protobuf object for a BL3 profile file.
+    Wrapper around the protobuf object for a WL profile file.
 
     Only tested on PC versions.  Thanks to Gibbed for the encryption method and
     the Protobuf definitions!

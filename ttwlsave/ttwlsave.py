@@ -95,7 +95,7 @@ class WLEquipSlot(object):
 
 class TTWLSave(object):
     """
-    Real simple wrapper for a BL3 savegame file.
+    Real simple wrapper for a WL savegame file.
     
     Only tested on PC versions.  Thanks to Gibbed for the encryption method and
     the Protobuf definitions!
@@ -754,7 +754,7 @@ class TTWLSave(object):
         Clears out all data from the given `playthrough` (zero-indexed), including any higher
         playthroughs.  This is completely untested for clearing NVHM data, but is used by
         the cli_edit to clear out THVM.  This supports clearing higher levels just because my
-        original scripts to generate my BL3 Save Archive accidentally unlocked an extra
+        original scripts to generate my WL Save Archive accidentally unlocked an extra
         playthrough higher than it intended to, so this will allow me to "clear TVHM" while
         also getting rid of that higher playthrough data.
 
@@ -884,7 +884,7 @@ class TTWLSave(object):
 
     def create_new_item_encoded(self, item_serial_b64):
         """
-        Creates a new item from the base64-encoded (and "BL3()"-wrapped)
+        Creates a new item from the base64-encoded (and "WL()"-wrapped)
         `item_serial_b64`, which can later be added to our item list.
         """
         return self.create_new_item(datalib.WLSerial.decode_serial_base64(item_serial_b64))
@@ -933,7 +933,7 @@ class TTWLSave(object):
 
     def overwrite_item_in_slot_encoded(self, slot, item_serial_b64):
         """
-        Given a base64 (and "BL3()"-wrapped) `item_serial_b64`, overwrite
+        Given a base64 (and "WL()"-wrapped) `item_serial_b64`, overwrite
         whatever item is in the given `slot`.  Will create a new item object
         if the slot is empty.
         """

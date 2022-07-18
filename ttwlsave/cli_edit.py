@@ -44,14 +44,13 @@ def main():
                 in question.  The output type "items" will output a text
                 file containing base64-encoded representations of the user's
                 inventory.  These can be read back in using the -i/--import-items
-                option.  Note that these are NOT the same as the item strings used
-                by the BL3 Memory Editor.
+                option.
             """
             )
 
     parser.add_argument('-V', '--version',
             action='version',
-            version='BL3 CLI SaveEdit v{}'.format(ttwlsave.__version__),
+            version='WL CLI SaveEdit v{}'.format(ttwlsave.__version__),
             )
 
     parser.add_argument('-o', '--output',
