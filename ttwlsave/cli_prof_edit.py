@@ -136,8 +136,6 @@ def main():
 
     unlock_choices = [
             'lostloot', 'bank',
-            'skins', 'heads',
-            'emotes',
             'customizations',
             ]
     parser.add_argument('--unlock',
@@ -162,10 +160,6 @@ def main():
     # Expand any of our "all" unlock actions
     if 'all' in args.unlock:
         args.unlock = {k: True for k in unlock_choices}
-    elif 'customizations' in args.unlock:
-        args.unlock['skins'] = True
-        args.unlock['heads'] = True
-        args.unlock['emotes'] = True
 
     # Set max item level arg
     if args.item_levels_max:
@@ -305,23 +299,11 @@ def main():
                     print('   - Bank SDUs')
                 profile.set_max_sdus([ProfileSDU.BANK])
 
-            # Skins
-            if 'skins' in args.unlock:
+            # Customizations
+            if 'customizations' in args.unlock:
                 if not args.quiet:
-                    print('   - Character Skins')
-                profile.unlock_char_skins()
-
-            # Heads
-            if 'heads' in args.unlock:
-                if not args.quiet:
-                    print('   - Character Heads')
-                profile.unlock_char_heads()
-
-            # Emotes
-            if 'emotes' in args.unlock:
-                if not args.quiet:
-                    print('   - Emotes')
-                profile.unlock_emotes()
+                    print('   - Customizations')
+                profile.unlock_customizations()
 
         # Import Items (cli_common provides the console output)
         if args.import_items:

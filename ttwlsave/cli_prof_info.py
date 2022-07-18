@@ -99,13 +99,11 @@ def main():
         for line in sorted(to_report):
             print(line)
 
-    # Various customizations
-    for (label, current, maxcount) in [
-            ('Character Skins', prof.get_char_skins(), prof.get_char_skins_total()),
-            ('Character Heads', prof.get_char_heads(), prof.get_char_heads_total()),
-            ('Emotes', prof.get_emotes(), prof.get_emotes_total()),
-            ]:
-        print('{} Unlocked: {}/{}'.format(label, len(current), maxcount))
+    # Customizations
+    print('Customizations Unlocked: {}/{}'.format(
+        len(prof.get_customizations()),
+        prof.get_customizations_total(),
+        ))
 
 if __name__ == '__main__':
     main()

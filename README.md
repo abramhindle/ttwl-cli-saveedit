@@ -194,16 +194,21 @@ FOr instructions on using the Profile portions of the editor, see
 
 # TODO
 
-- Would anyone appreciate an option to *delete* Fabricators?  Hm.
+New with WL:
+- Looks like `--fake-tvhm` can be used to unlock Chaos Mode right from the
+  beginning; need to test that out to see if it plays nicely with the endgame
+  though.
+- Might be fun to do a `--randomize-customizations` option, though I'd have to
+  actually split them all out into proper categories, which doesn't sound like
+  a good time.  I suppose the sorting itself probably wouldn't be awful; they're
+  already sorted pretty much like that...
+
+From BL3 still:
 - Would be nice to have some anointment-setting functions in here.
-- Did we want a function to *clear* Vault Card progress?
 - PS4 Support (for already-unlocked saves, anyway)
 - If we fail to read a savefile or profile, might be nice to *actually* check
   if it's the other of profile-or-savefile, and give a more helpful message in
   those cases.
-- Something a bit more Enum-like for various things in `__init__.py`; I
-  know that's not very Pythonic, but when dealing with extra-Python data
-  formats, one must sometimes make exceptions.
 - Unit tests?
 
 # Credits

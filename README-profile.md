@@ -233,25 +233,16 @@ of SDUs for the Lost Loot machine and Bank, respectively:
 
 ### Customizations
 
-You can specify various types of cosmetics to unlock individually,
-which will give you all known customizations of that type.  (Note that
-as new content is released, this editor will have to be updated to
-include the new customizations.)  They can be individually unlocked
-with any of the following:
-
-    ttwl-profile-edit profile.sav newprofile.sav --unlock skins
-    ttwl-profile-edit profile.sav newprofile.sav --unlock heads
-    ttwl-profile-edit profile.sav newprofile.sav --unlock emotes
-
-Alternatively, you can unlock *all* customizations all at once, by
-using the `customizations` unlock:
+You can use the `--unlock customizations` option to unlock all
+available customizations/cosmetics.  Note that as new content is released,
+this editor will have to be updated to include the new customizations.
 
     ttwl-profile-edit profile.sav newprofile.sav --unlock customizations
 
-**Note:** DLC-locked customizations, such as the Gold Pack, or any
-customization specific to a story DLC, will remain unavailable even
-if unlocked via this utility.  If you later purchase the DLC in question,
-though, the relevant cosmetics should show up as available immediately.
+**Note:** DLC-locked customizations, such as the Golden Hero Armor,
+will remain unavailable even if unlocked via this utility.  If you later
+purchase the DLC in question, though, the relevant cosmetics should show
+up as available immediately.
 
 ### All Unlocks at Once
 

@@ -459,72 +459,30 @@ class TTWLProfile(object):
                 customization_asset_path=cust,
                 ))
 
-    def get_char_skins_total(self):
+    def get_customizations_total(self):
         """
-        Returns the total number of skins that are possible to unlock.  Includes the
-        skins that are unlocked by default (just one per char).
+        Returns the total number of customizations that are possible to unlock.  Includes
+        the customizations which are unlocked by default
         """
-        return len(profile_skins) + len(profile_skins_defaults)
+        return len(profile_customizations) + len(profile_customizations_defaults)
 
-    def get_char_skins(self):
+    def get_customizations(self):
         """
-        Returns a set of the current character skins which are unlocked.  Includes the
-        skins that are unlocked by default (just one per char).
+        Returns a set of the current customizations which are unlocked.  Includes the
+        customizations which are unlocked by default
         """
-        return self.get_cur_customizations(profile_skins) | profile_skins_defaults
+        return self.get_cur_customizations(profile_customizations) | profile_customizations_defaults
 
-    def unlock_char_skins(self):
+    def unlock_customizations(self):
         """
-        Unlocks all character skins
+        Unlocks all customizations
         """
-        self.unlock_customization_set(profile_skins)
-
-    def get_char_heads_total(self):
-        """
-        Returns the total number of heads that are possible to unlock.  Includes the
-        heads that are unlocked by default (just one per char).
-        """
-        return len(profile_heads) + len(profile_heads_defaults)
-
-    def get_char_heads(self):
-        """
-        Returns a set of the current character heads which are unlocked.  Includes the
-        heads that are unlocked by default (just one per char).
-        """
-        return self.get_cur_customizations(profile_heads) | profile_heads_defaults
-
-    def unlock_char_heads(self):
-        """
-        Unlocks all character heads
-        """
-        self.unlock_customization_set(profile_heads)
-
-    def get_emotes_total(self):
-        """
-        Returns the total number of emotes that are possible to unlock.  Includes the
-        emotes that are unlocked by default (four per char).
-        """
-        return len(profile_emotes) + len(profile_emotes_defaults)
-
-    def get_emotes(self):
-        """
-        Returns a set of the current emotes which are unlocked.  Includes the emotes
-        that are unlocked by default (four per char).
-        """
-        return self.get_cur_customizations(profile_emotes) | profile_emotes_defaults
-
-    def unlock_emotes(self):
-        """
-        Unlocks all emotes
-        """
-        self.unlock_customization_set(profile_emotes)
+        self.unlock_customization_set(profile_customizations)
 
     def clear_all_customizations(self):
         """
         Removes all unlocked customizations.
         """
-        # It didn't seem worth coding these individually, since multiple customization
-        # types exist for most of these.  Whatever.
         del self.prof.unlocked_customizations[:]
 
     def _get_generic_keys(self, key):
