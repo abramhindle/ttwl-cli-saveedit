@@ -504,59 +504,26 @@ class TTWLSave(object):
                 len(self.save.game_state_save_data_for_playthrough),
                 )-1
 
-    def get_pt_mayhem_levels(self):
+    def get_chaos_level(self):
         """
-        Returns a list of Mayhem levels active for each Playthrough
+        Returns the current Chaos Level
         """
-        return [d.mayhem_level for d in self.save.game_state_save_data_for_playthrough]
+        return self.save.game_state_save_data_for_playthrough[0].mayhem_level
 
-    def get_pt_mayhem_level(self, pt):
+    def get_chaos_level_with_max(self):
         """
-        Returns the Mayhem level for the given Playthrough (zero-indexed)
+        Returns a tuple with the current Chaos Level, plus the max unlocked level.
         """
-        if len(self.save.game_state_save_data_for_playthrough) > pt:
-            return self.save.game_state_save_data_for_playthrough[pt].mayhem_level
-        return None
+        return (self.save.game_state_save_data_for_playthrough[0].mayhem_level,
+                self.save.game_state_save_data_for_playthrough[0].mayhem_unlocked_level)
 
-    def set_mayhem_level_pt(self, pt, mayhem):
+    def set_chaos_level(self, level):
         """
-        Sets the mayhem level for the given Playthrough (zero-indexed)
+        Sets the current Chaos Level (will also set at least that level to be unlocked)
         """
-        self.save.game_state_save_data_for_playthrough[pt].mayhem_level = mayhem
-
-    def set_all_mayhem_level(self, mayhem):
-        """
-        Sets the mayhem level for all Playthroughs.
-        """
-        for data in self.save.game_state_save_data_for_playthrough:
-            data.mayhem_level = mayhem
-
-    def get_pt_mayhem_seeds(self):
-        """
-        Returns a list of Mayhem seeds for each Playthrough
-        """
-        return [d.mayhem_random_seed for d in self.save.game_state_save_data_for_playthrough]
-
-    def get_pt_mayhem_seed(self, pt):
-        """
-        Returns the Mayhem seed for the given Playthrough (zero-indexed)
-        """
-        if len(self.save.game_state_save_data_for_playthrough) > pt:
-            return self.save.game_state_save_data_for_playthrough[pt].mayhem_random_seed
-        return None
-
-    def set_mayhem_seed_pt(self, pt, random_seed):
-        """
-        Sets the mayhem seed for the given Playthrough (zero-indexed)
-        """
-        self.save.game_state_save_data_for_playthrough[pt].mayhem_random_seed = random_seed
-
-    def set_all_mayhem_seeds(self, random_seed):
-        """
-        Sets the mayhem seed for all Playthroughs.
-        """
-        for data in self.save.game_state_save_data_for_playthrough:
-            data.mayhem_random_seed = random_seed
+        self.save.game_state_save_data_for_playthrough[0].mayhem_level = level
+        if level > self.save.game_state_save_data_for_playthrough[0].mayhem_unlocked_level:
+            self.save.game_state_save_data_for_playthrough[0].mayhem_unlocked_level = level
 
     def clear_game_state_pt(self, playthrough):
         """

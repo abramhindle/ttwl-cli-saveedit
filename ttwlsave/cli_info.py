@@ -111,18 +111,17 @@ def main():
     # Playthroughs
     print('Playthroughs Completed: {}'.format(save.get_playthroughs_completed()))
 
+    # Chaos Level
+    print('Chaos Level: {} (unlocked: {})'.format(*save.get_chaos_level_with_max()))
+
     # Playthrough-specific Data
-    for pt, (mayhem,
-                mayhem_seed,
-                mapname,
+    for pt, (mapname,
                 stations,
                 active_missions,
                 active_missions_obj,
                 completed_missions,
                 completed_missions_obj,
                 ) in enumerate(itertools.zip_longest(
-            save.get_pt_mayhem_levels(),
-            save.get_pt_mayhem_seeds(),
             save.get_pt_last_maps(True),
             save.get_pt_active_ft_station_lists(),
             save.get_pt_active_mission_lists(True),
@@ -132,12 +131,6 @@ def main():
             )):
 
         print('Playthrough {} Info:'.format(pt+1))
-
-        # Mayhem
-        if mayhem is not None:
-            print(' - Mayhem Level: {}'.format(mayhem))
-        if mayhem_seed is not None:
-            print(' - Mayhem Random Seed: {}'.format(mayhem_seed))
 
         # Map
         if mapname is not None:

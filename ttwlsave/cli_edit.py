@@ -134,16 +134,9 @@ def main():
                 help='Set all inventory item chaos levels to {}'.format(level.label),
                 )
 
-    parser.add_argument('--mayhem',
+    parser.add_argument('--chaos',
             type=int,
-            choices=range(20),
-            help='Set the mayhem mode for all playthroughs (mostly useful for Normal mode)',
-            )
-
-    parser.add_argument('--mayhem-seed',
-            dest='mayhem_seed',
-            type=int,
-            help='Sets the mayhem random seed for all playthroughs',
+            help='Set the Chaos Level',
             )
 
     parser.add_argument('--money',
@@ -283,6 +276,12 @@ def main():
                 args.item_levels,
                 ttwlsave.max_level,
                 ))
+
+    # Check Chaos level
+    if args.chaos is not None:
+        if args.chaos < 0 or args.chaos > ttwlsave.max_chaos_level:
+            raise argparse.ArgumentTypeError(f'Valid Chaos Level range is 0 through {ttwlsave.max_chaos_level}')
+
     # AH: Only 1 playthrough
     # # Check to make sure that any deleted missions are not plot missions
     # for arg in [args.delete_pt1_mission, args.delete_pt2_mission]:
@@ -319,8 +318,7 @@ def main():
         args.randomize_guid,
         # args.zero_guardian_rank,
         args.level is not None,
-        args.mayhem is not None,
-        args.mayhem_seed is not None,
+        args.chaos is not None,
         args.money is not None,
         args.moon_orbs is not None,
         args.souls is not None,
@@ -371,21 +369,15 @@ def main():
         #         print(' - Zeroing Guardian Rank')
         #     save.zero_guardian_rank()
 
-        # Mayhem Level
-        if args.mayhem is not None:
+        # Chaos Level
+        if args.chaos is not None:
             if not args.quiet:
-                print(' - Setting Mayhem Level to: {}'.format(args.mayhem))
-            save.set_all_mayhem_level(args.mayhem)
-            if args.mayhem > 0:
-                if not args.quiet:
-                    print('   - Also ensuring that Mayhem Mode is unlocked')
-                save.unlock_challenge(ttwlsave.MAYHEM)
-
-        # Mayhem Seed
-        if args.mayhem_seed is not None:
-            if not args.quiet:
-                print(' - Setting Mayhem Random Seed to: {}'.format(args.mayhem_seed))
-            save.set_all_mayhem_seeds(args.mayhem_seed)
+                print(' - Setting Chaos Level to: {}'.format(args.chaos))
+            save.set_chaos_level(args.chaos)
+            #if args.chaos > 0:
+            #    if not args.quiet:
+            #        print('   - Also ensuring that Chaos Mode is unlocked')
+            #    save.unlock_challenge(ttwlsave.CHAOS)
 
         # Level
         if args.level is not None:

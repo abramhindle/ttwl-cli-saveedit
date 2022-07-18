@@ -25,8 +25,7 @@ commands will be:
   - [Save Game GUID](#save-game-guid)
   - [Guardian Rank](#guardian-rank)
   - [Character Level](#character-level)
-  - [Mayhem Level](#mayhem-level)
-  - [Mayhem Random Seed](#mayhem-random-seed)
+  - [Chaos Level](#chaos-level)
   - [Currency (Money, Moon Orbs, and Souls)](#currency-money-moon-orbs-and-souls)
   - [Mission Deletion](#mission-deletion)
   - [Seasonal Event Status](#seasonal-event-status)
@@ -164,37 +163,20 @@ or to the max level allowed by the game using `--level-max`
     ttwl-save-edit old.sav new.sav --level 20
     ttwl-save-edit old.sav new.sav --level-max
 
-## Mayhem Level
+## Chaos Level
 
-This is only really useful before you've got Mayhem Mode unlocked.
-You can use the `--mayhem` argument to activate Mayhem mode even from
-the very beginning of the game.  Note that you still won't have access
-to the Mayhem console on Sanctuary until it's properly unlocked by the
-game, so this will be the only way of changing Mayhem mode until that
-point in the game.  This will set the Mayhem level for all
-playthroughs found in the game.
+The `--chaos` argument can be used to activate Chaos Mode at any point,
+and/or unlock Chaos Levels you haven't yet unlocked legitimately.
+Note that currently, if you use this option to unlock Chaos Mode prior
+to the game giving it to you the proper way, you won't have access to
+the Chaos Mode UI in the menu system, so a save editor will be the
+only way to change the level (such as disabling Chaos Mode, for instance.)
 
-    ttwl-save-edit old.sav new.sav --mayhem 10
+This option will ensure that you have at least the specified Chaos Level
+unlocked.
 
-Note that in order to have Anointments drop while playing in Normal
-mode, your savegame does need to have THVM unlocked, so see the `--unlock`
-docs below for how to do that.
-
-## Mayhem Random Seed
-
-The active modifiers in Mayhem Mode are all generated using a single
-[random seed](https://en.wikipedia.org/wiki/Pseudorandom_number_generator)
-which is specified on a per-playthrough basis.  If you have a set of
-Mayhem modifiers you like, you can take that seed (shown in the `ttwl-save-info`
-output) and set it onto another save using the `--mayhem-seed` argument:
-
-    ttwl-save-edit old.sav new.save --mayhem-seed -3938591
-
-The seeds may be positive or negative, and can range up to 2 billion or
-so, both negative and positive.  Note that if Gearbox changes the pool of
-available Mayhem modifiers, such as by disabling some, or adding new ones,
-the random seeds you're used to will start to give a different result, so
-you may have to reroll a bunch to find your favorite set, again.
+    ttwl-save-edit old.sav new.sav --chaos 0
+    ttwl-save-edit old.sav new.sav --chaos 50
 
 ## Currency (Money, Moon Orbs, and Souls)
 

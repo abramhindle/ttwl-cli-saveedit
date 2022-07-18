@@ -232,7 +232,7 @@ class Ammo(LabelEnum):
     SNIPER = ('Sniper', '/Game/GameData/Weapons/Ammo/Resource_Ammo_Sniper.Resource_Ammo_Sniper', 204)
 
 # Challenges
-(MAYHEM,
+(CHAOS,
         CHAL_ARTIFACT,
         COM_BEASTMASTER,
         COM_GUNNER,
@@ -240,7 +240,7 @@ class Ammo(LabelEnum):
         COM_SIREN,
         ) = range(6)
 challenge_to_eng = {
-        MAYHEM: 'Mayhem Mode',
+        CHAOS: 'Chaos Mode',
         CHAL_ARTIFACT: 'Artifact Slot',
         COM_BEASTMASTER: 'Beastmaster COM Slot',
         COM_GUNNER: 'Gunner COM Slot',
@@ -254,7 +254,10 @@ challenge_char_lock = {
         #COM_SIREN: SIREN,
         }
 challengeobj_to_challenge = {
-        '/Game/GameData/Challenges/Account/Challenge_VaultReward_Mayhem.Challenge_VaultReward_Mayhem_C': MAYHEM,
+        # This CHAOS here was just me testing to see if I could get the menu UI unlocked;
+        # this one here doesn't do it at all;  I think it's just the achievement for
+        # completing a single Chaos chamber.
+        '/Game/GameData/Challenges/System/BP_Challenge_Console_Chaos_Complete.BP_Challenge_Console_Chaos_Complete_C': CHAOS,
         '/Game/GameData/Challenges/Account/Challenge_VaultReward_ArtifactSlot.Challenge_VaultReward_ArtifactSlot_C': CHAL_ARTIFACT,
         '/Game/GameData/Challenges/Character/Beastmaster/BP_Challenge_Beastmaster_ClassMod.BP_Challenge_Beastmaster_ClassMod_C': COM_BEASTMASTER,
         '/Game/GameData/Challenges/Character/Gunner/BP_Challenge_Gunner_ClassMod.BP_Challenge_Gunner_ClassMod_C': COM_GUNNER,
@@ -979,11 +982,12 @@ required_xp_list = [
 ]
 max_supported_level = len(required_xp_list)
 
-# Mayhem parts
-mayhem_max = 10
+# Maximum Chaos Level
+max_chaos_level = 50
 
 # InvData types which can accept Mayhem parts
 # (may have to be more clever about this if non-guns start accepting *different* Mayhem parts)
+# (*only* using this for enchantment checking currently!)
 mayhem_invdata_types = set([
     '/Game/Gear/Weapons/AssaultRifles/Atlas/_Shared/_Design/WT_AR_ATL.WT_AR_ATL',
     '/Game/Gear/Weapons/AssaultRifles/ChildrenOfTheVault/_Shared/_Design/WT_AR_COV.WT_AR_COV',
