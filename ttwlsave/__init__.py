@@ -260,65 +260,98 @@ challengeobj_to_challenge = {
         }
 challenge_to_challengeobj = {v: k for k, v in challengeobj_to_challenge.items()}
 
+# Char-level Stat (not sure if this is useful to set, but we'll do it anyway)
+level_stat = '/Game/GameData/Stats/Progression/Stat_Character_Level.Stat_Character_Level'
+
 # Level-based challenges (probably unimportant, but I've already started doing it,
 # so here we go anyway)
-level_stat = '/Game/PlayerCharacters/_Shared/_Design/Stats/Character/Stat_Character_Level.Stat_Character_Level'
 level_challenges = [
-        (2, '/Game/GameData/Challenges/System/BP_Challenge_Console_1.BP_Challenge_Console_1_C'),
-        (10, '/Game/GameData/Challenges/System/BP_Challenge_Console_2.BP_Challenge_Console_2_C'),
-        (25, '/Game/GameData/Challenges/System/BP_Challenge_Console_3.BP_Challenge_Console_3_C'),
-        (50, '/Game/GameData/Challenges/System/BP_Challenge_Console_4.BP_Challenge_Console_4_C'),
+        (10, '/Game/GameData/Challenges/System/BP_Challenge_Console_PlayerLevel_10.BP_Challenge_Console_PlayerLevel_10_C'),
+        (20, '/Game/GameData/Challenges/System/BP_Challenge_Console_PlayerLevel_20.BP_Challenge_Console_PlayerLevel_20_C'),
+        (30, '/Game/GameData/Challenges/System/BP_Challenge_Console_PlayerLevel_30.BP_Challenge_Console_PlayerLevel_30_C'),
+        (40, '/Game/GameData/Challenges/System/BP_Challenge_Console_PlayerLevel_40.BP_Challenge_Console_PlayerLevel_40_C'),
         ]
+
+# Most levels give +1 skill points, but there's a few exceptions.
+skill_point_exceptions = {
+        20: 2,
+        40: 3,
+        }
 
 # Skeleton Keys
 class Key(HashLabelEnum):
     SKELETON = ('Skeleton Keys', '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_GoldenKey')
 
-# XP
-# TODO: These are wrong!  WL seems to have tweaked the scaling constants.
+# XP - Multiplication value has changed to 65 (from 60, in all previous
+# Borderlands games).  Exponent is still 2.8.  We're continuing to
+# hardcode the list to avoid rounding/precision errors, though.
 max_level = 40
 required_xp_list = [
-    0,          # lvl 1
-    358,        # lvl 2
-    1241,       # lvl 3
-    2850,       # lvl 4
-    5376,       # lvl 5
-    8997,       # lvl 6
-    13886,      # lvl 7
-    20208,      # lvl 8
-    28126,      # lvl 9
-    37798,      # lvl 10
-    49377,      # lvl 11
-    63016,      # lvl 12
-    78861,      # lvl 13
-    97061,      # lvl 14
-    117757,     # lvl 15
-    141092,     # lvl 16
-    167206,     # lvl 17
-    196238,     # lvl 18
-    228322,     # lvl 19
-    263595,     # lvl 20
-    302190,     # lvl 21
-    344238,     # lvl 22
-    389873,     # lvl 23
-    439222,     # lvl 24
-    492414,     # lvl 25
-    549578,     # lvl 26
-    610840,     # lvl 27
-    676325,     # lvl 28
-    746158,     # lvl 29
-    820463,     # lvl 30
-    899363,     # lvl 31
-    982980,     # lvl 32
-    1071435,    # lvl 33
-    1164850,    # lvl 34
-    1263343,    # lvl 35
-    1367034,    # lvl 36
-    1476041,    # lvl 37
-    1590483,    # lvl 38
-    1710476,    # lvl 39
-    # Level 40 is the only one I know is right; higher than the original
-    1989148,    # lvl 40
+        # The first 40 here have been verified to be correct
+        0,          # lvl 1
+        388,        # lvl 2
+        1344,       # lvl 3
+        3087,       # lvl 4
+        5824,       # lvl 5
+        9746,       # lvl 6
+        15042,      # lvl 7
+        21892,      # lvl 8
+        30470,      # lvl 9
+        40947,      # lvl 10
+        53492,      # lvl 11
+        68266,      # lvl 12
+        85433,      # lvl 13
+        105149,     # lvl 14
+        127570,     # lvl 15
+        152850,     # lvl 16
+        181140,     # lvl 17
+        212590,     # lvl 18
+        247348,     # lvl 19
+        285561,     # lvl 20
+        327372,     # lvl 21
+        372925,     # lvl 22
+        422362,     # lvl 23
+        475823,     # lvl 24
+        533448,     # lvl 25
+        595376,     # lvl 26
+        661743,     # lvl 27
+        732685,     # lvl 28
+        808338,     # lvl 29
+        888835,     # lvl 30
+        974310,     # lvl 31
+        1064895,    # lvl 32
+        1160721,    # lvl 33
+        1261920,    # lvl 34
+        1368621,    # lvl 35
+        1480953,    # lvl 36
+        1599044,    # lvl 37
+        1723023,    # lvl 38
+        1853015,    # lvl 39
+        1989148,    # lvl 40
+
+        # Theoretical values -- no real way to test these, but
+        # I'll leave 'em here anyway in case the level cap ever
+        # gets raised.  They're unlikely to be off by more than 1.
+        2131546,    # lvl 41
+        2280336,    # lvl 42
+        2435641,    # lvl 43
+        2597586,    # lvl 44
+        2766293,    # lvl 45
+        2941884,    # lvl 46
+        3124484,    # lvl 47
+        3314212,    # lvl 48
+        3511190,    # lvl 49
+        3715538,    # lvl 50
+        3927377,    # lvl 51
+        4146826,    # lvl 52
+        4374005,    # lvl 53
+        4609032,    # lvl 54
+        4852025,    # lvl 55
+        5103102,    # lvl 56
+        5362381,    # lvl 57
+        5629978,    # lvl 58
+        5906010,    # lvl 59
+        6190593,    # lvl 60
 ]
 max_supported_level = len(required_xp_list)
 

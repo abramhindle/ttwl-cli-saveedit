@@ -440,10 +440,13 @@ class TTWLSave(object):
         assign the least amount of XP possible to gain the specified level,
         but if `top_val` is `True`, will assign the maximum possible XP in
         that level, instead (so 1XP more will cause the character to level
-        up).
+        up).  Will return the number of skillpoints added to the char as
+        as result of this (will not *remove* any skill points when going
+        backwards).
         """
         if level > len(required_xp_list):
             raise Exception('Unknown level {}'.format(level))
+
         # Rather than checking against `max_level`, we're going to set the
         # max to 80 (which is the highest XP value I'm 100% sure of).  That
         # way folks would be able to pre-level a char, even if this editor's
@@ -452,6 +455,17 @@ class TTWLSave(object):
             raise Exception('Maximum level is {}'.format(max_supported_level))
         if level < 1:
             raise Exception('Level must be at least 1')
+
+        # WL doesn't auto-calculate skill points like all previous games
+        # did, so if we're levelling *up*, we should add in skill points.
+        # Do so now, before we've updated the char level, so we know what
+        # the difference is.
+        points_to_add = 0
+        cur_level = self.get_level()
+        if level > cur_level:
+            for step in range(cur_level+1, level+1):
+                points_to_add += skill_point_exceptions.get(step, 1)
+            self.add_skill_points(points_to_add)
         
         # If we've been told to assign the max level, we can't do top_val
         if level == max_level:
@@ -466,22 +480,20 @@ class TTWLSave(object):
         # Make sure our stats level is set properly
         self.set_stats_obj(level_stat, level)
 
-        # If we're setting > level 1, make sure the skill tree gets unlocked
-        self.unlock_skill_tree(level)
+        # Also unlock the appropriate challenges for the char's level, though
+        # it probably doesn't actually matter at all.  Whatever.
+        for challenge_level, challenge_obj in level_challenges:
+            if level >= challenge_level:
+                self.unlock_challenge_obj(challenge_obj)
 
-    def unlock_skill_tree(self, level):
+        # Return skill points added
+        return points_to_add
+
+    def add_skill_points(self, points_to_add):
         """
-        Ensures that the player can use their skill tree (after editing their
-        savegame > lvl1).  `level` is used to also unlock the appropriate
-        challenges for the char's level, though that probably doesn't actually
-        matter at all.
+        Adds the specified `points_to_add` number of skill points to the character.
         """
-        if level > 1 and self.save.ability_data.tree_grade == 0:
-            self.save.ability_data.tree_grade = 2
-        if level is not None:
-            for challenge_level, challenge_obj in level_challenges:
-                if level >= challenge_level:
-                    self.unlock_challenge_obj(challenge_obj)
+        self.save.ability_data.ability_points += points_to_add
 
     def get_playthroughs_completed(self):
         """
@@ -514,19 +526,36 @@ class TTWLSave(object):
         """
         Returns the current Chaos Level
         """
-        return self.save.game_state_save_data_for_playthrough[0].mayhem_level
+        if len(self.save.game_state_save_data_for_playthrough) > 0:
+            return self.save.game_state_save_data_for_playthrough[0].mayhem_level
+        else:
+            return 0
 
     def get_chaos_level_with_max(self):
         """
         Returns a tuple with the current Chaos Level, plus the max unlocked level.
         """
-        return (self.save.game_state_save_data_for_playthrough[0].mayhem_level,
-                self.save.game_state_save_data_for_playthrough[0].mayhem_unlocked_level)
+        if len(self.save.game_state_save_data_for_playthrough) > 0:
+            return (self.save.game_state_save_data_for_playthrough[0].mayhem_level,
+                    self.save.game_state_save_data_for_playthrough[0].mayhem_unlocked_level)
+        else:
+            return (0, 0)
 
     def set_chaos_level(self, level):
         """
         Sets the current Chaos Level (will also set at least that level to be unlocked)
         """
+        if len(self.save.game_state_save_data_for_playthrough) == 0:
+            # TODO: Test this!  5.sav will work.
+            self.save.game_state_save_data_for_playthrough.append(OakSave_pb2.GameStateSaveData(
+                last_traveled_map_id=OakSave_pb2.MapIDData(
+                    zone_name_id=0,
+                    map_name_id=0,
+                    ),
+                mayhem_level=0,
+                mayhem_random_seed=0,
+                mayhem_unlocked_level=0,
+                ))
         self.save.game_state_save_data_for_playthrough[0].mayhem_level = level
         if level > self.save.game_state_save_data_for_playthrough[0].mayhem_unlocked_level:
             self.save.game_state_save_data_for_playthrough[0].mayhem_unlocked_level = level
@@ -608,7 +637,11 @@ class TTWLSave(object):
         like this so it's easier to revert, if GBX ever does add
         TVHM-or-whatever.
         """
-        return self.get_pt_last_maps(eng=eng)[0]
+        maplist = self.get_pt_last_maps(eng=eng)
+        if len(maplist) > 0:
+            return maplist[0]
+        else:
+            return '(NO MAP)'
 
     def get_pt_last_map(self, pt=0, eng=False):
         """
@@ -725,7 +758,11 @@ class TTWLSave(object):
         like this so it's easier to revert, if GBX ever does add
         TVHM-or-whatever.
         """
-        return self.get_pt_active_mission_lists(eng=eng)[0]
+        mission_lists = self.get_pt_active_mission_lists(eng=eng)
+        if len(mission_lists) > 0:
+            return mission_lists[0]
+        else:
+            return []
 
     def get_pt_completed_mission_lists(self, eng=False):
         """
@@ -743,7 +780,11 @@ class TTWLSave(object):
         like this so it's easier to revert, if GBX ever does add
         TVHM-or-whatever.
         """
-        return self.get_pt_completed_mission_lists(eng=eng)[0]
+        mission_lists = self.get_pt_completed_mission_lists(eng=eng)
+        if len(mission_lists) > 0:
+            return mission_lists[0]
+        else:
+            return []
 
     def get_pt_mission_list(self, mission_status, pt=0, eng=False):
         """

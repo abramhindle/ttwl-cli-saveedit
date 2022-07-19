@@ -162,6 +162,18 @@ or to the max level allowed by the game using `--level-max`
     ttwl-save-edit old.sav new.sav --level 20
     ttwl-save-edit old.sav new.sav --level-max
 
+By default, this will set your XP level to the minimum for the specified
+level.  To set to the *maximum* XP for the level (so that a +1XP will
+level you up), add `--xp-max`
+
+    ttwl-save-edit old.sav new.sav --level 25 --xp-max
+
+The `--xp-max` argument has no effect when setting the user to the
+maximum level.
+
+These arguments will also add in any appropriate skill points which
+would have happened as a result of levelling.
+
 ## Chaos Level
 
 The `--chaos` argument can be used to activate Chaos Mode at any point,

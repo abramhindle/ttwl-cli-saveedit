@@ -109,6 +109,13 @@ def main():
             help='Set the character to max level ({})'.format(ttwlsave.max_level),
             )
 
+    parser.add_argument('--xp-max',
+            action='store_true',
+            help="""When using --level, instead of assigning the minimum amount of XP for
+                the level, assign the maximum (so that 1 more XP will level to the next).
+                Has no effect when setting a char to max level.""",
+            )
+
     itemlevelgroup = parser.add_mutually_exclusive_group()
 
     itemlevelgroup.add_argument('--items-to-char',
@@ -344,8 +351,18 @@ def main():
         # Level
         if args.level is not None:
             if not args.quiet:
-                print(' - Setting Character Level to: {}'.format(args.level))
-            save.set_level(args.level)
+                if args.xp_max:
+                    extra = ' (at max XP value)'
+                else:
+                    extra = ''
+                print(' - Setting Character Level{} to: {}'.format(extra, args.level))
+            points_added = save.set_level(args.level, top_val=args.xp_max)
+            if points_added > 0:
+                if points_added == 1:
+                    plural = ''
+                else:
+                    plural = 's'
+                print(f'   - Also added {points_added} skill point{plural}')
 
         # Money
         if args.money is not None:
