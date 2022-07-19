@@ -146,7 +146,7 @@ def main():
 
     parser.add_argument('--souls',
             type=int,
-            help='Set Souls value',
+            help='Set Lost Souls value',
             )
 
 
@@ -359,10 +359,10 @@ def main():
                 print(' - Setting Moon Orbs to: {:,}'.format(args.moon_orbs))
             save.set_moon_orbs(args.moon_orbs)
 
-        # Souls
+        # Lost Souls
         if args.souls is not None:
             if not args.quiet:
-                print(' - Setting Souls to: {:,}'.format(args.souls))
+                print(' - Setting Lost Souls to: {:,}'.format(args.souls))
             save.set_souls(args.souls)
 
         # AH: Temporarily disabling this
