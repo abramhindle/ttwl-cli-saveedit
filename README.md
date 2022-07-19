@@ -201,7 +201,9 @@ New with WL:
 - Might be fun to do a `--randomize-customizations` option, though I'd have to
   actually split them all out into proper categories, which doesn't sound like
   a good time.  I suppose the sorting itself probably wouldn't be awful; they're
-  already sorted pretty much like that...
+  already sorted pretty much like that...  Also I suppose that's a savegame
+  feature, but we'd also have to be told to load in a profile to get that to
+  work, in order to know what customizations are even available.
 
 From BL3 still:
 - Would be nice to have some anointment-setting functions in here.
