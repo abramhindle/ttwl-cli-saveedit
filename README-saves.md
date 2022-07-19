@@ -26,7 +26,7 @@ commands will be:
   - [Guardian Rank](#guardian-rank)
   - [Character Level](#character-level)
   - [Chaos Level](#chaos-level)
-  - [Currency (Money, Moon Orbs, and Souls)](#currency-money-moon-orbs-and-souls)
+  - [Currency (Money, Moon Orbs, and Lost Souls)](#currency-money-moon-orbs-and-lost-souls)
   - [Mission Deletion](#mission-deletion)
   - [Item Levels](#item-levels)
   - [Item Chaos Levels](#item-chaos-levels)
@@ -177,9 +177,9 @@ unlocked.
     ttwl-save-edit old.sav new.sav --chaos 0
     ttwl-save-edit old.sav new.sav --chaos 50
 
-## Currency (Money, Moon Orbs, and Souls)
+## Currency (Money, Moon Orbs, and Lost Souls)
 
-Money, Moon Orbs, and Souls can be set with the `--money`, `--moon-orbs`,
+Money, Moon Orbs, and Lost Souls can be set with the `--money`, `--moon-orbs`,
 and `--souls` arguments, respectively:
 
     ttwl-save-edit old.sav new.sav --money 20000000
@@ -189,7 +189,7 @@ and `--souls` arguments, respectively:
 Note that the game's maximum money is 2 billion, and the maximum Moon
 Orbs is 16,000.  This utility will let you set values higher than that,
 but doing so isn't recommended.  There doesn't seem to be a defined
-maximum for Souls.
+maximum for Lost Souls.
 
 ## Mission Deletion
 

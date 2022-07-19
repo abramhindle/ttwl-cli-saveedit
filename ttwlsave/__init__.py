@@ -157,7 +157,7 @@ class Companion(LabelEnum):
 class Currency(HashLabelEnum):
     MONEY = ('Money', '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_Money.InventoryCategory_Money', 2000000000)
     MOON_ORBS = ('Moon Orbs', '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_Eridium.InventoryCategory_Eridium', 16000)
-    SOULS = ('Souls', '/Game/PatchDLC/Indigo1/Common/Pickups/IndCurrency/InventoryCategory_IndCurrency.InventoryCategory_IndCurrency', None)
+    SOULS = ('Lost Souls', '/Game/PatchDLC/Indigo1/Common/Pickups/IndCurrency/InventoryCategory_IndCurrency.InventoryCategory_IndCurrency', None)
 
 # Inventory Slots
 class InvSlot(LabelEnum):
@@ -1832,7 +1832,7 @@ profile_customizations_defaults = {
 #
 # For most missions, the following find statement will generate this list:
 #
-#    for file in $(find Game/Missions Game/PatchDLC/Indigo*/Missions \( -iname "Mission_*.uexp" \) -print); do echo -n "'/$(dirname $file)/$(basename $file .uexp)': \""; echo $(strings $file | head -n 2 | tail -n 1)\",; done | sort -i
+#    for file in $(find Game/Missions Game/PatchDLC/Indigo1/Common/Missions Game/PatchDLC/Indigo*/Missions \( -iname "Mission_*.uexp" \) -print); do echo -n "'/$(dirname $file)/$(basename $file .uexp)': \""; echo $(strings $file | head -n 2 | tail -n 1)\",; done | sort -i
 #
 mission_to_name = {
         '/Game/Missions/Major/Beanstalk/Mission_Skybound': "Walk the Stalk",
@@ -1898,6 +1898,9 @@ mission_to_name = {
         '/Game/Missions/Side/Zone_3/Oasis/Mission_LowTideBoil': "Gumbo No. 5",
         '/Game/Missions/Side/Zone_3/Sands/Mission_BlueHatCult': "Armageddon Distracted",
         '/Game/Missions/Side/Zone_3/Sands/Mission_ElementalBeer': "Hot Fizz",
+        '/Game/PatchDLC/Indigo1/Common/Missions/Mission_Indigo_Epilogue': "Vesper's Epilogue",
+        '/Game/PatchDLC/Indigo1/Common/Missions/Mission_Indigo_FirstWheelUse': "Meet the Wheel of Fate",
+        '/Game/PatchDLC/Indigo1/Common/Missions/Mission_PLC_Completion': "Nightmare in Dreamveil",
         '/Game/PatchDLC/Indigo1/Missions/CompletionMission/Mission_PLC1_CompletionV1': "Defeated Chums: Difficulty 1",
         '/Game/PatchDLC/Indigo1/Missions/CompletionMission/Mission_PLC1_CompletionV2': "Defeated Chums: Difficulty 2",
         '/Game/PatchDLC/Indigo1/Missions/CompletionMission/Mission_PLC1_CompletionV3': "Defeated Chums: Difficulty 3",
