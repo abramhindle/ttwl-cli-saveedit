@@ -104,7 +104,7 @@ def main():
     print('Currencies:')
     print(' - Money: {:,}'.format(save.get_money()))
     print(' - Moon Orbs: {:,}'.format(save.get_moon_orbs()))
-    print(' - Souls: {:,}'.format(save.get_souls()))
+    print(' - Lost Souls: {:,}'.format(save.get_souls()))
 
     # Chaos Level
     print('Chaos Level: {} (unlocked: {})'.format(*save.get_chaos_level_with_max()))
