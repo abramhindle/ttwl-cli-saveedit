@@ -431,9 +431,9 @@ guardian_rank_rewards = set([
 
 # Profile Customizations - Not bothering to separate these out by type; there's just
 # too many and I don't care enough, especially given that this util only really does
-# a simple "unlock all".
-# (all these customization sections omit the ones unlocked by default,
-# which don't seem to show up in the profile usually)
+# a simple "unlock all".  Note that this set doesn't include the ones which are
+# available by default but don't ordinarily show up in the profile.  See
+# `profile_customizations_defaults` below for those.
 profile_customizations = {
         '/Game/PlayerCharacters/_Shared/_Design/Customization/Armor/ColorPrimary/ArmorColor_18_Primary.ArmorColor_18_Primary',
         '/Game/PlayerCharacters/_Shared/_Design/Customization/Armor/ColorSecondary/ArmorColor_18_Secondary.ArmorColor_18_Secondary',
