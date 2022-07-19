@@ -275,6 +275,7 @@ class Key(HashLabelEnum):
     SKELETON = ('Skeleton Keys', '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_GoldenKey')
 
 # XP
+# TODO: These are wrong!  WL seems to have tweaked the scaling constants.
 max_level = 40
 required_xp_list = [
     0,          # lvl 1
@@ -316,47 +317,8 @@ required_xp_list = [
     1476041,    # lvl 37
     1590483,    # lvl 38
     1710476,    # lvl 39
-    1836137,    # lvl 40
-    1967582,    # lvl 41
-    2104926,    # lvl 42
-    2248285,    # lvl 43
-    2397772,    # lvl 44
-    2553501,    # lvl 45
-    2715586,    # lvl 46
-    2884139,    # lvl 47
-    3059273,    # lvl 48
-    3241098,    # lvl 49
-    3429728,    # lvl 50
-    3625271,    # lvl 51
-    3827840,    # lvl 52
-    4037543,    # lvl 53
-    4254491,    # lvl 54
-    4478792,    # lvl 55
-    4710556,    # lvl 56
-    4949890,    # lvl 57
-    5196902,    # lvl 58
-    5451701,    # lvl 59
-    5714393,    # lvl 60
-    5985086,    # lvl 61
-    6263885,    # lvl 62
-    6550897,    # lvl 63
-    6846227,    # lvl 64
-    7149982,    # lvl 65
-    7462266,    # lvl 66
-    7783184,    # lvl 67
-    8112840,    # lvl 68
-    8451340,    # lvl 69
-    8798786,    # lvl 70
-    9155282,    # lvl 71
-    9520932,    # lvl 72
-    9895837,    # lvl 73
-    10280103,    # lvl 74
-    10673830,    # lvl 75
-    11077120,    # lvl 76
-    11490077,    # lvl 77
-    11912801,    # lvl 78
-    12345393,    # lvl 79
-    12787955,    # lvl 80
+    # Level 40 is the only one I know is right; higher than the original
+    1989148,    # lvl 40
 ]
 max_supported_level = len(required_xp_list)
 
