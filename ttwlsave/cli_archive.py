@@ -197,9 +197,6 @@ def main():
             if item.chaos_level != ttwlsave.ChaosLevel.ASCENDED.value:
                 item.chaos_level = ttwlsave.ChaosLevel.ASCENDED.value
 
-        # Wipe guardian rank
-        save.zero_guardian_rank()
-
         # Write out
         save.save_to(output_filename)
         files_written += 1

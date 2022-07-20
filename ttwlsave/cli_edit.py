@@ -90,12 +90,6 @@ def main():
             default=True,
             help='DON\'T Randomize the savegame GUID',
             )
-    # AH: Disabled for now
-    # parser.add_argument('--zero-guardian-rank',
-    #         dest='zero_guardian_rank',
-    #         action='store_true',
-    #         help='Zero out savegame Guardian Rank',
-    #         )
 
     levelgroup = parser.add_mutually_exclusive_group()
 
@@ -290,7 +284,6 @@ def main():
         args.name,
         args.save_game_id is not None,
         args.randomize_guid,
-        # args.zero_guardian_rank,
         args.level is not None,
         args.chaos is not None,
         args.money is not None,
@@ -332,18 +325,13 @@ def main():
             if not args.quiet:
                 print(' - Randomizing savegame GUID')
             save.randomize_guid()
-        # AH: No guardian rank
-        # Zeroing Guardian Rank
-        # if args.zero_guardian_rank:
-        #     if not args.quiet:
-        #         print(' - Zeroing Guardian Rank')
-        #     save.zero_guardian_rank()
 
         # Chaos Level
         if args.chaos is not None:
             if not args.quiet:
                 print(' - Setting Chaos Level to: {}'.format(args.chaos))
             save.set_chaos_level(args.chaos)
+            # TODO: eh? --fake-tvhm unlocks this more properly...
             #if args.chaos > 0:
             #    if not args.quiet:
             #        print('   - Also ensuring that Chaos Mode is unlocked')

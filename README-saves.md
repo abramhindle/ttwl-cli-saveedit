@@ -23,7 +23,6 @@ commands will be:
   - [Character Name](#character-name)
   - [Save Game ID](#save-game-id)
   - [Save Game GUID](#save-game-guid)
-  - [Guardian Rank](#guardian-rank)
   - [Character Level](#character-level)
   - [Chaos Level](#chaos-level)
   - [Currency (Money, Moon Orbs, and Lost Souls)](#currency-money-moon-orbs-and-lost-souls)
@@ -144,17 +143,6 @@ randomizing this value, and they've worked fine) but here's the
 option anyway:
 
     ttwl-save-edit old.sav new.sav --randomize-guid
-
-## Guardian Rank
-
-Guardian Rank can be zeroed out using the `--zero-guardian-rank`
-argument.  This is useful when a savegame gets out of sync from your
-profile, such as if you download a savegame from the internet, or if
-you're making changes to values in your profile.  After zeroing out
-the Guardian Rank in a savegame, the next time the character is loaded
-into the game, it will inherit the main profile's Guardian Rank.
-
-    ttwl-save-edit old.sav new.sav --zero-guardian-rank
 
 ## Character Level
 

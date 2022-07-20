@@ -97,8 +97,6 @@ def main():
     # XP/Level
     print('XP: {}'.format(save.get_xp()))
     print('Level: {}'.format(save.get_level()))
-    # AH: need to convert to chaos
-    # print('Guardian Rank: {}'.format(save.get_guardian_rank()))
 
     # Currencies
     print('Currencies:')
