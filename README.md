@@ -271,6 +271,9 @@ passed away in early 2021, and that editor is now permanently offline.  RIP!
 
 # Changelog
 
+**v0.0.10**
+ - Mega patch from Apocalyptech
+
 **v0.0.9**
  - Updated Inventory for Molten Mirrors (20220623)
 

@@ -20,8 +20,8 @@ setup(
         long_description=readme(),
         long_description_content_type='text/markdown',
         url='https://github.com/abramhindle/ttwl-cli-saveedit',
-        author='CJ Kucera',
-        author_email='cj@apocalyptech.com',
+        author='CJ Kucera, Abram Hindle',
+        author_email='cj@apocalyptech.com, web@softwareprocess.es',
         data_files=[
             # I always like these to be installed along with the apps
             (f'share/{app_name}', ['COPYING.txt', 'README.md', 'README-saves.md', 'README-profile.md']),
