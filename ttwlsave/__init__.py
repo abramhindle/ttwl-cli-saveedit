@@ -149,7 +149,6 @@ class CharClass(LabelEnum):
 # Companions
 class Companion(LabelEnum):
     LICH = ('Demi-Lich', 'petnicknamelich')
-    # TODO: just guessing at these two, still.
     WYVERN = ('Wyvern', 'petnicknamewyvern')
     MUSHROOM = ('Mushroom', 'petnicknamemushroom')
 
