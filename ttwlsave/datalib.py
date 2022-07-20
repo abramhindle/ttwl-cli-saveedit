@@ -118,6 +118,8 @@ class WLSerial(object):
             # Not actually widely in-use, but this repo technically used it for
             # awhile, thinking that it was the de facto standard (it was not).
             'ttwl',
+            # too much code still uses bl3 -- deprecate me
+            'bl3',
             }
 
     def __init__(self, serial, datawrapper):
