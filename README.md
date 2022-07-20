@@ -196,10 +196,6 @@ FOr instructions on using the Profile portions of the editor, see
 
 New with WL:
 - Hero Points
-- Unlocks:
-  - Feats / Companions
-  - Second Class (w/ extra 2 skill points)
-  - Ability to choose different second class?
 - Looks like `--fake-tvhm` can be used to unlock Chaos Mode right from the
   beginning; need to test that out to see if it plays nicely with the endgame
   though.

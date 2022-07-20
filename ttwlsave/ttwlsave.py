@@ -1470,3 +1470,29 @@ class TTWLSave(object):
         for idx in reversed(indicies_to_del):
             del self.save.challenge_data[idx]
 
+    def unlock_feat(self):
+        """
+        Unlocks the character's feat/companion
+        """
+        self.save.ability_data.dual_class_save_data.unlocked_class_features = True
+
+    def unlock_multiclass(self):
+        """
+        Unlocks all Multiclass capability -- both the ability to choose one
+        and the ability to respec it right away.  If multiclass was not
+        already unlocked on the save, this will also add +2 Skill Points.
+        Returns `True` if the points were added, or `False` otherwise.
+        """
+        # Add skill points if we need to
+        added_points = False
+        if not self.save.ability_data.dual_class_save_data.unlocked_initial_secondary_class:
+            self.add_skill_points(2)
+            added_points = True
+
+        # Do the unlock
+        self.save.ability_data.dual_class_save_data.unlocked_initial_secondary_class = True
+        self.save.ability_data.dual_class_save_data.unlocked_secondary_class_swapping = True
+
+        # Return
+        return added_points
+

@@ -160,6 +160,7 @@ def main():
     unlock_choices = [
             'ammo', 'backpack',
             'equipslots',
+            'feat', 'multiclass',
             ]
     parser.add_argument('--unlock',
             action=cli_common.DictAction,
@@ -430,6 +431,19 @@ def main():
                     InvSlot.RING2,
                     InvSlot.AMULET,
                     ])
+
+            # Feats / Companions
+            if 'feat' in args.unlock:
+                if not args.quiet:
+                    print('   - Feat / Companion')
+                save.unlock_feat()
+
+            # Multiclass
+            if 'multiclass' in args.unlock:
+                if not args.quiet:
+                    print('   - Multiclass Capability')
+                    if save.unlock_multiclass():
+                        print('     - Also added +2 Skill Points')
 
         # Import Items (cli_common provides the console output)
         if args.import_items:

@@ -33,6 +33,8 @@ commands will be:
   - [Unlocks](#unlocks)
     - [Ammo/Backpack Unlocks](#ammobackpack-unlocks)
     - [Equipment Slots](#equipment-slots)
+    - [Feat/Companion](#featcompanion)
+    - [Multiclass](#multiclass)
     - [All Unlocks at Once](#all-unlocks-at-once)
   - ["Un-Finish" NVHM](#un-finish-nvhm)
   - [Import Items](#import-items)
@@ -280,6 +282,24 @@ and amulet).  This will *not* unlock the second spell slot,
 since that's skill/class-based.
 
     ttwl-save-edit old.sav new.sav --unlock equipslots
+
+### Feat/Companion
+
+You can use the `feat` unlock to activate your character's
+Feat/Companion.
+
+    ttwl-save-edit old.sav new.sav --unlock feat
+
+### Multiclass
+
+The `multiclass` unlock will allow you to spec into a second
+class, allow changing your secondary class (instead of having
+to wait for the end of the game), and give you the extra +2
+skill points which the game ordinarily gives you when the
+second class slot is unlocked (the skill points will not be
+given if the savegame's secondary class is already unlocked).
+
+    ttwl-save-edit old.sav new.sav --unlock multiclass
 
 ### All Unlocks at Once
 
