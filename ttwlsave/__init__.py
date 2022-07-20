@@ -401,27 +401,40 @@ mayhem_invdata_lower_types = set([t.lower() for t in mayhem_invdata_types])
 anointable_invdata_types = mayhem_invdata_types | set(['/Game/Gear/Shields/_Design/A_Data/Shield_Default.Shield_Default'])
 anointable_invdata_lower_types = set([t.lower() for t in anointable_invdata_types])
 
-# Guardian Rank Rewards
-guardian_rank_rewards = set([
-    '/Game/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_Accuracy.GuardianReward_Accuracy',
-    '/Game/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_ActionSkillCooldown.GuardianReward_ActionSkillCooldown',
-    '/Game/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_CriticalDamage.GuardianReward_CriticalDamage',
-    '/Game/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_FFYLDuration.GuardianReward_FFYLDuration',
-    '/Game/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_FFYLMovementSpeed.GuardianReward_FFYLMovementSpeed',
-    '/Game/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_GrenadeDamage.GuardianReward_GrenadeDamage',
-    '/Game/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_GunDamage.GuardianReward_GunDamage',
-    '/Game/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_GunFireRate.GuardianReward_GunFireRate',
-    '/Game/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_MaxHealth.GuardianReward_MaxHealth',
-    '/Game/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_MeleeDamage.GuardianReward_MeleeDamage',
-    '/Game/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_RarityRate.GuardianReward_RarityRate',
-    '/Game/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_RecoilReduction.GuardianReward_RecoilReduction',
-    '/Game/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_ReloadSpeed.GuardianReward_ReloadSpeed',
-    '/Game/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_ShieldCapacity.GuardianReward_ShieldCapacity',
-    '/Game/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_ShieldRechargeDelay.GuardianReward_ShieldRechargeDelay',
-    '/Game/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_ShieldRechargeRate.GuardianReward_ShieldRechargeRate',
-    '/Game/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_VehicleDamage.GuardianReward_VehicleDamage',
-    '/Game/PatchDLC/Hibiscus/PlayerCharacters/_Shared/_Design/GuardianRank/GuardianReward_ElementalDamage.GuardianReward_ElementalDamage',
-    ])
+# Myth Rank -- value is just the index in the array; num is the max value
+class MythRank(LabelEnum):
+    # Archmage
+    INTELLIGENCE = ('Intelligence', 0, 10)
+    SPELL_CRIT_DAMAGE = ('Spell Crit Damage', 1, 20)
+    SPELL_CRIT_CHANCE = ('Spell Crit Chance', 2, 20)
+    FIRE_DAMAGE = ('Fire Damage', 3, 20)
+    CRYO_DAMAGE = ('Cryo Damage', 4, 20)
+    STATUS_CHANCE = ('Status Effect Chance', 5, 10)
+    SPELL_DAMAGE = ('Spell Damage', 6, 0)
+    # Blademaster
+    STRENGTH = ('Strength', 7, 10)
+    CONSTITUTION = ('Constitution', 8, 10)
+    DARK_MAGIC_DAMAGE = ('Dark Magic Damage', 9, 20)
+    MELEE_CRIT_CHANCE = ('Melee Crit Chance', 10, 20)
+    MELEE_SPEED = ('Melee Swing Speed', 11, 20)
+    MELEE_CRIT_DAMAGE = ('Melee Crit Damage', 12, 20)
+    MELEE_DAMAGE = ('Melee Damage', 13, 0)
+    # Deadeye
+    DEXTERITY = ('Dexterity', 14, 10)
+    GUN_HANDLING = ('Gun Handling', 15, 10)
+    MOVE_SPEED = ('Move Speed', 16, 25)
+    RELOAD_SPEED = ('Reload Speed', 17, 20)
+    MAG_SIZE = ('Mag Size', 18, 15)
+    FIRE_RATE = ('Fire Rate', 19, 20)
+    GUN_DAMAGE = ('Gun Damage', 20, 0)
+    # Druid
+    WISDOM = ('Wisdom', 21, 10)
+    COMPANION_DAMAGE = ('Companion Damage', 22, 20)
+    ATTUNEMENT = ('Attunement', 23, 10)
+    SHOCK_DAMAGE = ('Lightning Damage', 24, 20)
+    LUCK = ('Loot Luck', 25, 20)
+    POISON_DAMAGE = ('Poison Damage', 26, 20)
+    ABILITY_DAMAGE = ('Ability Damage', 27, 0)
 
 # Profile Customizations - Not bothering to separate these out by type; there's just
 # too many and I don't care enough, especially given that this util only really does

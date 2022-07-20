@@ -20,11 +20,11 @@ commands will be:
 - [Output Formats](#output-formats)
 - [Modifying the Profile](#modifying-the-profile)
   - [Skeleton Keys](#skeleton-keys)
-  - [Guardian Rank](#guardian-rank)
-    - [Zeroing Guardian Rank](#zeroing-guardian-rank)
-    - [Minimizing Guardian Rank](#minimizing-guardian-rank)
-    - [Guardian Rank Rewards](#guardian-rank-rewards)
-    - [Guardian Rank Tokens](#guardian-rank-tokens)
+  - [Myth Rank](#myth-rank)
+    - [Zeroing Myth Rank](#zeroing-myth-rank)
+    - [Set Myth Rank Stats to Max](#set-myth-rank-stats-to-max)
+    - [Set Arbitrary Myth Rank Stats Points](#set-arbitrary-myth-rank-stats-points)
+    - [Set Myth Rank XP](#set-myth-rank-xp)
   - [Bank Item Levels](#bank-item-levels)
   - [Bank Item Chaos Levels](#bank-item-chaos-levels)
   - [Clear Customizations](#clear-customizations)
@@ -117,68 +117,52 @@ the `--skeleton-keys` argument:
 
     ttwl-profile-edit profile.sav newprofile.sav --skeleton-keys 150
 
-## Guardian Rank
+## Myth Rank
 
-There are a number of functions available for managing Guardian Rank
-in profiles.  Remember in all cases that if Guardian Rank in a profile
-is zeroed out, it will "inherit" the Guardian Rank from the first
-savegame that's loaded.  Likewise, a zeroed-out GR in a savegame will
-inherit the current GR from the profile.  When editing the profile
-Guardian Rank, it might be prudent to zero out all your savegames
-using the save editor's `--zero-guardian-rank` afterwards, to make
-sure that everything stays in sync.
+There are a number of functions available for managing Myth Rank
+in profiles.  Note that we don't currently know the equation used to
+convert Myth Rank XP into Myth Points, so allocating points into
+the Myth Rank stats can lead to the game's UI showing negative
+points available, etc.  That doesn't seem to hurt the game at all,
+though.
 
-### Zeroing Guardian Rank
+### Zeroing Myth Rank
 
-Guardian rank can be completely cleared from a profile using the
-`--zero-guardian-rank` argument.  This might be useful if your
-profile's Guardian Rank got "infected" with Guardian Rank from
-someone else's save, from back before Gearbox fixed that particular
-bug, and you wanted to clear it out.  Remember that the profile will
-probably "inherit" the GR from the first-loaded savegame, so make sure
-that the save has what you want first.  The `--min-guardian-rank`
-option below might be better, if you're looking to start from scratch.
+Myth Rank can be completely cleared from a profile using the
+`--zero-myth-rank` argument.  This will wipe both stat allocations
+and the "raw" Myth Rank XP, so you'd be starting completely fresh.
 
-Anyway, there's probably not much call for it nowadays, but here it is,
-just in case.
+    ttwl-profile-edit profile.sav newprofile.sav --zero-myth-rank
 
-    ttwl-profile-edit profile.sav newprofile.sav --zero-guardian-rank
+### Set Myth Rank Stats to Max
 
-### Minimizing Guardian Rank
+Many of the Myth Rank stats have a maximum point allocation.  To set
+those stats to the maximum values, use `--myth-stats-max`.  This will
+also ensure that the stats *without* maximum values have at least
+1 point allocated.
 
-This is a "safer" version of `--zero-guardian-rank` which starts you
-off with 18 Guardian Rank, with one point in each of the Guardian Rank
-Rewards.  This will prevent the profile from picking up the GR status
-from the first savegame that it loads.  So if you're looking to reset your
-GR and start over from scratch, this is probably the better of the two
-options.  The argument is called `--min-guardian-rank`:
+    ttwl-profile-edit profile.sav newprofile.sav --myth-stats-max
 
-    ttwl-profile-edit profile.sav newprofile.sav --min-guardian-rank
+### Set Arbitrary Myth Rank Stats Points
 
-### Guardian Rank Rewards
+You can also globally set a specific value to be allocated into all
+Myth Rank stats.  This won't allocate more than the maximum, for
+stats which have a maximum value established.  For example, to put
+7 points into all stats:
 
-To set the specified investment in Guardian Rank Rewards, across all
-eighteen rewards, use the `--guardian-rank-rewards` argument.  The value
-you use should be the number of times you want each reward to be
-"redeemed."  For example, to put everything at about 14%:
+    ttwl-profile-edit profile.sav newprofile.sav --myth-stats-points 7
 
-    ttwl-profile-edit profile.sav newprofile.sav --guardian-rank-rewards 40
+### Set Myth Rank XP
 
-Specifying `1` for the value is nearly identical to using `--min-guardian-rank`,
-except that this argument doesn't clear out the Guardian XP reported by
-the game, or the available token count.  This argument will also update your
-main Guardian Rank number to be an appropriate value, given the number of
-rewards and available tokens.
+As mentioned above, we don't currently know the equation used to convert
+Myth Rank XP into Myth Rank Points.  If you use one of the arguments
+above to allocate more points than your current XP would allow, the game's
+UI will report a negative number of points available.  This doesn't
+actually hurt anything, but might be annoying to look at, so you can
+use `--myth-xp` to try and get rid of that.  Alternatively, this could
+just be used to provide you with some more points to allocate in-game.
 
-### Guardian Rank Tokens
-
-The number of available Guardian Rank tokens can be set using the
-`--guardian-rank-tokens` argument:
-
-    ttwl-profile-edit profile.sav newprofile.sav --guardian-rank-tokens 10
-
-This argument will also update your main Guardian Rank number to be an
-appropriate value, given the number of rewards and available tokens.
+    ttwl-profile-edit profile.sav newprofile.sav --myth-xp 2000000
 
 ## Bank Item Levels
 

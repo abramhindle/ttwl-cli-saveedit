@@ -80,28 +80,27 @@ def main():
             help='Number of Skeleton Keys in the profile',
             )
 
-    # Arguably we could be using a mutually-exclusive group for many of these
-    # GR options, but I can see some potential value in specifying more than
-    # one, so I'm not bothering.
+    myth_group = parser.add_mutually_exclusive_group()
 
-    parser.add_argument('--zero-guardian-rank',
+    myth_group.add_argument('--zero-myth-rank',
             action='store_true',
-            help='Zero out profile Guardian Rank',
+            help='Zero out Myth Rank entirely',
             )
 
-    parser.add_argument('--min-guardian-rank',
+    myth_group.add_argument('--myth-stats-max',
             action='store_true',
-            help='Set Guardian Rank to minimum required to prevent overwriting by saves',
+            help='Max out Myth Rank Stats where possible',
             )
 
-    parser.add_argument('--guardian-rank-rewards',
+    myth_group.add_argument('--myth-stats-points',
             type=int,
-            help='Set Guardian Rank rewards to the specified number of tokens each',
+            help="""Set all Myth Rank Stats to the specified value (will not
+                go over the maximums for each category though)."""
             )
 
-    parser.add_argument('--guardian-rank-tokens',
+    parser.add_argument('--myth-xp',
             type=int,
-            help="Number of available Guardian Rank tokens",
+            help='Sets the raw Myth Rank XP value',
             )
 
     itemlevelgroup = parser.add_mutually_exclusive_group()
@@ -183,6 +182,16 @@ def main():
                 ttwlsave.max_level,
                 ))
 
+    # Check Myth Rank Numbers
+    if args.myth_stats_points is not None:
+        if args.myth_stats_points < 0:
+            raise argparse.ArgumentTypeError('Myth Rank Point value cannot be negative')
+
+    # Check Myth XP Numbers
+    if args.myth_xp is not None:
+        if args.myth_xp < 0:
+            raise argparse.ArgumentTypeError('Myth Rank XP value cannot be negative')
+
     # Check for overwrite warnings
     if os.path.exists(args.output_filename) and not args.force:
         if args.output_filename == args.input_filename:
@@ -207,19 +216,16 @@ def main():
     # Check to see if we have any changes to make
     have_changes = any([
         args.skeleton_keys is not None,
-        args.zero_guardian_rank,
-        args.min_guardian_rank,
-        args.guardian_rank_rewards is not None,
-        args.guardian_rank_tokens is not None,
+        args.zero_myth_rank,
+        args.myth_stats_max,
+        args.myth_stats_points is not None,
+        args.myth_xp is not None,
         len(args.unlock) > 0,
         args.import_items,
         args.item_levels,
         args.items_chaos_level is not None,
         args.clear_customizations,
         ])
-
-    # Alert about Guardian Rank stuff
-    guardian_rank_alert = False
 
     # Make changes
     if have_changes:
@@ -234,47 +240,30 @@ def main():
                 print(' - Setting Skeleton Key count to {}'.format(args.skeleton_keys))
             profile.set_skeleton_keys(args.skeleton_keys)
 
-        # Zeroing Guardian Rank
-        if args.zero_guardian_rank:
+        # Zeroing Myth Rank Entirely
+        if args.zero_myth_rank:
             if not args.quiet:
-                print(' - Zeroing Guardian Rank')
-                if not args.min_guardian_rank \
-                        and args.guardian_rank_rewards is None \
-                        and args.guardian_rank_tokens is None:
-                    print('   NOTE: A profile with a zeroed Guardian Rank will probably have its')
-                    print('   Guardian Rank info populated from the first savegame loaded by the game')
-            profile.zero_guardian_rank()
+                print(' - Clearing Myth Rank Entirely')
+            profile.zero_myth_rank()
 
-        # Setting Guardian rank to Minimum
-        if args.min_guardian_rank:
+        # Maxing out Myth Rank Stats (where appropriate)
+        if args.myth_stats_max:
             if not args.quiet:
-                print(' - Setting Guardian Rank to minimum (to prevent overwriting by savefiles)')
-            new_gr = profile.min_guardian_rank()
-            if new_gr is not None and not args.quiet:
-                print('   - Guardian Rank set to {}'.format(new_gr))
-            guardian_rank_alert = True
+                print(' - Setting Myth Rank stats to the maximum, where possible')
+            profile.myth_stats_max()
 
-        # Setting arbitrary Guardian Rank rewards
-        if args.guardian_rank_rewards is not None:
+        # Setting Myth Rank Stats to a specific value
+        if args.myth_stats_points is not None:
             if not args.quiet:
-                if args.guardian_rank_rewards == 1:
-                    plural = ''
-                else:
-                    plural = 's'
-                print(' - Setting Guardian Rank rewards to {} point{}'.format(args.guardian_rank_rewards, plural))
-            new_gr = profile.set_guardian_rank_reward_levels(args.guardian_rank_rewards, force=True)
-            if new_gr is not None and not args.quiet:
-                print('   - Also set Guardian Rank level to {}'.format(new_gr))
-            guardian_rank_alert = True
+                print(f' - Setting all Myth Rank points to: {args.myth_stats_points}')
+            profile.set_myth_stats_points(args.myth_stats_points)
 
-        # Setting Guardian Rank tokens
-        if args.guardian_rank_tokens is not None:
+        # Setting Myth Rank XP
+        # (make sure this happens *after* zero_myth_rank, in case the user specifies both)
+        if args.myth_xp is not None:
             if not args.quiet:
-                print(' - Setting available Guardian Rank tokens to {}'.format(args.guardian_rank_tokens))
-            new_gr = profile.set_guardian_rank_tokens(args.guardian_rank_tokens)
-            if new_gr is not None and not args.quiet:
-                print('   - Also set Guardian Rank level to {}'.format(new_gr))
-            guardian_rank_alert = True
+                print(f' - Setting Myth XP to: {args.myth_xp:,}')
+            profile.set_myth_xp(args.myth_xp)
 
         # Clear Customizations (do this *before* explicit customization unlocks)
         if args.clear_customizations:
@@ -331,12 +320,6 @@ def main():
                     args.items_chaos_level,
                     quiet=args.quiet,
                     )
-
-        # Guardian Rank Alert
-        if not args.quiet and guardian_rank_alert:
-            print(' - NOTE: Make sure to zero out your savegame Guardian Ranks, if making')
-            print('   changes to Guardian Rank in your profile, otherwise the changes might')
-            print('   not take effect properly.')
 
         # Newline at the end of all this.
         if not args.quiet:

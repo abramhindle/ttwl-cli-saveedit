@@ -196,7 +196,7 @@ FOr instructions on using the Profile portions of the editor, see
 
 New with WL:
 - Hero Points
-- Myth Rank
+- Figure out equation for Myth Rank XP -> Points
 - Looks like `--fake-tvhm` can be used to unlock Chaos Mode right from the
   beginning; need to test that out to see if it plays nicely with the endgame
   though.

@@ -524,103 +524,63 @@ class TTWLProfile(object):
         """
         self._set_generic_keys(Key.SKELETON, num_keys)
 
-    def fixup_guardian_rank(self, force=True):
+    def set_myth_stats_points(self, points):
         """
-        Fixes Guardian Rank, based on the redeemed rewards and available tokens.
-        When `force` is `True` (the default), it will always set the value it
-        thinks is right.  When `force` is `False`, though, it will only *raise*
-        the GR if need be, but not lower it.  Returns the new Guardian Rank
-        if it was changed, or `None` otherwise.
+        Sets all Myth Rank points to the specified value, making sure to not go
+        over the maximums for each category.
         """
-        min_guardian_rank_level = sum([r.num_tokens for r in self.prof.guardian_rank.rank_rewards])
-        min_guardian_rank_level += self.prof.guardian_rank.available_tokens
+        for idx, rank in enumerate(MythRank):
+            if rank.num > 0 and points > rank.num:
+                to_set = rank.num
+            else:
+                to_set = points
+            self.prof.player_prestige.points_spent_by_index_order[idx] = to_set
 
-        # Figure out if we should set the value or not
-        set_value = False
-        if force and self.prof.guardian_rank.guardian_rank != min_guardian_rank_level:
-            set_value = True
-        elif not force and self.prof.guardian_rank.guardian_rank < min_guardian_rank_level:
-            set_value = True
+    def zero_myth_rank(self):
+        """
+        Resets this profile's Myth Rank entirely
+        """
+        self.set_myth_stats_points(0)
+        self.prof.player_prestige.prestige_experience = 0
 
-        # Now do it (or not)
-        if set_value:
-            self.prof.guardian_rank.guardian_rank = min_guardian_rank_level
-            return min_guardian_rank_level
-        else:
-            return None
+    def myth_stats_max(self):
+        """
+        Sets Myth Rank Stats to their maximum values, for the categories which
+        have maximums.  Other categories will just make sure there's at least
+        one point in them.
+        """
+        for idx, rank in enumerate(MythRank):
+            if rank.num > 0:
+                self.prof.player_prestige.points_spent_by_index_order[idx] = rank.num
+            else:
+                self.prof.player_prestige.points_spent_by_index_order[idx] = max(
+                        1,
+                        self.prof.player_prestige.points_spent_by_index_order[idx],
+                        )
 
-    def get_guardian_rank(self):
+    def set_myth_xp(self, value):
         """
-        Gets our current guardian rank
+        Sets our raw Myth Rank XP to the specified `value`.  This is what the game
+        uses to determin how many Myth Rank points "should" be available.  We
+        don't yet know the equation used to calculate the XP->points value, so
+        this'll have to do for now.
         """
-        return self.prof.guardian_rank.guardian_rank
+        self.prof.player_prestige.prestige_experience = value
 
-    def get_guardian_rank_tokens(self):
+    def get_myth_xp(self):
         """
-        Gets our available guardian rank token count
+        Returns the raw Myth Rank XP for the profile
         """
-        return self.prof.guardian_rank.available_tokens
+        return self.prof.player_prestige.prestige_experience
 
-    def set_guardian_rank_tokens(self, tokens):
+    def get_myth_rank_stats(self):
         """
-        Sets our available guardian rank token count.  Will increase the profile's
-        Guardian Rank to suit, if needed, and will return the new Guardian Rank
-        if that was required (or `None` otherwise).
+        Returns a dict containing information about how Myth Rank is allocated
+        in the profile.  Keys will be a MythRank enum member, and the values
+        will be the currently-set points.
         """
-        self.prof.guardian_rank.available_tokens = tokens
-        return self.fixup_guardian_rank(force=False)
-
-    def zero_guardian_rank(self):
-        """
-        Resets this profile's Guardian Rank to zero.
-        """
-        # Leaving `guardian_reward_random_seed` alone, I guess?
-        # `guardian_experience` is an old value that's no longer used; the real new
-        # var is `new_guardian_experience`.
-        self.prof.guardian_rank.available_tokens = 0
-        del self.prof.guardian_rank.rank_rewards[:]
-        self.prof.guardian_rank.guardian_rank = 0
-        self.prof.guardian_rank.guardian_experience = 0
-        self.prof.guardian_rank.new_guardian_experience = 0
-
-    def set_guardian_rank_reward_levels(self, points, force=True):
-        """
-        Sets the given number of `points` in each of the guardian rank rewards.
-        Will also raise our Guardian Rank level upwards if appropriate.  If
-        `force` is `True`, we will set the given level regardless of the current
-        values.  If it is `False`, we will only *increase* the reward level,
-        never decrease.  Returns the new `guardian_rank` level, if it is
-        changed (or `None` otherwise).
-        """
-
-        # Set any existing records appropriately
-        rewards_to_set = set(list(guardian_rank_rewards))
-        for reward in self.prof.guardian_rank.rank_rewards:
-            if reward.reward_data_path in rewards_to_set:
-                rewards_to_set.remove(reward.reward_data_path)
-                if force or reward.num_tokens < points:
-                    reward.num_tokens = points
-
-        # If we're missing any, add them.
-        for reward in rewards_to_set:
-            self.prof.guardian_rank.rank_rewards.append(OakProfile_pb2.GuardianRankRewardSaveGameData(
-                num_tokens=points,
-                reward_data_path=reward,
-                ))
-
-        # Now fix up Guardian Rank level, if needed
-        return self.fixup_guardian_rank()
-
-    def min_guardian_rank(self):
-        """
-        Sets our guardian rank to the lowest level possible such that we won't get
-        overwritten by savegames that get loaded (as opposed to `zero_guardian_rank()`).
-        Namely, 18 Guardian Rank, and a single point in each Reward.  Will return the
-        new guardian rank.
-        """
-        self.prof.guardian_rank.guardian_rank = 0
-        self.prof.guardian_rank.available_tokens = 0
-        self.prof.guardian_rank.guardian_experience = 0
-        self.prof.guardian_rank.new_guardian_experience = 0
-        return self.set_guardian_rank_reward_levels(1, force=True)
+        to_ret = {}
+        for stat, cur_value in zip(MythRank, self.prof.player_prestige.points_spent_by_index_order):
+            to_ret[stat] = cur_value
+        return to_ret
 

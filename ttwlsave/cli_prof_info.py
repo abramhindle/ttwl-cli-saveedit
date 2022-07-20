@@ -60,10 +60,6 @@ def main():
     # Skeleton Keys
     print('Skeleton Keys: {}'.format(prof.get_skeleton_keys()))
 
-    # Guardian Rank
-    # print('Guardian Rank: {}'.format(prof.get_guardian_rank()))
-    # print('Available GR Tokens: {}'.format(prof.get_guardian_rank_tokens()))
-
     # SDUs
     sdus = prof.get_sdus_with_max(True)
     if len(sdus) == 0:
@@ -104,6 +100,24 @@ def main():
         len(prof.get_customizations()),
         prof.get_customizations_total(),
         ))
+
+    # Myth Rank
+    print('Myth Rank XP: {:,}'.format(prof.get_myth_xp()))
+    total_myth = 0
+    for stat, cur_value in prof.get_myth_rank_stats().items():
+        if cur_value > 0:
+            if total_myth == 0:
+                print('Myth Rank Stats:')
+            total_myth += cur_value
+            if stat.num > 0:
+                total = f'/{stat.num}'
+            else:
+                total = ''
+            print(f' - {stat.label}: {cur_value}{total}')
+    if total_myth == 0:
+        print('No points allocated in Myth Rank')
+    else:
+        print(f'Total Myth Points Allocated: {total_myth}')
 
 if __name__ == '__main__':
     main()
