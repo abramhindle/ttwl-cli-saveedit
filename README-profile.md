@@ -347,3 +347,10 @@ contents, including item codes which could be put in a text file for
 later import:
 
     ttwl-profile-info -i profile.sav
+
+You can also add in the `--rerolls` argument to also show the number of
+enchantment rerolls that each item has logged.  This will only change
+the output when there's been at least one reroll.
+
+    ttwl-profile-info -i --reroll profile.sav
+

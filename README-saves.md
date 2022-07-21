@@ -450,6 +450,12 @@ codes which could be put in a text file for later import:
 
     ttwl-save-info -i old.sav
 
+You can also add in the `--rerolls` argument to also show the number of
+enchantment rerolls that each item has logged.  This will only change
+the output when there's been at least one reroll.
+
+    ttwl-save-info -i --reroll old.sav
+
 ## Fast Travel Stations
 
 The `--fast-travel` argument will output a list of all unlocked
