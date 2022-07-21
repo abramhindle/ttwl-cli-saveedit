@@ -135,16 +135,17 @@ interpreted as a hex value (so `10.sav` would have an ID of `16`).
 
 ## Save Game GUID
 
-This is another identifier I suspect isn't actually important at all,
-but there's an internal GUID which can be used to identify savegames
-uniquely.  The `--randomize-guid` option will randomize this value,
-so if you're copying a character or something you can ensure that the
-value is different between them.  As I say, I have no idea if that's
-ever actually important (I've copied characters many times without
-randomizing this value, and they've worked fine) but here's the
-option anyway:
+Each savegame in Wonderlands has an internal GUID, which is essentially
+a random bunch of data which uniquely identifies the savegame.  In
+previous Borderlands games, this value wasn't super important, but in
+Wonderlands, new savegames *must* have their GUIDs randomized, or the
+game won't recognize the new save.  So, in this editor, randomizing the
+GUID is the default behavior when doing any operation on savegames.
+To *prevent* GUID randomization (for instance, if you're planning on
+overwriting an existing savegame, rather than creating a new one),
+you can use the `--dont-randomize-guid` option instead:
 
-    ttwl-save-edit old.sav new.sav --randomize-guid
+    ttwl-save-edit old.sav new.sav --dont-randomize-guid --other-options
 
 ## Character Level
 
