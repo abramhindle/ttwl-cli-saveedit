@@ -27,7 +27,7 @@ import ttwlsave
 import argparse
 from . import cli_common
 from . import plot_missions
-from ttwlsave import InvSlot, SDU, ChaosLevel, HeroStats
+from ttwlsave import InvSlot, SDU, ChaosLevel, HeroStats, Backstory
 from ttwlsave.ttwlsave import TTWLSave
 
 def main():
@@ -129,6 +129,11 @@ def main():
                 const=level,
                 help='Set all inventory item chaos levels to {}'.format(level.label),
                 )
+
+    parser.add_argument('--backstory',
+            choices=[b.name.lower() for b in Backstory],
+            help='Set backstory',
+            )
 
     hero_group = parser.add_mutually_exclusive_group()
 
@@ -331,6 +336,7 @@ def main():
         args.items_to_char,
         args.item_levels,
         args.items_chaos_level is not None,
+        args.backstory,
         #args.unfinish_nvhm,
         args.unfinish_missions,
         args.fake_tvhm,
@@ -389,6 +395,13 @@ def main():
                 else:
                     plural = 's'
                 print(f'   - Also added {points_added} skill point{plural}')
+
+        # Backstory
+        if args.backstory:
+            b = Backstory[args.backstory.upper()]
+            if not args.quiet:
+                print(f' - Setting backstory to: {b.label}')
+            save.set_backstory(b)
 
         # Hero Stats - Specific value
         if args.hero_stats is not None:

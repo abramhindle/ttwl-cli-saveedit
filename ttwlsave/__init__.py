@@ -445,6 +445,19 @@ class HeroStats(LabelEnum):
     CON = ('Constitution', 'constitution')
     ATT = ('Attunement', 'luck')
 
+# Backstories
+class Backstory(LabelEnum):
+    IDIOT = ('Village Idiot: STR+8, INT-3, WIS-3',
+            '/Game/PlayerCharacters/_Shared/_Design/Aspects/Aspect_01.Aspect_01')
+    ELVES = ('Raised By Elves: DEX+4, CON-4, ATT+2',
+            '/Game/PlayerCharacters/_Shared/_Design/Aspects/Aspect_02.Aspect_02')
+    MONK = ('Failed Monk: STR-4, DEX-2, INT+3, WIS+6',
+            '/Game/PlayerCharacters/_Shared/_Design/Aspects/Aspect_03.Aspect_03')
+    HOARDER = ('Recovering Inventory Hoarder: DEX-2, INT+2, CON-2, ATT+5',
+            '/Game/PlayerCharacters/_Shared/_Design/Aspects/Aspect_04.Aspect_04')
+    ALCHEMIST = ('Rogue Alchemist: DEX-2, WIS+8, CON-5, ATT+2',
+            '/Game/PlayerCharacters/_Shared/_Design/Aspects/Aspect_05.Aspect_05')
+
 # Profile Customizations - Not bothering to separate these out by type; there's just
 # too many and I don't care enough, especially given that this util only really does
 # a simple "unlock all".  Note that this set doesn't include the ones which are

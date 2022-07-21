@@ -1496,3 +1496,24 @@ class TTWLSave(object):
         for stat in stats:
             setattr(self.save.hero_points_save_data, stat.value, value)
 
+    def get_backstory(self, eng=False):
+        """
+        Returns the backstory for the character.  If `eng` is False, this will be
+        a Backstory enum instance if possible, or the raw object path if not found.
+        If `eng` is True, an English label will be returned instead (if possible)
+        """
+        bs = Backstory.has_value(self.save.hero_points_save_data.player_aspect_data_path)
+        if bs:
+            if eng:
+                return bs.label
+            else:
+                return bs
+        else:
+            return self.save.hero_points_save_data.player_aspect_data_path
+
+    def set_backstory(self, backstory):
+        """
+        Sets the character backstory, given a Backstory enum instance
+        """
+        self.save.hero_points_save_data.player_aspect_data_path = backstory.value
+

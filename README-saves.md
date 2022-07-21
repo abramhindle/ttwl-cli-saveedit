@@ -165,6 +165,21 @@ maximum level.
 These arguments will also add in any appropriate skill points which
 would have happened as a result of levelling.
 
+## Backstory
+
+Character backstory can be set with the `--backstory` argument.  The
+following values are valid to specify which backstory to set:
+
+ - `idiot`: Village Idiot
+ - `elves`: Raised by Elves
+ - `monk`: Failed Monk
+ - `hoarder`: Recovering Inventory Hoarder
+ - `alchemist`: Rogue Alchemist
+
+For example:
+
+    ttwl-save-edit old.sav new.sav --backstory elves
+
 ## Hero Stats
 
 There are a few options available to set your character's Hero Stats.

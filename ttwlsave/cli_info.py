@@ -98,6 +98,9 @@ def main():
     print('XP: {}'.format(save.get_xp()))
     print('Level: {}'.format(save.get_level()))
 
+    # Backstory
+    print('Backstory: {}'.format(save.get_backstory(True)))
+
     # Hero Stats
     print('Raw Hero Stats (no Backstory or Myth Rank adjustments):')
     for stat, value in save.get_hero_stats().items():
