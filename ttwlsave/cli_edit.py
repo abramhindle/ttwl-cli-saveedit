@@ -472,7 +472,8 @@ def main():
             if 'multiclass' in args.unlock:
                 if not args.quiet:
                     print('   - Multiclass Capability')
-                    if save.unlock_multiclass():
+                if save.unlock_multiclass():
+                    if not args.quiet:
                         print('     - Also added +2 Skill Points')
 
         # Import Items (cli_common provides the console output)
