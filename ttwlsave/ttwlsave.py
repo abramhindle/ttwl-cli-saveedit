@@ -927,22 +927,12 @@ class TTWLSave(object):
     def unlock_slots(self, slots=None):
         """
         Unlocks the specified inventory `slots`, which should be a list of InvSlot
-        members.  If `slots` is not passed in, will unlock all inventory slots.  This
-        will take the initiative to unlock some associated challenges, if
-        necessary -- Artifacts and COMs in particular have an associated challenge
-        with their slot unlocking, which we'll go ahead and process.
+        members.  If `slots` is not passed in, will unlock all inventory slots.
         """
         if slots is None:
             slots = InvSlot
         for slot in slots:
             self.equipslots[slot].set_enabled()
-            # TODO: Find out if there are any challenges associated with these.  It
-            # seems that if so, unlocking them isn't strictly necessary (ie: the
-            # slots seem perfectly usable without), but I do like to be thorough.
-            #if slot == ARTIFACT:
-            #    self.unlock_challenge(CHAL_ARTIFACT)
-            #elif slot == COM:
-            #    self.unlock_char_com_challenge()
 
     def add_item(self, new_item):
         """
@@ -1225,30 +1215,6 @@ class TTWLSave(object):
         """
         return sorted(self.save.challenge_data, key=lambda chal: chal.challenge_class_path)
 
-    def get_interesting_challenges(self, eng=False):
-        """
-        Returns a dict containing the challenge type and completed status.  The challenge
-        type key will be a constant by default, or an English label if `eng` is `True`
-        """
-        to_ret = {}
-        for chal in self.save.challenge_data:
-            if chal.challenge_class_path in challengeobj_to_challenge:
-                chal_type = challengeobj_to_challenge[chal.challenge_class_path]
-                if chal_type not in challenge_char_lock or challenge_char_lock[chal_type] == self.get_class():
-                    if eng:
-                        chal_type = challenge_to_eng[chal_type]
-                    to_ret[chal_type] = chal.currently_completed
-        return to_ret
-
-    def get_interesting_challenge(self, chal_type):
-        """
-        Returns the status of the given challenge type
-        """
-        challenges = self.get_interesting_challenges()
-        if chal_type in challenges:
-            return challenges[chal_type]
-        return None
-
     def set_stats_obj(self, stat_obj, stat_value):
         """
         Sets the given `stat_obj`, which lives in `game_stats_data`.
@@ -1286,30 +1252,6 @@ class TTWLSave(object):
         # AFAIK we should never get here; rather than create a new one,
         # I'm just going to raise an Exception for now.
         raise Exception('Challenge not found: {}'.format(challenge_obj))
-
-    def unlock_challenge(self, chal_type):
-        """
-        Unlocks the given challenge type
-        """
-        self.unlock_challenge_obj(challenge_to_challengeobj[chal_type])
-
-    def unlock_char_com_challenge(self):
-        """
-        Special-case routine to unlock the appropriate challenge for COM slot, which
-        will depend on what character we are.
-        """
-        char_class = self.get_class()
-        if char_class == BEASTMASTER:
-            self.unlock_challenge(COM_BEASTMASTER)
-        elif char_class == GUNNER:
-            self.unlock_challenge(COM_GUNNER)
-        elif char_class == OPERATIVE:
-            self.unlock_challenge(COM_OPERATIVE)
-        elif char_class == SIREN:
-            self.unlock_challenge(COM_SIREN)
-        else:
-            # How in the world would we get here?
-            raise Exception('Unknown character class: {}'.format(char_class))
 
     def get_savegame_guid(self):
         """

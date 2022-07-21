@@ -216,49 +216,6 @@ class ChaosLevel(LabelEnum):
     PRIMORDIAL = ('Primordial', 3)
     ASCENDED = ('Ascended', 4)
 
-# Challenges
-(CHAOS,
-        CHAL_ARTIFACT,
-        COM_BEASTMASTER,
-        COM_GUNNER,
-        COM_OPERATIVE,
-        COM_SIREN,
-        ) = range(6)
-challenge_to_eng = {
-        CHAOS: 'Chaos Mode',
-        CHAL_ARTIFACT: 'Artifact Slot',
-        COM_BEASTMASTER: 'Beastmaster COM Slot',
-        COM_GUNNER: 'Gunner COM Slot',
-        COM_OPERATIVE: 'Operative COM Slot',
-        COM_SIREN: 'Siren COM Slot',
-        }
-challenge_char_lock = {
-        #COM_BEASTMASTER: BEASTMASTER,
-        #COM_GUNNER: GUNNER,
-        #COM_OPERATIVE: OPERATIVE,
-        #COM_SIREN: SIREN,
-        }
-challengeobj_to_challenge = {
-        # This CHAOS here was just me testing to see if I could get the menu UI unlocked;
-        # this one here doesn't do it at all;  I think it's just the achievement for
-        # completing a single Chaos chamber.
-        '/Game/GameData/Challenges/System/BP_Challenge_Console_Chaos_Complete.BP_Challenge_Console_Chaos_Complete_C': CHAOS,
-        '/Game/GameData/Challenges/Account/Challenge_VaultReward_ArtifactSlot.Challenge_VaultReward_ArtifactSlot_C': CHAL_ARTIFACT,
-        '/Game/GameData/Challenges/Character/Beastmaster/BP_Challenge_Beastmaster_ClassMod.BP_Challenge_Beastmaster_ClassMod_C': COM_BEASTMASTER,
-        '/Game/GameData/Challenges/Character/Gunner/BP_Challenge_Gunner_ClassMod.BP_Challenge_Gunner_ClassMod_C': COM_GUNNER,
-        '/Game/GameData/Challenges/Character/Operative/BP_Challenge_Operative_ClassMod.BP_Challenge_Operative_ClassMod_C': COM_OPERATIVE,
-        '/Game/GameData/Challenges/Character/Siren/BP_Challenge_Siren_ClassMod.BP_Challenge_Siren_ClassMod_C': COM_SIREN,
-
-        # This alone is not sufficient to unlock Sanctuary early
-        #'/Game/GameData/Challenges/FastTravel/Challenge_FastTravel_Sanctuary3_2.Challenge_FastTravel_Sanctuary3_2_C': FOO,
-
-        # Unlocking Fabricator really doesn't interest me; I think you'd need the item drop to go along with it, too.
-        #'/Game/GameData/Challenges/Account/Challenge_VaultReward_Fabricator.Challenge_VaultReward_Fabricator_C': FOO,
-
-        # Also, where are the other two gun slots?
-        }
-challenge_to_challengeobj = {v: k for k, v in challengeobj_to_challenge.items()}
-
 # Char-level Stat (not sure if this is useful to set, but we'll do it anyway)
 level_stat = '/Game/GameData/Stats/Progression/Stat_Character_Level.Stat_Character_Level'
 

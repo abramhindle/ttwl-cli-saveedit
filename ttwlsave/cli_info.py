@@ -258,11 +258,6 @@ def main():
     for ammo, count in save.get_ammo_counts(True).items():
         print(' - {}: {}'.format(ammo, count))
 
-    # Challenges
-    print('Challenges we care about:')
-    for challenge, status in save.get_interesting_challenges(True).items():
-        print(' - {}: {}'.format(challenge, status))
-
     # "raw" Challenges
     if args.verbose or args.all_challenges:
         print('All Challenges:')
