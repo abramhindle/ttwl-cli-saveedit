@@ -24,6 +24,7 @@ commands will be:
   - [Save Game ID](#save-game-id)
   - [Save Game GUID](#save-game-guid)
   - [Character Level](#character-level)
+  - [Hero Stats](#hero-stats)
   - [Chaos Level](#chaos-level)
   - [Currency (Money, Moon Orbs, and Lost Souls)](#currency-money-moon-orbs-and-lost-souls)
   - [Mission Deletion](#mission-deletion)
@@ -163,6 +164,41 @@ maximum level.
 
 These arguments will also add in any appropriate skill points which
 would have happened as a result of levelling.
+
+## Hero Stats
+
+There are a few options available to set your character's Hero Stats.
+Note that all of these options operate on the "raw" stat values, which
+range from 1 to 30 (and default to 10 on freshly-created characters).
+The values you see and set with these options do *not* take into account
+the character's backstory, or any Myth Rank buffs.  The valid range
+for these values will always be 1 through 30.
+
+First, `--hero-stats` can be used to set all stats to an arbitrary
+value:
+
+    ttwl-save-edit old.sav new.sav --hero-stats 15
+
+Alternatively, `--hero-stats-max` will set them all to their maximum
+values (30):
+
+
+    ttwl-save-edit old.sav new.sav --hero-stats-max
+
+Finally, there are individual arguments for each stat:
+
+    ttwl-save-edit old.sav new.sav --str 15
+    ttwl-save-edit old.sav new.sav --dex 15
+    ttwl-save-edit old.sav new.sav --int 15
+    ttwl-save-edit old.sav new.sav --wis 15
+    ttwl-save-edit old.sav new.sav --con 15
+    ttwl-save-edit old.sav new.sav --att 15
+
+The individual-stat options get processed after the "global"
+options, so if for instance you wanted to set all values to
+15 but raise Strength and Dexterity to 20, you could specify:
+
+    ttwl-save-edit old.sav new.sav --hero-stats 15 --str 20 --dex 20
 
 ## Chaos Level
 

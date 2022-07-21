@@ -138,7 +138,7 @@ def main():
             'customizations',
             ]
     parser.add_argument('--unlock',
-            action=cli_common.DictAction,
+            action=cli_common.SetAction,
             choices=unlock_choices + ['all'],
             default={},
             help='Game features to unlock',

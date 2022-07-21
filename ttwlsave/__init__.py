@@ -436,6 +436,15 @@ class MythRank(LabelEnum):
     POISON_DAMAGE = ('Poison Damage', 26, 20)
     ABILITY_DAMAGE = ('Ability Damage', 27, 0)
 
+# Hero Stats
+class HeroStats(LabelEnum):
+    STR = ('Strength', 'strength')
+    DEX = ('Dexterity', 'dexterity')
+    INT = ('Intelligence', 'intelligence')
+    WIS = ('Wisdom', 'wisdom')
+    CON = ('Constitution', 'constitution')
+    ATT = ('Attunement', 'luck')
+
 # Profile Customizations - Not bothering to separate these out by type; there's just
 # too many and I don't care enough, especially given that this util only really does
 # a simple "unlock all".  Note that this set doesn't include the ones which are

@@ -98,6 +98,11 @@ def main():
     print('XP: {}'.format(save.get_xp()))
     print('Level: {}'.format(save.get_level()))
 
+    # Hero Stats
+    print('Raw Hero Stats (no Backstory or Myth Rank adjustments):')
+    for stat, value in save.get_hero_stats().items():
+        print(f' - {stat.label}: {value}')
+
     # Currencies
     print('Currencies:')
     print(' - Money: {:,}'.format(save.get_money()))

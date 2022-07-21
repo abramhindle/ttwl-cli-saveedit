@@ -26,28 +26,45 @@ import argparse
 from . import datalib
 from ttwlsave import ChaosLevel
 
-class DictAction(argparse.Action):
+class SetAction(argparse.Action):
     """
     Custom argparse action to put list-like arguments into
-    a dict (where the value will be True) rather than a list.
-    This is probably implemented fairly shoddily.
+    a set, rather than a list.
     """
     def __init__(self, option_strings, dest, nargs=None, **kwargs):
-        """
-        Constructor, taken right from https://docs.python.org/2.7/library/argparse.html#action
-        """
         if nargs is not None:
             raise ValueError('nargs is not allowed')
-        super(DictAction, self).__init__(option_strings, dest, **kwargs)
+        super().__init__(option_strings, dest, **kwargs)
 
     def __call__(self, parser, namespace, values, option_string=None):
         """
         Actually setting a value.  Forces the attr into a dict if it isn't already.
         """
         arg_value = getattr(namespace, self.dest)
+        if not isinstance(arg_value, set):
+            arg_value = set()
+        arg_value.add(values)
+        setattr(namespace, self.dest, arg_value)
+
+class DictValueAction(argparse.Action):
+    """
+    Custom argparse action to sort arguments into a dict
+    structure whose keys are given by the argument constructor,
+    and values supplied by the user.  For our purposes, the keys
+    are likely to be instances of one of our Enums.
+    """
+
+    def __init__(self, option_strings, dest, key=None, nargs=None, **kwargs):
+        if nargs is not None:
+            raise ValueError('nargs is not allowed')
+        self.key = key
+        super().__init__(option_strings, dest, **kwargs)
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        arg_value = getattr(namespace, self.dest)
         if not isinstance(arg_value, dict):
             arg_value = {}
-        arg_value[values] = True
+        arg_value[self.key] = values
         setattr(namespace, self.dest, arg_value)
 
 def export_items(items, export_file, quiet=False):

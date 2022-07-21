@@ -27,7 +27,7 @@ import ttwlsave
 import argparse
 from . import cli_common
 from . import plot_missions
-from ttwlsave import InvSlot, SDU, ChaosLevel
+from ttwlsave import InvSlot, SDU, ChaosLevel, HeroStats
 from ttwlsave.ttwlsave import TTWLSave
 
 def main():
@@ -130,6 +130,29 @@ def main():
                 help='Set all inventory item chaos levels to {}'.format(level.label),
                 )
 
+    hero_group = parser.add_mutually_exclusive_group()
+
+    hero_group.add_argument('--hero-stats',
+            type=int,
+            help='Sets all raw Hero Stats to the specified value (from 1-30)',
+            )
+
+    hero_group.add_argument('--hero-stats-max',
+            action='store_true',
+            help='Sets all raw Hero Stats to their maximum values',
+            )
+
+    for stat in HeroStats:
+        arg_short = stat.label.lower()[:3]
+        parser.add_argument(f'--{arg_short}',
+                type=int,
+                metavar=stat.label.upper(),
+                dest='hero_stats_individual',
+                action=cli_common.DictValueAction,
+                key=stat,
+                help=f'Sets the value of the {stat.label} Hero Stat (from 1-30)',
+                )
+
     parser.add_argument('--chaos',
             type=int,
             help='Set the Chaos Level',
@@ -157,7 +180,7 @@ def main():
             'feat', 'multiclass',
             ]
     parser.add_argument('--unlock',
-            action=cli_common.DictAction,
+            action=cli_common.SetAction,
             choices=unlock_choices + ['all'],
             default={},
             help='Game features to unlock',
@@ -250,6 +273,17 @@ def main():
         if args.chaos < 0 or args.chaos > ttwlsave.max_chaos_level:
             raise argparse.ArgumentTypeError(f'Valid Chaos Level range is 0 through {ttwlsave.max_chaos_level}')
 
+    # Check Hero Stats level
+    if args.hero_stats is not None:
+        if args.hero_stats < 1 or args.hero_stats > 30:
+            raise argparse.ArgumentTypeError('Valid Hero Stat range is 1 through 30')
+    if args.hero_stats_max:
+        args.hero_stats = 30
+    if args.hero_stats_individual:
+        for stat, value in args.hero_stats_individual.items():
+            if value < 1 or value > 30:
+                raise argparse.ArgumentTypeError(f'Valid {stat.label} Stat range is 1 through 30')
+
     # AH: Only 1 playthrough
     # # Check to make sure that any deleted missions are not plot missions
     # for arg in [args.delete_pt1_mission, args.delete_pt2_mission]:
@@ -286,6 +320,9 @@ def main():
         args.randomize_guid,
         args.level is not None,
         args.chaos is not None,
+        args.hero_stats is not None,
+        # hero_stats_max sets hero_stats, so don't check for it here
+        args.hero_stats_individual,
         args.money is not None,
         args.moon_orbs is not None,
         args.souls is not None,
@@ -352,6 +389,19 @@ def main():
                 else:
                     plural = 's'
                 print(f'   - Also added {points_added} skill point{plural}')
+
+        # Hero Stats - Specific value
+        if args.hero_stats is not None:
+            if not args.quiet:
+                print(f' - Setting all Hero Stats to {args.hero_stats}')
+            save.set_hero_stats(HeroStats, args.hero_stats)
+
+        # Hero Stats - Individual stats
+        if args.hero_stats_individual:
+            for stat, value in args.hero_stats_individual.items():
+                if not args.quiet:
+                    print(f' - Setting {stat.label} Stat to: {value}')
+                save.set_hero_stats(stat, value)
 
         # Money
         if args.money is not None:

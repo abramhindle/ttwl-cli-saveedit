@@ -1474,3 +1474,25 @@ class TTWLSave(object):
         # Return
         return added_points
 
+    def get_hero_stats(self):
+        """
+        Returns a dict describing Hero Stats for the character.  The keys will be
+        a HeroStats enum member, and the value will be the current value in the
+        save.  Note that these are *not* adjusted for Backstory or Myth Rank
+        """
+        to_ret = {}
+        for stat in HeroStats:
+            to_ret[stat] = getattr(self.save.hero_points_save_data, stat.value)
+        return to_ret
+
+    def set_hero_stats(self, stats, value):
+        """
+        Sets the given `stats` to the specified `value`, in the Hero Stats section
+        of the save.  `stats` can be a single HeroStats enum, or an iterable
+        object containing one or more HeroStats enums.
+        """
+        if type(stats) == HeroStats:
+            stats = [stats]
+        for stat in stats:
+            setattr(self.save.hero_points_save_data, stat.value, value)
+
