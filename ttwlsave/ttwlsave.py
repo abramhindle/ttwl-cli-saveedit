@@ -655,22 +655,6 @@ class TTWLSave(object):
             return map_ids[pt]
         return None
 
-    # Part of attempting to unlock Sanctuary early would probably be unlocking its FT station,
-    # in addition to the related Challenge, though my attempts to do so didn't work.  I don't
-    # actually care enough to properly wrap this up, but here's some code I'd originally used
-    # for the FT unlock:
-	#sanc_ft = '/Game/GameData/FastTravel/FTS_Sanctuary.FTS_Sanctuary'
-	#have_sanc = False
-	#for ft in self.save.active_travel_stations_for_playthrough[0].active_travel_stations:
-	#    if ft.active_travel_station_name == sanc_ft:
-	#        have_sanc = True
-	#        break
-	#if not have_sanc:
-	#    self.save.active_travel_stations_for_playthrough[0].active_travel_stations.append(OakSave_pb2.ActiveFastTravelSaveData(
-	#        active_travel_station_name=sanc_ft,
-	#        blacklisted = False,
-	#        ))
-
     def get_pt_active_ft_station_lists(self):
         """
         Returns a list of Fast travel station names active for each playthrough
