@@ -208,13 +208,74 @@ class Ammo(LabelEnum):
     SHOTGUN = ('Shotgun', '/Game/GameData/Weapons/Ammo/Resource_Ammo_Shotgun.Resource_Ammo_Shotgun', 280)
     SNIPER = ('Sniper', '/Game/GameData/Weapons/Ammo/Resource_Ammo_Sniper.Resource_Ammo_Sniper', 204)
 
-# Chaos Levels
+# Item Chaos Levels
 class ChaosLevel(LabelEnum):
     REGULAR = ('Regular', 0)
     CHAOTIC = ('Chaotic', 1)
     VOLATILE = ('Volatile', 2)
     PRIMORDIAL = ('Primordial', 3)
     ASCENDED = ('Ascended', 4)
+
+# Keys (just Skeleton for now)
+class Key(HashLabelEnum):
+    SKELETON = ('Skeleton Keys', '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_GoldenKey')
+
+# Myth Rank -- value is just the index in the array; num is the max value
+class MythRank(LabelEnum):
+    # Archmage
+    INTELLIGENCE = ('Intelligence', 0, 10)
+    SPELL_CRIT_DAMAGE = ('Spell Crit Damage', 1, 20)
+    SPELL_CRIT_CHANCE = ('Spell Crit Chance', 2, 20)
+    FIRE_DAMAGE = ('Fire Damage', 3, 20)
+    CRYO_DAMAGE = ('Cryo Damage', 4, 20)
+    STATUS_CHANCE = ('Status Effect Chance', 5, 10)
+    SPELL_DAMAGE = ('Spell Damage', 6, 0)
+    # Blademaster
+    STRENGTH = ('Strength', 7, 10)
+    CONSTITUTION = ('Constitution', 8, 10)
+    DARK_MAGIC_DAMAGE = ('Dark Magic Damage', 9, 20)
+    MELEE_CRIT_CHANCE = ('Melee Crit Chance', 10, 20)
+    MELEE_SPEED = ('Melee Swing Speed', 11, 20)
+    MELEE_CRIT_DAMAGE = ('Melee Crit Damage', 12, 20)
+    MELEE_DAMAGE = ('Melee Damage', 13, 0)
+    # Deadeye
+    DEXTERITY = ('Dexterity', 14, 10)
+    GUN_HANDLING = ('Gun Handling', 15, 10)
+    MOVE_SPEED = ('Move Speed', 16, 25)
+    RELOAD_SPEED = ('Reload Speed', 17, 20)
+    MAG_SIZE = ('Mag Size', 18, 15)
+    FIRE_RATE = ('Fire Rate', 19, 20)
+    GUN_DAMAGE = ('Gun Damage', 20, 0)
+    # Druid
+    WISDOM = ('Wisdom', 21, 10)
+    COMPANION_DAMAGE = ('Companion Damage', 22, 20)
+    ATTUNEMENT = ('Attunement', 23, 10)
+    SHOCK_DAMAGE = ('Lightning Damage', 24, 20)
+    LUCK = ('Loot Luck', 25, 20)
+    POISON_DAMAGE = ('Poison Damage', 26, 20)
+    ABILITY_DAMAGE = ('Ability Damage', 27, 0)
+
+# Hero Stats
+class HeroStats(LabelEnum):
+    STR = ('Strength', 'strength')
+    DEX = ('Dexterity', 'dexterity')
+    INT = ('Intelligence', 'intelligence')
+    WIS = ('Wisdom', 'wisdom')
+    CON = ('Constitution', 'constitution')
+    ATT = ('Attunement', 'luck')
+
+# Backstories
+class Backstory(LabelEnum):
+    IDIOT = ('Village Idiot: STR+8, INT-3, WIS-3',
+            '/Game/PlayerCharacters/_Shared/_Design/Aspects/Aspect_01.Aspect_01')
+    ELVES = ('Raised By Elves: DEX+4, CON-4, ATT+2',
+            '/Game/PlayerCharacters/_Shared/_Design/Aspects/Aspect_02.Aspect_02')
+    MONK = ('Failed Monk: STR-4, DEX-2, INT+3, WIS+6',
+            '/Game/PlayerCharacters/_Shared/_Design/Aspects/Aspect_03.Aspect_03')
+    HOARDER = ('Recovering Inventory Hoarder: DEX-2, INT+2, CON-2, ATT+5',
+            '/Game/PlayerCharacters/_Shared/_Design/Aspects/Aspect_04.Aspect_04')
+    ALCHEMIST = ('Rogue Alchemist: DEX-2, WIS+8, CON-5, ATT+2',
+            '/Game/PlayerCharacters/_Shared/_Design/Aspects/Aspect_05.Aspect_05')
 
 # Char-level Stat (not sure if this is useful to set, but we'll do it anyway)
 level_stat = '/Game/GameData/Stats/Progression/Stat_Character_Level.Stat_Character_Level'
@@ -233,10 +294,6 @@ skill_point_exceptions = {
         20: 2,
         40: 3,
         }
-
-# Skeleton Keys
-class Key(HashLabelEnum):
-    SKELETON = ('Skeleton Keys', '/Game/Gear/_Shared/_Design/InventoryCategories/InventoryCategory_GoldenKey')
 
 # XP - Multiplication value has changed to 65 (from 60, in all previous
 # Borderlands games).  Exponent is still 2.8.  We're continuing to
@@ -361,63 +418,6 @@ enchantment_invdata_types = {
         '/Game/PatchDLC/Indigo2/Gear/Weapons/Pistols/Torgue/_Shared/_Design/_Unique/Butterboom/WT_PS_Butterboom.WT_PS_Butterboom',
         }
 enchantment_invdata_lower_types = set([t.lower() for t in enchantment_invdata_types])
-
-# Myth Rank -- value is just the index in the array; num is the max value
-class MythRank(LabelEnum):
-    # Archmage
-    INTELLIGENCE = ('Intelligence', 0, 10)
-    SPELL_CRIT_DAMAGE = ('Spell Crit Damage', 1, 20)
-    SPELL_CRIT_CHANCE = ('Spell Crit Chance', 2, 20)
-    FIRE_DAMAGE = ('Fire Damage', 3, 20)
-    CRYO_DAMAGE = ('Cryo Damage', 4, 20)
-    STATUS_CHANCE = ('Status Effect Chance', 5, 10)
-    SPELL_DAMAGE = ('Spell Damage', 6, 0)
-    # Blademaster
-    STRENGTH = ('Strength', 7, 10)
-    CONSTITUTION = ('Constitution', 8, 10)
-    DARK_MAGIC_DAMAGE = ('Dark Magic Damage', 9, 20)
-    MELEE_CRIT_CHANCE = ('Melee Crit Chance', 10, 20)
-    MELEE_SPEED = ('Melee Swing Speed', 11, 20)
-    MELEE_CRIT_DAMAGE = ('Melee Crit Damage', 12, 20)
-    MELEE_DAMAGE = ('Melee Damage', 13, 0)
-    # Deadeye
-    DEXTERITY = ('Dexterity', 14, 10)
-    GUN_HANDLING = ('Gun Handling', 15, 10)
-    MOVE_SPEED = ('Move Speed', 16, 25)
-    RELOAD_SPEED = ('Reload Speed', 17, 20)
-    MAG_SIZE = ('Mag Size', 18, 15)
-    FIRE_RATE = ('Fire Rate', 19, 20)
-    GUN_DAMAGE = ('Gun Damage', 20, 0)
-    # Druid
-    WISDOM = ('Wisdom', 21, 10)
-    COMPANION_DAMAGE = ('Companion Damage', 22, 20)
-    ATTUNEMENT = ('Attunement', 23, 10)
-    SHOCK_DAMAGE = ('Lightning Damage', 24, 20)
-    LUCK = ('Loot Luck', 25, 20)
-    POISON_DAMAGE = ('Poison Damage', 26, 20)
-    ABILITY_DAMAGE = ('Ability Damage', 27, 0)
-
-# Hero Stats
-class HeroStats(LabelEnum):
-    STR = ('Strength', 'strength')
-    DEX = ('Dexterity', 'dexterity')
-    INT = ('Intelligence', 'intelligence')
-    WIS = ('Wisdom', 'wisdom')
-    CON = ('Constitution', 'constitution')
-    ATT = ('Attunement', 'luck')
-
-# Backstories
-class Backstory(LabelEnum):
-    IDIOT = ('Village Idiot: STR+8, INT-3, WIS-3',
-            '/Game/PlayerCharacters/_Shared/_Design/Aspects/Aspect_01.Aspect_01')
-    ELVES = ('Raised By Elves: DEX+4, CON-4, ATT+2',
-            '/Game/PlayerCharacters/_Shared/_Design/Aspects/Aspect_02.Aspect_02')
-    MONK = ('Failed Monk: STR-4, DEX-2, INT+3, WIS+6',
-            '/Game/PlayerCharacters/_Shared/_Design/Aspects/Aspect_03.Aspect_03')
-    HOARDER = ('Recovering Inventory Hoarder: DEX-2, INT+2, CON-2, ATT+5',
-            '/Game/PlayerCharacters/_Shared/_Design/Aspects/Aspect_04.Aspect_04')
-    ALCHEMIST = ('Rogue Alchemist: DEX-2, WIS+8, CON-5, ATT+2',
-            '/Game/PlayerCharacters/_Shared/_Design/Aspects/Aspect_05.Aspect_05')
 
 # Profile Customizations - Not bothering to separate these out by type; there's just
 # too many and I don't care enough, especially given that this util only really does
