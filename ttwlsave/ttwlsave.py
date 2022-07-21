@@ -541,9 +541,11 @@ class TTWLSave(object):
         else:
             return (0, 0)
 
-    def set_chaos_level(self, level):
+    def set_chaos_level(self, level, unlock_only=False):
         """
-        Sets the current Chaos Level (will also set at least that level to be unlocked)
+        Sets the current Chaos Level (will also set at least that level to be unlocked).
+        If `unlock_only` is `True`, this will *only* ensure that the specified level
+        is unlocked, but not update the currently-active Chaos Level.
         """
         if len(self.save.game_state_save_data_for_playthrough) == 0:
             self.save.game_state_save_data_for_playthrough.append(OakSave_pb2.GameStateSaveData(
@@ -555,7 +557,8 @@ class TTWLSave(object):
                 mayhem_random_seed=0,
                 mayhem_unlocked_level=0,
                 ))
-        self.save.game_state_save_data_for_playthrough[0].mayhem_level = level
+        if not unlock_only:
+            self.save.game_state_save_data_for_playthrough[0].mayhem_level = level
         if level > self.save.game_state_save_data_for_playthrough[0].mayhem_unlocked_level:
             self.save.game_state_save_data_for_playthrough[0].mayhem_unlocked_level = level
         # If we set this value, we can use Chaos Mode right from the beginning of the game

@@ -81,7 +81,7 @@ def main():
         targets.append(args.filename)
 
     # If we're a directory, make sure it exists
-    if not os.path.exists(args.output):
+    if args.directory and not os.path.exists(args.output):
         os.mkdir(args.output)
 
     # If we've been given an info file, check to see if it exists
@@ -164,8 +164,22 @@ def main():
         # May as well force the name, while we're at it
         save.set_char_name("WL Savegame Archive")
 
+        # Randomize GUID
+        save.randomize_guid()
+
         # Max XP
         save.set_level(ttwlsave.max_level)
+
+        # Max Hero Stats
+        # (eh, actually don't bother -- would probably just gunk up the UI
+        # with "points available" warnings, and it's not like we're not
+        # cheating like hell with our gear anyway).
+        #save.set_hero_stats(ttwlsave.HeroStats, 30)
+
+        # Currency
+        save.set_money(50000000) # Fifty million
+        save.set_moon_orbs(10000)
+        save.set_souls(200)
 
         # Max SDUs
         save.set_max_sdus()
@@ -176,19 +190,24 @@ def main():
         # Unlock all inventory slots
         save.unlock_slots()
 
-        # Unlock PT2
-        # (In the original runthrough which I've already checked in, I'd accidentally set
-        # this to 2.  Whoops!  Doesn't seem to matter, so whatever.)
-        # TODO: eh???
-        save.set_playthroughs_completed(1)
+        # Unlock Feats/Companions
+        save.unlock_feat()
+
+        # Unlock Multiclass
+        save.unlock_multiclass()
+
+        # Unlock Chaos Mode (though don't actually set a value)
+        save.set_chaos_level(ttwlsave.max_chaos_level, unlock_only=True)
 
         # Inventory - force our testing gear
-        # Gear data just taken from my modtest char.  Level 57 Mayhem 10, though
-        # they'll get upgraded if needed, below.
-        craders = 'BL3(AwAAAADHQ4C6yJOBkHsckEekyWhISinQpbNyysgdQgAAAAAAADIgAA==)'
-        transformer = 'BL3(AwAAAACSdIC2t9hAkysShLxMKkMEAA==)'
-        save.overwrite_item_in_slot_encoded(ttwlsave.WEAPON1, craders)
-        save.overwrite_item_in_slot_encoded(ttwlsave.SHIELD, transformer)
+        # Gear data just taken from my modtest char - Level 40 + Ascended
+        # If the max level or Chaos Level ever updates, they'll get upgraded below
+        manual_transmission = 'WL(BQAAAABXNIA7ORppgmool0p50WCcRx0zrBU6hAAAAAAAAGdAACAA)'
+        transistor = 'WL(BQAAAACnEIC79mEggTIGugpRfCgjCAAABA==)'
+        goblin_pickaxe = 'WL(BQAAAAA0SIA7LQmBgzJG6DEwMSwAAEAA)'
+        save.overwrite_item_in_slot_encoded(ttwlsave.InvSlot.WEAPON1, manual_transmission)
+        save.overwrite_item_in_slot_encoded(ttwlsave.InvSlot.WARD, transistor)
+        save.overwrite_item_in_slot_encoded(ttwlsave.InvSlot.MELEE, goblin_pickaxe)
 
         # Bring testing gear up to our max level, while we're at it.
         for item in save.get_items():
@@ -196,6 +215,9 @@ def main():
                 item.level = ttwlsave.max_level
             if item.chaos_level != ttwlsave.ChaosLevel.ASCENDED.value:
                 item.chaos_level = ttwlsave.ChaosLevel.ASCENDED.value
+            # The serials above don't have any rerolls logged, but we may as well
+            # be sure about that anyway
+            item.rerolled = 0
 
         # Write out
         save.save_to(output_filename)

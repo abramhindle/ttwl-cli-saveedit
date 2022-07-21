@@ -104,6 +104,14 @@ to import into an existing savegame, you can do that with
 
     ttwl-save-import-json -h
 
+Finally, there's a utility which is intended to be used to generate
+savegame archive saves (like the [BL3 ones found here](http://apocalyptech.com/games/bl-saves/bl3.php).
+That archive doesn't yet exist for Wonderlands, but the utility should
+be good to go.  It's unlikely to be useful to anyone but apocalyptech,
+but you can try it out as well, if you like:
+
+    ttwl-process-archive-saves -h
+
 There are also profile-specific versions of most of those commands, which
 can be used to edit the main BL3 `profile.sav`:
 
