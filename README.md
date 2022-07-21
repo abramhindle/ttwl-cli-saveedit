@@ -194,17 +194,22 @@ FOr instructions on using the Profile portions of the editor, see
 
 # TODO
 
-New with WL:
 - Figure out equation for Myth Rank XP -> Points
+- Would be nice to have some enchantment-setting functions in here.
+- Redo how we handle serial editing in `datalib.py`; it's super inefficient as-is
+- Might be nice to pull some common item-handling argparse options into `cli_common.py`.
+  The actual functionality is handled in there (levelling items, reroll counts, etc)
+  but there's a fair bit of duplicated code in `cli_edit.py` and `cli_prof_edit.py`
+  to handle argument parsing.
+- Relatedly, there's a silly amount of code duplication inside `cli_common.py` related
+  to properly pluralizing some of our item-editing user reporting.  Would be nice to
+  roll that up a little more properly.
 - Might be fun to do a `--randomize-customizations` option, though I'd have to
   actually split them all out into proper categories, which doesn't sound like
   a good time.  I suppose the sorting itself probably wouldn't be awful; they're
   already sorted pretty much like that...  Also I suppose that's a savegame
   feature, but we'd also have to be told to load in a profile to get that to
   work, in order to know what customizations are even available.
-
-From BL3 still:
-- Would be nice to have some enchantment-setting functions in here.
 - PS4 Support (for already-unlocked saves, anyway)
 - If we fail to read a savefile or profile, might be nice to *actually* check
   if it's the other of profile-or-savefile, and give a more helpful message in
