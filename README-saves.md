@@ -218,16 +218,11 @@ options, so if for instance you wanted to set all values to
 ## Chaos Level
 
 The `--chaos` argument can be used to activate Chaos Mode at any point,
-and/or unlock Chaos Levels you haven't yet unlocked legitimately.
-Note that currently, if you use this option to unlock Chaos Mode prior
-to the game giving it to you the proper way, you won't have access to
-the Chaos Mode UI in the menu system, so a save editor will be the
-only way to change the level (such as disabling Chaos Mode, for instance.)
+and/or unlock Chaos Levels you haven't yet unlocked legitimately.  This
+will also unlock the Chaos Mode menu regardless of your plot progress,
+though there'll be no in-game way to unlock more Chaos Levels until you
+finish the game properly.
 
-This option will ensure that you have at least the specified Chaos Level
-unlocked.
-
-    ttwl-save-edit old.sav new.sav --chaos 0
     ttwl-save-edit old.sav new.sav --chaos 50
 
 ## Currency (Money, Moon Orbs, and Lost Souls)

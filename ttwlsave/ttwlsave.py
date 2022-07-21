@@ -559,6 +559,8 @@ class TTWLSave(object):
         self.save.game_state_save_data_for_playthrough[0].mayhem_level = level
         if level > self.save.game_state_save_data_for_playthrough[0].mayhem_unlocked_level:
             self.save.game_state_save_data_for_playthrough[0].mayhem_unlocked_level = level
+        # If we set this value, we can use Chaos Mode right from the beginning of the game
+        self.set_playthroughs_completed(1)
 
     def clear_game_state_pt(self, playthrough=0):
         """

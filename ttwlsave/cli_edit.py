@@ -374,11 +374,6 @@ def main():
             if not args.quiet:
                 print(' - Setting Chaos Level to: {}'.format(args.chaos))
             save.set_chaos_level(args.chaos)
-            # TODO: eh? --fake-tvhm unlocks this more properly...
-            #if args.chaos > 0:
-            #    if not args.quiet:
-            #        print('   - Also ensuring that Chaos Mode is unlocked')
-            #    save.unlock_challenge(ttwlsave.CHAOS)
 
         # Level
         if args.level is not None:
