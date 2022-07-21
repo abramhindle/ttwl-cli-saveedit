@@ -139,7 +139,7 @@ def main():
 
     hero_group.add_argument('--hero-stats',
             type=int,
-            help='Sets all raw Hero Stats to the specified value (from 1-30)',
+            help='Sets all raw Hero Stats to the specified value (from 10-30)',
             )
 
     hero_group.add_argument('--hero-stats-max',
@@ -155,7 +155,7 @@ def main():
                 dest='hero_stats_individual',
                 action=cli_common.DictValueAction,
                 key=stat,
-                help=f'Sets the value of the {stat.label} Hero Stat (from 1-30)',
+                help=f'Sets the value of the {stat.label} Hero Stat (from 10-30)',
                 )
 
     parser.add_argument('--chaos',
@@ -280,14 +280,14 @@ def main():
 
     # Check Hero Stats level
     if args.hero_stats is not None:
-        if args.hero_stats < 1 or args.hero_stats > 30:
-            raise argparse.ArgumentTypeError('Valid Hero Stat range is 1 through 30')
+        if args.hero_stats < 10 or args.hero_stats > 30:
+            raise argparse.ArgumentTypeError('Valid Hero Stat range is 10 through 30')
     if args.hero_stats_max:
         args.hero_stats = 30
     if args.hero_stats_individual:
         for stat, value in args.hero_stats_individual.items():
-            if value < 1 or value > 30:
-                raise argparse.ArgumentTypeError(f'Valid {stat.label} Stat range is 1 through 30')
+            if value < 10 or value > 30:
+                raise argparse.ArgumentTypeError(f'Valid {stat.label} Stat range is 10 through 30')
 
     # AH: Only 1 playthrough
     # # Check to make sure that any deleted missions are not plot missions
