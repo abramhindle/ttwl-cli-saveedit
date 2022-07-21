@@ -546,7 +546,6 @@ class TTWLSave(object):
         Sets the current Chaos Level (will also set at least that level to be unlocked)
         """
         if len(self.save.game_state_save_data_for_playthrough) == 0:
-            # TODO: Test this!  5.sav will work.
             self.save.game_state_save_data_for_playthrough.append(OakSave_pb2.GameStateSaveData(
                 last_traveled_map_id=OakSave_pb2.MapIDData(
                     zone_name_id=0,
