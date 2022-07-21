@@ -243,25 +243,21 @@ maximum for Lost Souls.
 ## Mission Deletion
 
 If you ever have a sidemission lock up, or just want to repeat a side
-mission, the `--delete-pt1-mission` and `--delete-pt2-mission` arguments
-can be used to delete the mission from your savegame so it can be picked
-up again.  Note that this will *only* work for side missions.  Plot
-missions aren't picked up at will like side missions are, and deleting
-plot missions will basically lock your character out of the rest of the
-game.
+mission, the `--delete--mission` argument can be used to delete the
+mission from your savegame so it can be picked up again.  Note that this
+will *only* work for side missions.  Plot missions aren't picked up at
+will like side missions are, and deleting plot missions will basically
+lock your character out of the rest of the game.
 
-The `pt1` argument corresponds to the first playthrough (Normal/NVHM), and
-the `pt2` argument corresponds to the second playthrough (TVHM).  To use
-this argument, you'll need to know the full object path to the mission you
-want to delete.  This can be found using `ttwl-save-info --mission-paths`.
-Docs for that function [can be found here](#missions).
+To use this argument, you'll need to know the full object path to the
+mission you want to delete.  This can be found using
+`ttwl-save-info --mission-paths`.  Docs for that function
+[can be found here](#missions).
 
-    ttwl-save-edit old.sav new.sav --delete-pt1-mission /Game/Missions/Side/Zone_0/Prologue/Mission_UnderwearTink.Mission_UnderwearTink_C
-    ttwl-save-edit old.sav new.sav --delete-pt2-mission /Game/Missions/Side/Zone_0/Prologue/Mission_UnderwearTink.Mission_UnderwearTink_C
+    ttwl-save-edit old.sav new.sav --delete-mission /Game/Missions/Side/Zone_3/Climb/Mission_LavaGoodTime.Mission_LavaGoodTime_C
 
-The `--delete-pt1-mission` and `--delete-pt2-mission` arguments can be
-specified more than once if you'd like to delete more than one mission at
-a time.
+The `--delete-mission` argument can be specified more than once if you'd
+like to delete more than one mission at a time.
 
 ## Item Levels
 
