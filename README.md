@@ -191,10 +191,18 @@ copy back after editing), or even specify the full paths with the filenames.
 
 # Editor Usage
 
+Full documentation for both savegames and profiles are linked immediately below,
+but as a quick example, here's a command to list information about `2.sav`,
+followed by an edit which saves out to a new `3.sav`
+
+    ttwl-save-info -i 2.sav
+
+    ttwl-save-edit --name 'CoolNewName' --save-game-id 3 --level 40 2.sav 3.sav
+
 For instructions on using the Savegame portions of the editor, see
 [README-saves.md](https://github.com/apocalyptech/ttwl-cli-saveedit/blob/master/README-saves.md).
 
-FOr instructions on using the Profile portions of the editor, see
+For instructions on using the Profile portions of the editor, see
 [README-profile.md](https://github.com/apocalyptech/ttwl-cli-saveedit/blob/master/README-profile.md).
 
 # TODO
