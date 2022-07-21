@@ -1,51 +1,39 @@
 # Tiny Tina's Wonderlands Commandline Savegame/Profile Editor
 
-The purpose behind this is to get save file info and to change character names and GUIDs.
-
-I frankly don't care about anything else. Cheating is bad mkay, but working on builds is great.
-
-Completely stolen from: https://github.com/apocalyptech/bl3-cli-saveedit/
-
-Installation?
-
-```
-pip3 install --user git+https://github.com/abramhindle/ttwl-cli-saveedit
-```
-
-Use?
-
-```
-ttwl-save-info -v -i 2.sav # gives info
-ttwl-save-edit --randomize-guid  --name 'CoolNewName' 2.sav 2.newbuild.sav # makes a new save file based on the old one with a new GUID and name
-```
-
-Or you can just use it online without having to install anything:
-
-https://abramhindle.github.io/ttwl-cli-saveedit/
-
-Yes it will install python and ttwl-cli-saveedit in your browser and give you a tiny UI to dupe your savefiles or import items.
-
-# Hardly anything works and it is all BL3 oriented.
-
-This project is a commandline Python-based Borderlands 3 Savegame
+This project is a commandline Python-based Wonderlands Savegame
 and Profile Editor.  It's a companion to the very similar
-[CLI editor for BL2/TPS](https://github.com/apocalyptech/borderlands2),
+[CLI editor for BL3](https://github.com/apocalyptech/bl3-cli-saveedit),
 and provides some very similar functionality.  It can be used
-to level up your characters, unlock Mayhem modes early in the
-game, unlock TVHM, add SDUs, unlock equipment slots, and more.
+to level up your characters, level up your gear, set character
+stats (Hero Skills, Myth Rank), and unlock a variety of character
+features early: feats/companions, second skill tree (including
+re-selecting via Quick Change), Chaos Mode, SDUs, equipment slots,
+and more.
 
 This editor has only been tested on PC Savegames -- other platforms'
 savegames are not supported at the moment.
 
 Please keep the following in mind:
 
+- The editor has been getting ported over from the BL3 version for a
+  little while now, and it feels reasonably complete, but keep in mind
+  that there are probably a few rough edges still, and there may be
+  some BL3 references still hanging about -- this project hasn't yet
+  reached v1.0.0.
 - This app does not have any graphical interface.  You must be
-  on a commandline in order to use it.
+  on a commandline in order to use it.  (A rudimentary web interface
+  is available, though -- see below.)
 - The app has only very limited item-editing capability at the
   moment, which is restricted to:
   - Item Levels can be changed
-  - Mayhem Level can be set on items
-- It does not offer any direct ability to alter Guardian Rank status.
+  - Chaos Level can be set on items
+  - Enchantment Reroll count can be cleared
+- Unlike in BL3, when creating new savegames for Wonderlands, the
+  savegame GUID *must* be randomized, otherwise the game won't
+  recognize the new save.  Therefore, rather than having a
+  `--randomize-guid` option for the save editor, this Wonderlands
+  version instead defaults to randomizing the GUID, and provides
+  a `--dont-randomize-guid` argument.
 - While I have not experienced any data loss with the app,
   **take backups of your savegames before using this**, and
   keep in mind that it could end up corrupting your saves.  If
@@ -54,6 +42,7 @@ Please keep the following in mind:
 
 # Table of Contents
 
+- [Web UI](#web-ui)
 - [Installation](#installation)
   - [Upgrading](#upgrading)
   - [Notes for People Using Windows](#notes-for-people-using-windows)
@@ -66,6 +55,17 @@ Please keep the following in mind:
 - [Other Utilities](#other-utilities)
 - [Changelog](#changelog)
 
+# Web UI
+
+Abram Hindle, who took an early lead in getting this ported over to
+Wonderlands, is providing a simple web-based version of this utility,
+so feel free to give that a try:
+
+https://abramhindle.github.io/ttwl-cli-saveedit/
+
+Yes, this will install python and ttwl-cli-saveedit in your browser and
+give you a tiny UI to dupe your savefiles or import items.
+
 # Installation
 
 This editor requires [Python 3](https://www.python.org/), and has been
@@ -74,57 +74,54 @@ tested on 3.7, 3.8, 3.9, and 3.10.  It also requires the [protobuf package](http
 The easiest way to install this app is via `pip`/`pip3`.  Once Python 3 is
 installed, you should be able to run this to install the app:
 
-    pip3 install bl3-cli-saveedit
+    pip3 install ttwl-cli-saveedit
+
+Or, for Abram Hindle's development version:
+
+    pip3 install --user git+https://github.com/abramhindle/ttwl-cli-saveedit
 
 Once installed, there should be a few new commandline utilities available
-to you.  The main editor is `bl3-save-edit`, and you can see its possible
+to you.  The main editor is `ttwl-save-edit`, and you can see its possible
 arguments with `-h`/`--help`:
 
-    bl3-save-edit -h
+    ttwl-save-edit -h
 
-There's also a `bl3-save-info` utility which just shows some information
+There's also a `ttwl-save-info` utility which just shows some information
 about a specified savefile.  You can see its possible arguments with
 `-h`/`--help` as well:
 
-    bl3-save-info -h
+    ttwl-save-info -h
 
 If you've got a raw savegame protobuf file that you've hand-edited (or
 otherwise processed) that you'd like to import into an existing savegame,
-you can do that with `bl3-save-import-protobuf`:
+you can do that with `ttwl-save-import-protobuf`:
 
-    bl3-save-import-protobuf -h
+    ttwl-save-import-protobuf -h
 
 Alternatively, if you've got a savegame exported as JSON that you'd like
 to import into an existing savegame, you can do that with
-`bl3-save-import-json`:
+`ttwl-save-import-json`:
 
-    bl3-save-import-json -h
-
-Finally, there's a utility which I'd used to generate my
-[BL3 Savegame Archive Page](http://apocalyptech.com/games/bl-saves/bl3.php).
-This one won't be useful to anyone but me, but you can view its arguments
-as well, if you like:
-
-    bl3-process-archive-saves -h
+    ttwl-save-import-json -h
 
 There are also profile-specific versions of most of those commands, which
 can be used to edit the main BL3 `profile.sav`:
 
-    bl3-profile-edit -h
-    bl3-profile-info -h
-    bl3-profile-import-protobuf -h
-    bl3-profile-import-json -h
+    ttwl-profile-edit -h
+    ttwl-profile-info -h
+    ttwl-profile-import-protobuf -h
+    ttwl-profile-import-json -h
 
 ### Upgrading
 
 When a new version is available, you can update using `pip3` like so:
 
-    pip3 install --upgrade bl3-cli-saveedit
+    pip3 install --upgrade ttwl-cli-saveedit
 
 You can check your current version by running any of the apps with the
 `-V`/`--version` argument:
 
-    bl3-save-info --version
+    ttwl-save-info --version
 
 ### Notes for People Using Windows
 
@@ -150,7 +147,7 @@ when you run `python -V`:
     C:\> python -V
     Python 3.9.4
 
-If that works, you can then run the `pip3 install bl3-cli-saveedit` command
+If that works, you can then run the `pip3 install ttwl-cli-saveedit` command
 as mentioned above, and use the commandline scripts to edit to your heart's
 content.
 
@@ -163,10 +160,10 @@ will also work just fine).
 
 You can then run the scripts directly from the Github checkout, though
 you'll have to use a slightly different syntax.  For instance, rather than
-running `bl3-save-edit -h` to get help for the main savegame editor, you
+running `ttwl-save-edit -h` to get help for the main savegame editor, you
 would run:
 
-    python -m bl3save.cli_edit -h
+    python -m ttwlsave.cli_edit -h
 
 The equivalents for each of the commands are listed in their individual
 README files, linked below.
@@ -178,7 +175,7 @@ When you give it a filename, it'll expect that the file lives in your "current"
 directory, unless the filename includes all its path information.  When launching
 a `cmd.exe` on Windows, for instance, you'll probably start out in your home
 directory (`C:\Users\username`), but your savegames will actually live in a
-directory more like `C:\Users\username\My Documents\My Games\Borderlands 3\Saved\SaveGames\<numbers>\`.
+directory more like `C:\Users\username\My Documents\My Games\Tiny Tina's Wonderlands\Saved\SaveGames\<numbers>\`.
 The easiest way to run the utilities is to just use `cd` to go into the dir
 where your saves are (or otherwise launch your commandline in the directory you
 want).  Otherwise, you could copy the save into your main user dir (and then
@@ -218,6 +215,11 @@ FOr instructions on using the Profile portions of the editor, see
 
 # Credits
 
+[Abram Hindle](https://github.com/abramhindle/) took an early lead in
+porting the BL3 CLI editor over to Wonderlands, which is much
+appreciated!  All the initial Wonderlands-support framework, and the
+basic editor functionality is thanks to him.
+
 The encryption/decryption stanzas in `BL3Save.__init__` and `BL3Save.save_to`
 were [helpfully provided by Gibbed](https://twitter.com/gibbed/status/1246863435868049410?s=19)
 (rick 'at' gibbed 'dot' us), so many thanks for that!  The protobuf definitions
@@ -244,31 +246,12 @@ provided in [COPYING.txt](COPYING.txt).
 
 # Other Utilities
 
-Various BL3 Savegame/Profile editors have been popping up, ever since Gibbed
-released the encryption details.  Here's a few which could be more to your
-liking, if you didn't want to use this one for whatever reason:
+There aren't too many Wonderlands save editors in the wild yet.  One
+fork of [FromDarkHell's BL3 Save/Profile Editor](https://github.com/FromDarkHell/BL3SaveEditor)
+is currently being maintained by a third party, though:
 
-- [FromDarkHell's BL3 Save/Profile Editor](https://github.com/FromDarkHell/BL3SaveEditor) -
+- [somefunguy's WL fork of FDH's Editor](https://github.com/somefunguy/BL3SaveEditor/tree/ttwl-dlc3) -
   Written in C#, has EXE downloads for ease of use on Windows.
-- [Zak's Borderlands 3 Saver Editor](https://github.com/ZakisM/bl3_save_edit) - Written
-  in Rust, and is cross-platform.  Edits both saves and profiles.
-- [Raptor's Editor](https://bl3.swiss.dev/) - This is a web-fronted editor,
-  though it uses a [local executable](https://github.com/cfi2017/bl3-save/releases)
-  to do all the work.  Sourcecode is available, and it works on Windows, Mac,
-  and Linux.  Coded in [Go](https://golang.org/).
-- [HackerSmaker's CSave Editor](https://github.com/HackerSmacker/CSave) - Cross-platform
-  commandline editor written in C.  Has a terminal (ncurses) UI on UNIX-like OSes.
-
-A couple others exist but as of July 2021, are out of date and not really great
-for use on newer saves.  Here they are, though, in case they get updated without
-me noticing:
-
-- [sandsmark's borderlands3-save-editor](https://github.com/sandsmark/borderlands3-save-editor) -
-  Written in C++ with Qt for GUI.  Is still in development.  Native downloads
-  for Windows, but should compile fine on other platforms.
-
-In Memoriam: Baysix, the author of the original web-based editor at bl3editor.com,
-passed away in early 2021, and that editor is now permanently offline.  RIP!
 
 # Changelog
 
