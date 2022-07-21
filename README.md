@@ -1,8 +1,7 @@
 # Tiny Tina's Wonderlands Commandline Savegame/Profile Editor
 
 This project is a commandline Python-based Wonderlands Savegame
-and Profile Editor.  It's a companion to the very similar
-[CLI editor for BL3](https://github.com/apocalyptech/bl3-cli-saveedit),
+and Profile Editor.  It's based on [apocalyptech's CLI editor for BL3](https://github.com/apocalyptech/bl3-cli-saveedit),
 and provides some very similar functionality.  It can be used
 to level up your characters, level up your gear, set character
 stats (Hero Skills, Myth Rank), and unlock a variety of character
