@@ -204,7 +204,7 @@ New with WL:
   work, in order to know what customizations are even available.
 
 From BL3 still:
-- Would be nice to have some anointment-setting functions in here.
+- Would be nice to have some enchantment-setting functions in here.
 - PS4 Support (for already-unlocked saves, anyway)
 - If we fail to read a savefile or profile, might be nice to *actually* check
   if it's the other of profile-or-savefile, and give a more helpful message in

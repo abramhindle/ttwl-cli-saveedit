@@ -314,49 +314,53 @@ max_supported_level = len(required_xp_list)
 # Maximum Chaos Level
 max_chaos_level = 50
 
-# InvData types which can accept Mayhem parts
-# (may have to be more clever about this if non-guns start accepting *different* Mayhem parts)
-# (*only* using this for enchantment checking currently!)
-mayhem_invdata_types = set([
-    '/Game/Gear/Weapons/AssaultRifles/Atlas/_Shared/_Design/WT_AR_ATL.WT_AR_ATL',
-    '/Game/Gear/Weapons/AssaultRifles/ChildrenOfTheVault/_Shared/_Design/WT_AR_COV.WT_AR_COV',
-    '/Game/Gear/Weapons/AssaultRifles/Dahl/_Shared/_Design/WT_AR_DAL.WT_AR_DAL',
-    '/Game/Gear/Weapons/AssaultRifles/Jakobs/_Shared/_Design/WT_AR_JAK.WT_AR_JAK',
-    '/Game/Gear/Weapons/AssaultRifles/Torgue/_Shared/_Design/WT_AR_TOR.WT_AR_TOR',
-    '/Game/Gear/Weapons/AssaultRifles/Vladof/_Shared/_Design/WT_AR_VLA.WT_AR_VLA',
-    '/Game/Gear/Weapons/HeavyWeapons/ATL/_Shared/_Design/WT_HW_ATL.WT_HW_ATL',
-    '/Game/Gear/Weapons/HeavyWeapons/ChildrenOfTheVault/_Shared/_Design/WT_HW_COV.WT_HW_COV',
-    '/Game/Gear/Weapons/HeavyWeapons/Torgue/_Shared/_Design/WT_HW_TOR.WT_HW_TOR',
-    '/Game/Gear/Weapons/HeavyWeapons/Vladof/_Shared/_Design/WT_HW_VLA.WT_HW_VLA',
-    '/Game/Gear/Weapons/Pistols/Atlas/_Shared/_Design/WT_PS_ATL.WT_PS_ATL',
-    '/Game/Gear/Weapons/Pistols/ChildrenOfTheVault/_Shared/_Design/WT_PS_COV.WT_PS_COV',
-    '/Game/Gear/Weapons/Pistols/Dahl/_Shared/_Design/WT_PS_DAL.WT_PS_DAL',
-    '/Game/Gear/Weapons/Pistols/Jakobs/_Shared/_Design/WT_PS_JAK.WT_PS_JAK',
-    '/Game/Gear/Weapons/Pistols/Maliwan/_Shared/_Design/WT_PS_MAL.WT_PS_MAL',
-    '/Game/Gear/Weapons/Pistols/Tediore/Shared/_Design/WT_PS_TED.WT_PS_TED',
-    '/Game/Gear/Weapons/Pistols/Torgue/_Shared/_Design/WT_PS_TOR.WT_PS_TOR',
-    '/Game/Gear/Weapons/Pistols/Vladof/_Shared/_Design/WT_PS_VLA.WT_PS_VLA',
-    '/Game/Gear/Weapons/SMGs/Dahl/_Shared/_Design/WT_SM_DAL.WT_SM_DAL',
-    '/Game/Gear/Weapons/SMGs/Hyperion/_Shared/_Design/WT_SM_HYP.WT_SM_HYP',
-    '/Game/Gear/Weapons/SMGs/Maliwan/_Shared/_Design/WT_SM_MAL.WT_SM_MAL',
-    '/Game/Gear/Weapons/SMGs/Tediore/_Shared/_Design/WT_SM_TED.WT_SM_TED',
-    '/Game/Gear/Weapons/Shotguns/Hyperion/_Shared/_Design/WT_SG_HYP.WT_SG_HYP',
-    '/Game/Gear/Weapons/Shotguns/Jakobs/_Shared/_Design/WT_SG_JAK.WT_SG_JAK',
-    '/Game/Gear/Weapons/Shotguns/Maliwan/_Shared/_Design/WT_SG_MAL.WT_SG_MAL',
-    '/Game/Gear/Weapons/Shotguns/Tediore/_Shared/_Design/WT_SG_TED.WT_SG_TED',
-    '/Game/Gear/Weapons/Shotguns/Torgue/_Shared/_Design/WT_SG_TOR.WT_SG_TOR',
-    '/Game/Gear/Weapons/SniperRifles/Dahl/_Shared/_Design/WT_SR_DAL.WT_SR_DAL',
-    '/Game/Gear/Weapons/SniperRifles/Hyperion/_Shared/_Design/WT_SR_HYP.WT_SR_HYP',
-    '/Game/Gear/Weapons/SniperRifles/Jakobs/_Shared/_Design/WT_SR_JAK.WT_SR_JAK',
-    '/Game/Gear/Weapons/SniperRifles/Maliwan/Shared/_Design/WT_SR_MAL.WT_SR_MAL',
-    '/Game/Gear/Weapons/SniperRifles/Vladof/_Shared/_Design/WT_SR_VLA.WT_SR_VLA',
-    '/Game/Gear/GrenadeMods/_Design/A_Data/GM_Default.GM_Default',
-    ])
-mayhem_invdata_lower_types = set([t.lower() for t in mayhem_invdata_types])
-
-# Anointable InvData types - will be identical to Mayhemable list, plus shields
-anointable_invdata_types = mayhem_invdata_types | set(['/Game/Gear/Shields/_Design/A_Data/Shield_Default.Shield_Default'])
-anointable_invdata_lower_types = set([t.lower() for t in anointable_invdata_types])
+# InvData types which can accept Enchantment parts
+# I'd be shocked if there weren't omissions of some sort in here.  These
+# are, at least, the InventoryData values for Wards + Shields, plus all
+# objects starting with `WT_`...
+enchantment_invdata_types = {
+        '/Game/Gear/Melee/Axes/_Shared/_Design/WT_Melee_Axe.WT_Melee_Axe',
+        '/Game/Gear/Melee/Blunts/_Shared/_Design/_Unique/Fish/WT_Melee_Fish.WT_Melee_Fish',
+        '/Game/Gear/Melee/Blunts/_Shared/_Design/_Unique/LeChancesLastLeg/WT_Melee_LeChancesLastLeg.WT_Melee_LeChancesLastLeg',
+        '/Game/Gear/Melee/Blunts/_Shared/_Design/_Unique/PegLeg/WT_Melee_PegLeg.WT_Melee_PegLeg',
+        '/Game/Gear/Melee/Blunts/_Shared/_Design/WT_Melee_Blunt.WT_Melee_Blunt',
+        '/Game/Gear/Melee/Swords/_Shared/_Design/WT_Melee_Sword.WT_Melee_Sword',
+        '/Game/Gear/Melee/Swords_2H/_Shared/_Design/_Unique/Dragonlord/Custom/WT_Sword2h_Fatebreaker.WT_Sword2h_Fatebreaker',
+        '/Game/Gear/Melee/Swords_2H/_Shared/_Design/WT_Melee_Sword_2H.WT_Melee_Sword_2H',
+        '/Game/Gear/Shields/_Design/A_Data/Shield_Default.Shield_Default',
+        '/Game/Gear/SpellMods/_Shared/_Design/A_Data/ST_Spell.ST_Spell',
+        '/Game/Gear/Weapons/AssaultRifles/ChildrenOfTheVault/_Shared/_Design/_Unique/RogueImp/Custom/WT_AR_COV_RogueImp.WT_AR_COV_RogueImp',
+        '/Game/Gear/Weapons/AssaultRifles/ChildrenOfTheVault/_Shared/_Design/WT_AR_COV.WT_AR_COV',
+        '/Game/Gear/Weapons/AssaultRifles/Dahl/_Shared/_Design/WT_AR_DAL.WT_AR_DAL',
+        '/Game/Gear/Weapons/AssaultRifles/Jakobs/_Shared/_Design/WT_AR_JAK.WT_AR_JAK',
+        '/Game/Gear/Weapons/AssaultRifles/Torgue/_Shared/_Design/WT_AR_TOR.WT_AR_TOR',
+        '/Game/Gear/Weapons/AssaultRifles/Vladof/_Shared/_Design/_Unique/ManualTransmission/Custom/WT_AR_VLA_ManualTrans.WT_AR_VLA_ManualTrans',
+        '/Game/Gear/Weapons/AssaultRifles/Vladof/_Shared/_Design/WT_AR_VLA.WT_AR_VLA',
+        '/Game/Gear/Weapons/HeavyWeapons/ChildrenOfTheVault/_Shared/_Design/WT_HW_COV.WT_HW_COV',
+        '/Game/Gear/Weapons/HeavyWeapons/Torgue/_Shared/_Design/WT_HW_TOR.WT_HW_TOR',
+        '/Game/Gear/Weapons/HeavyWeapons/Vladof/_Shared/_Design/WT_HW_VLA.WT_HW_VLA',
+        '/Game/Gear/Weapons/Pistols/ChildrenOfTheVault/_Shared/_Design/WT_PS_COV.WT_PS_COV',
+        '/Game/Gear/Weapons/Pistols/Dahl/_Shared/_Design/WT_PS_DAL.WT_PS_DAL',
+        '/Game/Gear/Weapons/Pistols/Jakobs/_Shared/_Design/WT_PS_JAK.WT_PS_JAK',
+        '/Game/Gear/Weapons/Pistols/Tediore/Shared/_Design/WT_PS_TED.WT_PS_TED',
+        '/Game/Gear/Weapons/Pistols/Torgue/_Shared/_Design/WT_PS_TOR.WT_PS_TOR',
+        '/Game/Gear/Weapons/Pistols/Vladof/_Shared/_Design/_Unique/AUTOMAGICEXE/Custom/WT_PS_VLA_Automagic.WT_PS_VLA_Automagic',
+        '/Game/Gear/Weapons/Pistols/Vladof/_Shared/_Design/WT_PS_VLA.WT_PS_VLA',
+        '/Game/Gear/Weapons/Shotguns/Hyperion/_Shared/_Design/WT_SG_HYP.WT_SG_HYP',
+        '/Game/Gear/Weapons/Shotguns/Jakobs/_Shared/_Design/_Unique/ReignOfArrows/CustomWeapon/WT_SG_JAK_ReignOfArrows.WT_SG_JAK_ReignOfArrows',
+        '/Game/Gear/Weapons/Shotguns/Jakobs/_Shared/_Design/WT_SG_JAK.WT_SG_JAK',
+        '/Game/Gear/Weapons/Shotguns/Tediore/_Shared/_Design/WT_SG_TED.WT_SG_TED',
+        '/Game/Gear/Weapons/Shotguns/Torgue/_Shared/_Design/WT_SG_TOR.WT_SG_TOR',
+        '/Game/Gear/Weapons/SMGs/Dahl/_Shared/_Design/WT_SM_DAL.WT_SM_DAL',
+        '/Game/Gear/Weapons/SMGs/Hyperion/_Shared/_Design/WT_SM_HYP.WT_SM_HYP',
+        '/Game/Gear/Weapons/SMGs/Tediore/_Shared/_Design/WT_SM_TED.WT_SM_TED',
+        '/Game/Gear/Weapons/SniperRifles/Dahl/_Shared/_Design/WT_SR_DAL.WT_SR_DAL',
+        '/Game/Gear/Weapons/SniperRifles/Hyperion/_Shared/_Design/WT_SR_HYP.WT_SR_HYP',
+        '/Game/Gear/Weapons/SniperRifles/Jakobs/_Shared/_Design/WT_SR_JAK.WT_SR_JAK',
+        '/Game/Gear/Weapons/SniperRifles/Vladof/_Shared/_Design/WT_SR_VLA.WT_SR_VLA',
+        '/Game/PatchDLC/Indigo2/Gear/Weapons/Pistols/Torgue/_Shared/_Design/_Unique/Butterboom/WT_PS_Butterboom.WT_PS_Butterboom',
+        }
+enchantment_invdata_lower_types = set([t.lower() for t in enchantment_invdata_types])
 
 # Myth Rank -- value is just the index in the array; num is the max value
 class MythRank(LabelEnum):

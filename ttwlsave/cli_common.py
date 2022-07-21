@@ -258,3 +258,43 @@ def update_chaos_level(items, to_chaos_level, quiet=False):
             ))
 
 
+def clear_rerolls(items, quiet=False):
+    """
+    Given a list of `items`, clear their enchantment reroll count.  If `quiet`
+    is `True`, only errors will be printed.
+    """
+    num_items = len(items)
+    if not quiet:
+        if num_items == 1:
+            plural = ''
+        else:
+            plural = 's'
+        print(' - Clearing reroll count for {} item{}'.format(
+            num_items,
+            plural,
+            ))
+    actually_updated = 0
+    for item in items:
+        if item.rerolled:
+            item.rerolled = 0
+            actually_updated += 1
+    if not quiet:
+        remaining = num_items - actually_updated
+        if actually_updated == 1:
+            updated_verb = 'was'
+        else:
+            updated_verb = 'were'
+        if remaining > 0:
+            if remaining == 1:
+                remaining_verb = 'was'
+            else:
+                remaining_verb = 'were'
+            remaining_txt = ' ({} {} already at zero rerolls)'.format(remaining, remaining_verb)
+        else:
+            remaining_txt = ''
+        print('   - {} {} updated{}'.format(
+            actually_updated,
+            updated_verb,
+            remaining_txt,
+            ))
+

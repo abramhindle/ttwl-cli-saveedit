@@ -30,6 +30,7 @@ commands will be:
   - [Mission Deletion](#mission-deletion)
   - [Item Levels](#item-levels)
   - [Item Chaos Levels](#item-chaos-levels)
+  - [Item Reroll Counts](#item-reroll-counts)
   - [Unlocks](#unlocks)
     - [Ammo/Backpack Unlocks](#ammobackpack-unlocks)
     - [Equipment Slots](#equipment-slots)
@@ -289,6 +290,15 @@ the given Chaos Level, though, including removing the Chaos Level entirely:
     ttwl-save-edit old.sav new.sav --items-volatile
     ttwl-save-edit old.sav new.sav --items-primordial
     ttwl-save-edit old.sav new.sav --items-ascended
+
+## Item Reroll Counts
+
+Rerolling enchantments on an item gets progressively more expensive until
+it becomes literally impossible given the Moon Orb currency cap.  The
+`--clear-rerolls` option will reset the counter to zero for all items in
+your inventory, so the reroll costs reset as well.
+
+    ttwl-save-edit old.sav new.sav --clear-rerolls
 
 ## Unlocks
 

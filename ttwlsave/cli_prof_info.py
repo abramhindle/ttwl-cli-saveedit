@@ -48,6 +48,11 @@ def main():
             help='Show inventory items',
             )
 
+    parser.add_argument('--rerolls',
+            action='store_true',
+            help='Also show enchantment reroll count on items',
+            )
+
     parser.add_argument('filename',
             help='Filename to process',
             )
@@ -75,8 +80,17 @@ def main():
     if args.verbose or args.items:
         to_report = []
         for item in bank_items:
+            reroll_extra = ''
+            if args.rerolls:
+                if item.rerolled:
+                    reroll_extra = f' (rerolls: {item.rerolled})'
             if item.eng_name:
-                to_report.append(' - {} ({}): {}'.format(item.eng_name, item.get_level_eng(), item.get_serial_base64()))
+                to_report.append(' - {} ({}){}: {}'.format(
+                    item.eng_name,
+                    item.get_level_eng(),
+                    reroll_extra,
+                    item.get_serial_base64(),
+                    ))
             else:
                 to_report.append(' - unknown item: {}'.format(item.get_serial_base64()))
         for line in sorted(to_report):
@@ -88,8 +102,17 @@ def main():
     if args.verbose or args.items:
         to_report = []
         for item in lostloot_items:
+            reroll_extra = ''
+            if args.rerolls:
+                if item.rerolled:
+                    reroll_extra = f' (rerolls: {item.rerolled})'
             if item.eng_name:
-                to_report.append(' - {} ({}): {}'.format(item.eng_name, item.get_level_eng(), item.get_serial_base64()))
+                to_report.append(' - {} ({}){}: {}'.format(
+                    item.eng_name,
+                    item.get_level_eng(),
+                    reroll_extra,
+                    item.get_serial_base64(),
+                    ))
             else:
                 to_report.append(' - unknown item: {}'.format(item.get_serial_base64()))
         for line in sorted(to_report):

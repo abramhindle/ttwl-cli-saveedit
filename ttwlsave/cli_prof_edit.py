@@ -123,6 +123,11 @@ def main():
                 help='Set all bank item chaos levels to {}'.format(level.label),
                 )
 
+    parser.add_argument('--clear-rerolls',
+            action='store_true',
+            help='Clears the reroll counter for all items in the bank',
+            )
+
     parser.add_argument('-i', '--import-items',
             type=str,
             help='Import items from file',
@@ -224,6 +229,7 @@ def main():
         args.import_items,
         args.item_levels,
         args.items_chaos_level is not None,
+        args.clear_rerolls,
         args.clear_customizations,
         ])
 
@@ -318,6 +324,12 @@ def main():
         if args.items_chaos_level is not None:
             cli_common.update_chaos_level(profile.get_bank_items(),
                     args.items_chaos_level,
+                    quiet=args.quiet,
+                    )
+
+        # Clearing reroll counts (cli_common provides the console output)
+        if args.clear_rerolls:
+            cli_common.clear_rerolls(profile.get_bank_items(),
                     quiet=args.quiet,
                     )
 

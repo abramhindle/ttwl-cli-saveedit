@@ -130,6 +130,11 @@ def main():
                 help='Set all inventory item chaos levels to {}'.format(level.label),
                 )
 
+    parser.add_argument('--clear-rerolls',
+            action='store_true',
+            help='Clears the reroll counter for all items in inventory',
+            )
+
     parser.add_argument('--backstory',
             choices=[b.name.lower() for b in Backstory],
             help='Set backstory',
@@ -336,6 +341,7 @@ def main():
         args.items_to_char,
         args.item_levels,
         args.items_chaos_level is not None,
+        args.clear_rerolls,
         args.backstory,
         #args.unfinish_nvhm,
         args.unfinish_missions,
@@ -520,6 +526,12 @@ def main():
         if args.items_chaos_level is not None:
             cli_common.update_chaos_level(save.get_items(),
                     args.items_chaos_level,
+                    quiet=args.quiet,
+                    )
+
+        # Clearing reroll counts (cli_common provides the console output)
+        if args.clear_rerolls:
+            cli_common.clear_rerolls(save.get_items(),
                     quiet=args.quiet,
                     )
 

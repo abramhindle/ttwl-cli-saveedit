@@ -598,6 +598,37 @@ class WLSerial(object):
             seed = 0
         return WLSerial._encrypt_serial(self.decrypted_serial, self.serial_version, seed)
 
+    @property
+    def rerolled(self):
+        """
+        Returns the number of times this item's enchantments have been rerolled
+        """
+        if not self.parsed:
+            self._parse_serial()
+            if not self.can_parse:
+                return None
+        return self._rerolled
+
+    @rerolled.setter
+    def rerolled(self, value):
+        """
+        Sets a new reroll count for the item.  This is a super inefficient way of
+        doing it -- we're rebuilding the whole serial right now and triggering a re-parse
+        if anything decides to re-read it.  It's, y'know, *sufficient*, but ick.
+        """
+        if not self.parsed:
+            self._parse_serial()
+            if not self.can_parse:
+                return None
+
+        # Set the reroll count and trigger a re-encode of the serial
+        self._rerolled = value
+        # Eh, we need this 'cause it's stored *after* parts.  I really do need to
+        # make this whole item-editing API about a million times more sensible.
+        self.changed_parts = True
+        self._deparse_serial()
+        self._update_superclass_serial()
+
     def get_serial_base64(self, orig_seed=False):
         """
         Returns the base64-encoded item serial number.  If `orig_seed` is
@@ -635,9 +666,9 @@ class WLSerial(object):
         else:
             raise Exception('Unknown item format: {}'.format(new_data))
 
-    def can_have_anointment(self):
+    def can_have_enchantment(self):
         """
-        Returns `True` if this is an item type which can have an anointment,
+        Returns `True` if this is an item type which can have an enchantment,
         or `False` otherwise.  Will also return `False` if we're unable to
         parse parts for the item.
         """
@@ -645,7 +676,7 @@ class WLSerial(object):
             self._parse_serial()
             if not self.can_parse or not self.can_parse_parts:
                 return False
-        return self._invdata.lower() in anointable_invdata_lower_types
+        return self._invdata.lower() in enchantment_invdata_lower_types
 
     def can_have_chaos_level(self):
         """
@@ -699,43 +730,44 @@ class WLSerial(object):
         else:
             return None
     
-    def set_anointment(self, anointment):
+    def set_enchantment(self, enchantment):
         """
-        Sets the given anointment on the item, if possible.  Returns `True` if we were
+        Sets the given enchantment on the item, if possible.  Returns `True` if we were
         able to do so, or `False` if not.  This does not do any checking to see if
-        the anointment would be ordinarily "valid" for the given item type, but it does
+        the enchantment would be ordinarily "valid" for the given item type, but it does
         at least attempt to only apply if it's an item type which can ordinarily have
-        anointments.
+        enchantments.
 
-        This will overwrite any existing anointment part on the item in question.
+        This will overwrite any existing enchantment part on the item in question.
 
         TODO: This routine currently assumes that any existing Generic part is an
-        anointment, and will wipe those out before setting the specified part.
+        enchantment, and will wipe those out before setting the specified part.
         As of July 2022 this should be a safe assumption, but might not be in
         the future.  Should this functionality ever get exported though a
-        "proper" CLI arg, we should really import a list of legit anointments
+        "proper" CLI arg, we should really import a list of legit enchantments
         to check against, just to assist in futureproofing.
         """
+        # TODO: Not actually tested *at all* in Wonderlands yet.
 
-        # Check for anointment part validity first thing, before we do anything
+        # Check for enchantment part validity first thing, before we do anything
         # else.
-        new_anointment_part = self.serial_db.get_part_index(
+        new_enchantment_part = self.serial_db.get_part_index(
                 'InventoryGenericPartData',
-                anointment,
+                enchantment,
                 )
-        if not new_anointment_part:
-            raise Exception('ERROR: {} is not a known anointment'.format(anointment))
+        if not new_enchantment_part:
+            raise Exception('ERROR: {} is not a known enchantment'.format(enchantment))
 
-        # The call to `can_have_anointment` will parse the serial if possible,
+        # The call to `can_have_enchantment` will parse the serial if possible,
         # so we'll be all set.
-        if not self.can_have_anointment():
+        if not self.can_have_enchantment():
             return False
 
         # Don't forget to set this
         self.changed_parts = True
 
-        # Start out with our new anointment part
-        new_parts = [(anointment, new_anointment_part)]
+        # Start out with our new enchantment part
+        new_parts = [(enchantment, new_enchantment_part)]
 
         # Aaaand assign our list of generic parts back
         self._generic_parts = new_parts
@@ -759,10 +791,11 @@ class WLSerial(object):
         to_ret = 'level {}'.format(level)
 
         # Then Chaos Level
-        if self.chaos_level is None:
+        chaos_label = self.get_chaos_level_eng()
+        if chaos_label is None:
             return '{}, chaos unknown'.format(to_ret)
         elif self.chaos_level > 0:
-            return '{}, {}'.format(to_ret, self.get_chaos_level_eng())
+            return '{}, {}'.format(to_ret, chaos_label)
         else:
             return to_ret
 

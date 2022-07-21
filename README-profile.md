@@ -27,6 +27,7 @@ commands will be:
     - [Set Myth Rank XP](#set-myth-rank-xp)
   - [Bank Item Levels](#bank-item-levels)
   - [Bank Item Chaos Levels](#bank-item-chaos-levels)
+  - [Bank Item Reroll Counts](#bank-item-reroll-counts)
   - [Clear Customizations](#clear-customizations)
   - [Unlocks](#unlocks)
     - [Lost Loot and Bank Capacity](#lost-loot-and-bank-capacity)
@@ -189,6 +190,15 @@ the given Chaos Level, though, including removing the Chaos Level entirely:
     ttwl-profile-edit profile.sav newprofile.sav --items-volatile
     ttwl-profile-edit profile.sav newprofile.sav --items-primordial
     ttwl-profile-edit profile.sav newprofile.sav --items-ascended
+
+## Bank Item Reroll Counts
+
+Rerolling enchantments on an item gets progressively more expensive until
+it becomes literally impossible given the Moon Orb currency cap.  The
+`--clear-rerolls` option will reset the counter to zero for all items in
+the bank, so the reroll costs reset as well.
+
+    ttwl-profile-edit profile.sav newprofile.sav --clear-rerolls
 
 ## Clear Customizations
 
