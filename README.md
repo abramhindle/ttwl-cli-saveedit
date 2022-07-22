@@ -207,6 +207,7 @@ For instructions on using the Profile portions of the editor, see
 # TODO
 
 - Figure out equation for Myth Rank XP -> Points
+- Unlock overworld abilities early?
 - Would be nice to have some enchantment-setting functions in here.
 - Redo how we handle serial editing in `datalib.py`; it's super inefficient as-is
 - Might be nice to pull some common item-handling argparse options into `cli_common.py`.
