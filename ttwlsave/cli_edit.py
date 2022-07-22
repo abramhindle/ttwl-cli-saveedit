@@ -529,7 +529,7 @@ def main():
             # ... or clearing TVHM state entirely.
             # save.clear_playthrough_data(0)
             # save.clear_mission_pt(0)
-            missions = save.get_pt_completed_mission_lists()[0]
+            missions = save.get_completed_mission_lists()
             for mission in missions:
                 # print(mission)
                 if mission != "/Game/Missions/Plot/Mission_Plot11.Mission_Plot11_C":
