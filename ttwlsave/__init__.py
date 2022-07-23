@@ -2017,6 +2017,12 @@ class CustomizationLink(LabelEnum):
     EYE = ('Eye', 'EyeLink')
 
 class CustomizationSlider:
+    """
+    Custom class to support customization slider randomization.  This is quite
+    a bit more code than I'd ideally like in this class (which I'd prefer
+    stay pretty data-focused), but I also sort of don't want it anywhere
+    else.  Eh, so it goes.
+    """
 
     def __init__(self, var, range_regular, range_overdrive,
             link=None, link_var=None,
@@ -2030,6 +2036,22 @@ class CustomizationSlider:
         self.link_is_inverse = link_is_inverse
 
     def values(self, link_state, overdrive=False, just_first=False):
+        """
+        Returns a dict whose keys are the attribute names to change, and
+        whose values are the values to set.  We're doing it this way
+        on account of "linked" attributes (symmetry, basically).  `link_state`
+        should be a dict whose keys are CustomizationLink enums, and
+        whose values are booleans -- `True` if the values are linked,
+        `False` otherwise.  If linked, the two returned entries in
+        the dict will have the same value (adjusted for `link_is_inverse`,
+        if necessary).  Otherwise, both will have random values in
+        the same range.
+
+        If `just_first` is `True`, instead of returning a dict, *only*
+        return the value of the "main" variable.  We're just using that
+        for voice pitch scaling, since that's handled pretty differently
+        in the save file.
+        """
         if overdrive:
             range_to_use = self.range_overdrive
         else:
@@ -2109,12 +2131,14 @@ customization_main_sliders = [
             (0.94, 1.1),
             ),
         ]
+
+# Vocal pitch slider
 customization_pitch_slider = CustomizationSlider('pitch',
         (0.2, 0.8),
         (0.0, 1.0),
         )
 
-# Ordinarily nowadays I'd use sets for these, but the random functions prefer
+# Ordinarily nowadays I'd use sets for these, but the `random` functions prefer
 # lists, so lists it is.
 customization_pronouns = [
         '/Game/PlayerCharacters/_Shared/_Design/PlayerPronouns/PlayerPronouns_Feminine.PlayerPronouns_Feminine',
