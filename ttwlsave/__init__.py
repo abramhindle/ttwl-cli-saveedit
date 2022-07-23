@@ -1596,6 +1596,7 @@ profile_customizations_defaults_by_cat = {
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/EarShape/EarShape_10.EarShape_10',
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/EarShape/EarShape_11.EarShape_11',
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/EarShape/EarShape_12.EarShape_12',
+                '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/EarShapes/EarShape_15.EarShape_15',
                 },
         Customization.NOSE_SHAPE: {
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/NoseShape/NoseShape_01.NoseShape_01',
