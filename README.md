@@ -208,9 +208,16 @@ For instructions on using the Profile portions of the editor, see
 
 - Figure out equation for Myth Rank XP -> Points
 - Unlock overworld abilities early?
-- Maybe would be nice to have a magic `all` value for `--randomize-customizations`
-  to assume that all customizations are available, rather than having to read
-  the list from a profile?
+- Customization Randomization improvements:
+  - Maybe would be nice to have a magic `all` value for `--randomize-customizations`
+    to assume that all customizations are available, rather than having to read
+    the list from a profile?
+  - Show customizations via an optional arg in ttwl-cli-info
+  - Option to copy customizations from one char to another?
+  - For that matter, would it be worth having an explicit customization-export
+    function which writes out *just* customizations to a file, which could then be
+    imported via a different arg/util?  Probably not -- I think I'd probably just
+    content myself with copy-from-another-char, but something to think about.
 - Would be nice to have some enchantment-setting functions in here.
 - Redo how we handle serial editing in `datalib.py`; it's super inefficient as-is
 - Might be nice to pull some common item-handling argparse options into `cli_common.py`.
