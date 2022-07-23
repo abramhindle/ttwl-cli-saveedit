@@ -420,11 +420,7 @@ enchantment_invdata_types = {
         }
 enchantment_invdata_lower_types = set([t.lower() for t in enchantment_invdata_types])
 
-# Profile Customizations - Not bothering to separate these out by type; there's just
-# too many and I don't care enough, especially given that this util only really does
-# a simple "unlock all".  Note that this set doesn't include the ones which are
-# available by default but don't ordinarily show up in the profile.  See
-# `profile_customizations_defaults` below for those.
+# Profile Customization Types
 class Customization(enum.Enum):
     BODY_SHAPE = enum.auto()
     HEAD_SHAPE = enum.auto()
@@ -468,6 +464,9 @@ class Customization(enum.Enum):
     STATUE_MATERIAL = enum.auto()
     STATUE_POSE = enum.auto()
 
+# Profile Customizations.  # Note that this dict doesn't include the ones which
+# are available by default but don't ordinarily show up in the profile.  See
+# `profile_customizations_defaults_by_cat` below for those.
 profile_customizations_by_cat = {
         Customization.BODY_SHAPE: set(),
         Customization.HEAD_SHAPE: set(),
@@ -1480,12 +1479,15 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Statues/Poses/HeroStatuePose_26.HeroStatuePose_26',
                 },
         }
+
+# For ease of use, a few transformations on the above dict
 profile_customizations_to_type = {}
 profile_customizations = set()
 for cust_type, cust_set in profile_customizations_by_cat.items():
     profile_customizations |= cust_set
     for cust in cust_set:
         profile_customizations_to_type[cust] = cust_type
+
 # "Default" customizations which are available via the GUI but which don't
 # actually show up in the customiztaion unlock list.  We want to include
 # these as part of the unlocked-cosmetic count, but don't want to inject
@@ -2003,6 +2005,8 @@ profile_customizations_defaults_by_cat = {
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/HeroStatue/Pose/HeroStatuePose_16.HeroStatuePose_16',
                 },
         }
+
+# For ease of use, a few transformations on the above dict
 profile_customizations_defaults = set()
 for cust_type, cust_set in profile_customizations_defaults_by_cat.items():
     profile_customizations_defaults |= cust_set
