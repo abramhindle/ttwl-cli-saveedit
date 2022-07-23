@@ -40,7 +40,7 @@ commands will be:
   - ["Un-Finish" Missions](#un-finish-missions)
   - [Fake TVHM](#fake-tvhm)
   - [Delete Missions](#delete-missions)
-  - [Randomize Customizations](#randomize-customization)
+  - [Randomize Customizations](#randomize-customizations)
   - [Import Items](#import-items)
 - [Importing Raw Protobufs](#importing-raw-protobufs)
 - [Importing JSON](#importing-json)
