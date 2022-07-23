@@ -29,6 +29,7 @@ from . import cli_common
 from . import plot_missions
 from ttwlsave import InvSlot, SDU, ChaosLevel, HeroStats, Backstory
 from ttwlsave.ttwlsave import TTWLSave
+from ttwlsave.ttwlprofile import TTWLProfile
 
 def main():
 
@@ -221,6 +222,19 @@ def main():
                 here.  This option can be specified more than once."""
             )
 
+    parser.add_argument('--randomize-customizations',
+            type=str,
+            metavar='PROFILE',
+            help="""Randomize customziations based on the customizations
+                unlocked in the specified profile file.""",
+            )
+
+    parser.add_argument('--overdrive',
+            action='store_true',
+            help="""When randomizing customizations, use the "overdrive"
+                slider settings, which allow for wilder extremes.""",
+            )
+
     # Positional args
     parser.add_argument('input_filename',
             help='Input filename',
@@ -332,6 +346,7 @@ def main():
         args.unfinish_missions,
         args.fake_tvhm,
         args.delete_mission is not None,
+        args.randomize_customizations,
         ])
 
     # Make changes
@@ -536,6 +551,18 @@ def main():
                     save.delete_mission(mission, allow_plot=True)
             save.set_playthroughs_completed(1)
             save.finish_game()
+
+        # Randomize customizations
+        if args.randomize_customizations:
+            if not args.quiet:
+                if args.overdrive:
+                    extra = ' (with Overdrive sliders)'
+                else:
+                    extra = ''
+                print(f' - Randomizing Customizations{extra}')
+            prof = TTWLProfile(args.randomize_customizations)
+            if save.randomize_customizations(prof):
+                save.randomize_appearance_sliders(args.overdrive)
         
         # Newline at the end of all this.
         if not args.quiet:

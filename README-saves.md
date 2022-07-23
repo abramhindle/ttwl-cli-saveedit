@@ -37,7 +37,10 @@ commands will be:
     - [Feat/Companion](#featcompanion)
     - [Multiclass](#multiclass)
     - [All Unlocks at Once](#all-unlocks-at-once)
-  - ["Un-Finish" NVHM](#un-finish-nvhm)
+  - ["Un-Finish" Missions](#un-finish-missions)
+  - [Fake TVHM](#fake-tvhm)
+  - [Delete Missions](#delete-missions)
+  - [Randomize Customizations](#randomize-customization)
   - [Import Items](#import-items)
 - [Importing Raw Protobufs](#importing-raw-protobufs)
 - [Importing JSON](#importing-json)
@@ -348,6 +351,38 @@ You can also use `all` to unlock all the various `--unlock`
 options at once, without having to specify each one individually:
 
     ttwl-save-edit old.sav new.sav --unlock all
+
+## "Un-Finish" Missions
+
+**TODO:** Docs!
+
+## Fake TVHM
+
+**TODO:** Docs!  (also test to see if we need this)
+
+## Delete Missions
+
+**TODO:** Docs!
+
+## Randomize Customizations
+
+The `--randomize-customizations` argument will randomize all available
+customization options, given a profile file (so that we know which
+customizations have been unlocked).  Specify the profile filename
+like so:
+
+    ttwl-save-edit old.sav new.sav --randomize-customizations profile.sav
+
+This will randomize chosen customizations (including Emotes, Banner, and
+Statue), all the sliders, and other options which the in-game randomization
+doesn't seem to touch (like body type and voice selection, etc).  When
+doing the randomizations, there is a 10% chance for Eyes/Mouth/Ears to be
+asymmetric (calculated independently for each).  By default, the sliders
+will use the "regular" bounds, but if you specify the `--overdrive`
+argument, it will use the "overdrive" presets instead, which allow for
+much wilder extremes:
+
+    ttwl-save-edit old.sav new.sav --randomize-customizations profile.sav --overdrive
 
 ## Import Items
 

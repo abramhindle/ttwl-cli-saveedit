@@ -30,6 +30,7 @@
 
 import uuid
 import struct
+import random
 import google.protobuf
 import google.protobuf.json_format
 from . import *
@@ -1446,4 +1447,112 @@ class TTWLSave(object):
         Sets the character backstory, given a Backstory enum instance
         """
         self.save.hero_points_save_data.player_aspect_data_path = backstory.value
+
+    def randomize_customizations(self, profile, categories=None, quiet=False):
+        """
+        Randomizes character customizations, using a TTWLProfile object `profile` to
+        know which customizations are unlocked.  If `categories` is specified, it should
+        be an iterable object with `Customization` enum entries describing which categories
+        will be randomized.  By default, this will randomize all categories.  Note: Emotes
+        will *not* be randomized, as they're stored differently than everything else,
+        and I don't care enough.  Returns `True` if we were able to do the randomization,
+        or `False` if we encountered some problem preventing us from understanding
+        the status of the customizations.  This will also print an error to the user
+        in such circumstances, unless `quiet` is set to `True`
+        """
+        # Construct a dict of our current customizations (minus emotes)
+        cur_customizations = {cust_type: None for cust_type in Customization}
+        del cur_customizations[Customization.EMOTE]
+        for obj_path in self.save.selected_customizations:
+            if obj_path not in profile_customizations_to_type:
+                if not quiet:
+                    print(f'Aborted customization randomization - Unknown customization: {obj_path}')
+                return False
+            cust_type = profile_customizations_to_type[obj_path]
+            if cust_type != Customization.EMOTE:
+                cur_customizations[cust_type] = obj_path
+
+        # Now do emotes
+        cur_emotes = []
+        for index in self.save.equipped_emote_customizations:
+            if index == -1:
+                cur_emotes.append(None)
+            else:
+                cur_emotes.append(self.save.selected_customizations[index])
+
+        # Now grab a dict describing our unlocked customizations from the profile
+        try:
+            unlocked_customizations = profile.get_cur_customizations_by_type()
+        except TTWLProfile.UnknownCustomizationException as e:
+            if not quiet:
+                print('Aborted customization randomization - Unknown unlocked customization: {}'.format(str(e)))
+            return False
+
+        # Now loop through our desired customization randomizations and update
+        # cur_customizations where appropriate
+        do_emotes = False
+        if categories is None:
+            categories = Customization
+        for cust_type in categories:
+            if cust_type == Customization.EMOTE:
+                cur_emotes = random.sample(list(unlocked_customizations[Customization.EMOTE]), 4)
+            else:
+                cur_customizations[cust_type] = random.choice(list(unlocked_customizations[cust_type]))
+
+        # Now reconstruct our save data
+        del self.save.selected_customizations[:]
+        for cust_obj in cur_customizations.values():
+            #print('Chose: {}'.format(cust_obj))
+            self.save.selected_customizations.append(cust_obj)
+
+        # Emotes at the end, I suppose
+        del self.save.equipped_emote_customizations[:]
+        for emote in cur_emotes:
+            if emote is None:
+                self.save.equipped_emote_customizations.append(-1)
+            else:
+                self.save.equipped_emote_customizations.append(len(self.save.selected_customizations))
+                #print('Chose: {}'.format(emote))
+                self.save.selected_customizations.append(emote)
+
+        # Return!
+        return True
+
+    def randomize_appearance_sliders(self, overdrive=False, asymmetry_chance=0.1):
+        """
+        Randomizes our character's appearance sliders (and also the chosen
+        pronouns and voice pack).  Basically everything that's *not* in
+        the customization-unlock area handled by `randomize_customizations`.
+        """
+
+        # First, log whether we're using overdrive or not.
+        self.save.disable_customization_suppression = overdrive
+
+        # Next: decide if we're allowing asymmetry.  Defaulting to a 10%
+        # chance per category?  (Or, in terms of this object, an 90% chance
+        # of being linked.)
+        link_state = {}
+        for link in CustomizationLink:
+            link_state[link] = random.random() > asymmetry_chance
+        for data in self.save.customization_link_data:
+            link = CustomizationLink.has_value(data.customization_name)
+            if link:
+                data.active = link_state[link]
+
+        # Main Sliders
+        to_update = {}
+        for slider in customization_main_sliders:
+            to_update.update(slider.values(link_state, overdrive))
+        for item in self.save.custom_float_customizations:
+            if item.name in to_update:
+                item.value = to_update[item.name]
+
+        # Voice Sliders
+        self.save.player_voice.pitch = customization_pitch_slider.values(link_state, overdrive, just_first=True)
+
+        # Pronouns
+        self.save.player_pronoun_selection = random.choice(customization_pronouns)
+
+        # Voice Pack
+        self.save.player_voice.data = random.choice(customization_voices)
 

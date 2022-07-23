@@ -86,6 +86,14 @@ class TTWLProfile(object):
     some decorations for that instead.  Alas!
     """
 
+    class UnknownCustomizationException(Exception):
+        """
+        Custom exception that we might throw inside `get_cur_customizations_by_type()`,
+        if we run into a customization object path that we can't categorize.  (This
+        is likely to happen if new DLCs are added which supply new customizations
+        we don't know about yet.)
+        """
+
     _prefix_magic = bytearray([
         0xD8, 0x04, 0xB9, 0x08, 0x5C, 0x4E, 0x2B, 0xC0,
         0x61, 0x9F, 0x7C, 0x8D, 0x5D, 0x34, 0x00, 0x56,
@@ -445,6 +453,33 @@ class TTWLProfile(object):
             if cust.customization_asset_path in cust_set:
                 to_ret.add(cust.customization_asset_path)
         return to_ret
+
+    def get_cur_customizations_by_type(self):
+        """
+        Returns a dict of all currently-unlocked customizations, whose keys are
+        `Customization` enum instances and whose values are sets with the valid
+        customization object paths.  The sets will include all customizations
+        which are unlocked by default and which don't ordinarily appear explicitly
+        in the profile.
+        """
+        to_ret = {}
+
+        # First up, copy all our "defaults" in -- these don't show up by default
+        # in the profile.  This'll also ensure that all our customization keys
+        # are in the returned dict.
+        for cust_type, cust_set in profile_customizations_defaults_by_cat.items():
+            to_ret[cust_type] = set(cust_set)
+
+        # Now, loop through the unlocks and add in what we've got
+        for cust in self.prof.unlocked_customizations:
+            if cust.customization_asset_path not in profile_customizations_to_type:
+                raise UnknownCustomizationException(cust.customization_asset_path)
+            cust_type = profile_customizations_to_type[cust.customization_asset_path]
+            to_ret[cust_type].add(cust.customization_asset_path)
+
+        # Return!
+        return to_ret
+
 
     def unlock_customization_set(self, cust_set):
         """
