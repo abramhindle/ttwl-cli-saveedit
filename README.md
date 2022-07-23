@@ -213,6 +213,8 @@ For instructions on using the Profile portions of the editor, see
     to assume that all customizations are available, rather than having to read
     the list from a profile?
   - Show customizations via an optional arg in ttwl-cli-info
+  - Allow only randomizing specific things?  (Char, Emotes, Banner, etc).  The
+    backend functions already support that.
   - Option to copy customizations from one char to another?
   - For that matter, would it be worth having an explicit customization-export
     function which writes out *just* customizations to a file, which could then be
