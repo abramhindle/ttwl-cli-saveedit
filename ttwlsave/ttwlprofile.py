@@ -73,14 +73,6 @@ class LostLootItem(datalib.WLSerial):
         if self.index >= 0:
             self.container[self.index] = self.serial
 
-class UnknownCustomizationException(Exception):
-    """
-    Custom exception that we might throw inside `get_cur_customizations_by_type()`,
-    if we run into a customization object path that we can't categorize.  (This
-    is likely to happen if new DLCs are added which supply new customizations
-    we don't know about yet.)
-    """
-
 class TTWLProfile(object):
     """
     Wrapper around the protobuf object for a WL profile file.
@@ -94,6 +86,13 @@ class TTWLProfile(object):
     some decorations for that instead.  Alas!
     """
 
+    class UnknownCustomizationException(Exception):
+        """
+        Custom exception that we might throw inside `get_cur_customizations_by_type()`,
+        if we run into a customization object path that we can't categorize.  (This
+        is likely to happen if new DLCs are added which supply new customizations
+        we don't know about yet.)
+        """
 
     _prefix_magic = bytearray([
         0xD8, 0x04, 0xB9, 0x08, 0x5C, 0x4E, 0x2B, 0xC0,
@@ -513,7 +512,7 @@ class TTWLProfile(object):
         # Now, loop through the unlocks and add in what we've got
         for cust in self.prof.unlocked_customizations:
             if cust.customization_asset_path not in profile_customizations_to_type:
-                raise UnknownCustomizationException(cust.customization_asset_path)
+                raise TTWLProfile.UnknownCustomizationException(cust.customization_asset_path)
             cust_type = profile_customizations_to_type[cust.customization_asset_path]
             to_ret[cust_type].add(cust.customization_asset_path)
 

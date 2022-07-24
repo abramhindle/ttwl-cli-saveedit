@@ -36,6 +36,7 @@ import google.protobuf.json_format
 from . import *
 from . import datalib
 from . import OakSave_pb2, OakShared_pb2
+from .ttwlprofile import TTWLProfile
 
 MissionState = OakSave_pb2.MissionStatusPlayerSaveGameData.MissionState
 
@@ -1537,7 +1538,7 @@ class TTWLSave(object):
         """
 
         # Get our currently-selected customizations
-        (cur_customizations, cur_emotes) = self.get_selected_customziations()
+        (cur_customizations, cur_emotes) = self.get_selected_customizations()
         if cur_customizations is None:
             if not quiet:
                 print(f'Aborted customization randomization - Unknown customization: {cur_emotes}')
