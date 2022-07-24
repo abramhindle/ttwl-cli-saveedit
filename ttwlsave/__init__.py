@@ -570,7 +570,14 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/HairColor/HairColor_37.HairColor_37',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/HairColor/HairColor_38.HairColor_38',
                 },
-        Customization.EAR_SHAPE: set(),
+        Customization.EAR_SHAPE: {
+                '/Game/PatchDLC/Indigo1/PlayerCharacters/_Shared/_Design/Customization/EarShape/EarShape_13.EarShape_13',
+                '/Game/PatchDLC/Indigo1/PlayerCharacters/_Shared/_Design/Customization/EarShape/EarShape_14.EarShape_14',
+                '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/EarShapes/EarShape_15.EarShape_15',
+                '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/EarShapes/EarShape_16.EarShape_16',
+                '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/EarShape/EarShape_17.EarShape_17',
+                '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/EarShape/EarShape_18.EarShape_18',
+                },
         Customization.NOSE_SHAPE: set(),
         Customization.MOUTH_SHAPE: set(),
         Customization.EYEBROW: set(),
@@ -1596,7 +1603,6 @@ profile_customizations_defaults_by_cat = {
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/EarShape/EarShape_10.EarShape_10',
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/EarShape/EarShape_11.EarShape_11',
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/EarShape/EarShape_12.EarShape_12',
-                '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/EarShapes/EarShape_15.EarShape_15',
                 },
         Customization.NOSE_SHAPE: {
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/NoseShape/NoseShape_01.NoseShape_01',
