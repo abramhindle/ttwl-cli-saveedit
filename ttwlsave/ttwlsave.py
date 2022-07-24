@@ -1448,29 +1448,39 @@ class TTWLSave(object):
         """
         self.save.hero_points_save_data.player_aspect_data_path = backstory.value
 
-    def randomize_customizations(self, profile, categories=None, quiet=False):
+    def get_selected_customizations(self, eng=False):
         """
-        Randomizes character customizations, using a TTWLProfile object `profile` to
-        know which customizations are unlocked.  If `categories` is specified, it should
-        be an iterable object with `Customization` enum entries describing which categories
-        will be randomized.  By default, this will randomize all categories.  Note: Emotes
-        will *not* be randomized, as they're stored differently than everything else,
-        and I don't care enough.  Returns `True` if we were able to do the randomization,
-        or `False` if we encountered some problem preventing us from understanding
-        the status of the customizations.  This will also print an error to the user
-        in such circumstances, unless `quiet` is set to `True`
+        Returns a tuple with two elements:
+            1) A dict of our currently-selected customizations, minus emotes.  If
+               `eng` is `False` (the default), The keys will be `Customization`
+               enum entries.  If `eng` is `True`, the keys will be the English
+               labels for the customization type.  The values will be the object paths.
+            2) A list of currently-chosen Emote paths.  The list will always have
+               four entries, and can have `None` as an element if the user hasn't
+               filled an Emote slot.
+
+        If a customization in the selected list isn't known to us, we'll be
+        extremely improper and return totally different data in the tuple.  The
+        first element will be `None`, and the second will be the object path
+        of the customization we don't know about.
         """
         # Construct a dict of our current customizations (minus emotes)
-        cur_customizations = {cust_type: None for cust_type in Customization}
-        del cur_customizations[Customization.EMOTE]
+        if eng:
+            cur_customizations = {cust_type.value: None for cust_type in Customization}
+            del cur_customizations[Customization.EMOTE.value]
+        else:
+            cur_customizations = {cust_type: None for cust_type in Customization}
+            del cur_customizations[Customization.EMOTE]
         for obj_path in self.save.selected_customizations:
             if obj_path not in profile_customizations_to_type:
-                if not quiet:
-                    print(f'Aborted customization randomization - Unknown customization: {obj_path}')
-                return False
+                return (None, obj_path)
             cust_type = profile_customizations_to_type[obj_path]
             if cust_type != Customization.EMOTE:
-                cur_customizations[cust_type] = obj_path
+                if eng:
+                    key = cust_type.value
+                else:
+                    key = cust_type
+                cur_customizations[key] = obj_path
 
         # Now do emotes
         cur_emotes = []
@@ -1479,6 +1489,59 @@ class TTWLSave(object):
                 cur_emotes.append(None)
             else:
                 cur_emotes.append(self.save.selected_customizations[index])
+
+        # Return!
+        return (cur_customizations, cur_emotes)
+
+    def get_special_selected_customizations(self):
+        """
+        Returns a dict of "special" customizations which don't show up in the main
+        customization-selection structure in the save.  This include things like
+        body type, voice pack, etc.  We will also report on slider info.
+        """
+        to_ret = {}
+        to_ret['Overdrive Sliders'] = self.save.disable_customization_suppression
+        to_ret['Voice Pack'] = self.save.player_voice.data
+        to_ret['Voice Pitch'] = self.save.player_voice.pitch
+        to_ret['Pronouns'] = self.save.player_pronoun_selection
+        link_state = {}
+        for data in self.save.customization_link_data:
+            link = CustomizationLink.has_value(data.customization_name)
+            if link:
+                link_state[link] = data.active
+                if data.active:
+                    value = 'On'
+                else:
+                    value = 'Off'
+                to_ret[f'{link.label} Symmetry'] = value
+        slider_vars = set()
+        for slider in customization_main_sliders:
+            slider_vars.add(slider.var)
+            if slider.link is not None and not link_state[slider.link]:
+                slider_vars.add(slider.link_var)
+        for item in self.save.custom_float_customizations:
+            if item.name in slider_vars:
+                to_ret[f'{item.name} Slider'] = item.value
+        return to_ret
+
+    def randomize_customizations(self, profile, categories=None, quiet=False):
+        """
+        Randomizes character customizations, using a TTWLProfile object `profile` to
+        know which customizations are unlocked.  If `categories` is specified, it should
+        be an iterable object with `Customization` enum entries describing which categories
+        will be randomized.  By default, this will randomize all categories.  Returns
+        `True` if we were able to do the randomization, or `False` if we encountered some
+        problem preventing us from understanding the status of the customizations.  This
+        will also print an error to the user in such circumstances, unless `quiet` is
+        set to `True`
+        """
+
+        # Get our currently-selected customizations
+        (cur_customizations, cur_emotes) = self.get_selected_customziations()
+        if cur_customizations is None:
+            if not quiet:
+                print(f'Aborted customization randomization - Unknown customization: {cur_emotes}')
+            return False
 
         # Now grab a dict describing our unlocked customizations from the profile
         try:

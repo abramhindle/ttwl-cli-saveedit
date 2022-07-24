@@ -70,6 +70,11 @@ def main():
             action='store_true',
             help='Show all unlocked Fast Travel stations')
 
+    parser.add_argument('--customizations',
+            action='store_true',
+            help='Show currently-selected customizations (as raw object paths)',
+            )
+
     parser.add_argument('filename',
             help='Filename to process',
             )
@@ -110,6 +115,24 @@ def main():
     print('Raw Hero Stats (no Backstory or Myth Rank adjustments):')
     for stat, value in save.get_hero_stats().items():
         print(f' - {stat.label}: {value}')
+
+    # Customizations
+    if args.verbose or args.customizations:
+        (cur_customizations, cur_emotes) = save.get_selected_customizations()
+        if cur_customizations is None:
+            print(f'WARNING: Unknown customization found: {cur_emotes}')
+        else:
+            print('Customizations:')
+            (reports, emotes) = save.get_selected_customizations(eng=True)
+            reports['Emotes'] = emotes
+            reports.update(save.get_special_selected_customizations())
+            for cust, value in reports.items():
+                if type(value) == list:
+                    print(f' - {cust}:')
+                    for item in value:
+                        print(f'     {item}')
+                else:
+                    print(f' - {cust}: {value}')
 
     # Currencies
     print('Currencies:')

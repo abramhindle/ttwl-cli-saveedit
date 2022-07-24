@@ -49,6 +49,7 @@ commands will be:
   - [Fast Travel Stations](#fast-travel-stations)
   - [Challenges](#challenges)
   - [Missions](#missions)
+  - [Customizations](#customizations)
 
 # Basic Operation
 
@@ -526,4 +527,12 @@ with locked missions), use the `--mission-paths` option:
 
     ttwl-save-info --mission-paths old.sav
     ttwl-save-info --all-missions --mission-paths old.sav
+
+## Customizations
+
+The `--customizations` argument will output all the raw chosen-customization
+data for the given save file.  This information isn't super useful on its
+own, but it's available anyway, if you're curious.
+
+    ttwl-save-info --customizations old.sav
 
