@@ -455,6 +455,45 @@ class TTWLProfile(object):
                 to_ret.add(cust.customization_asset_path)
         return to_ret
 
+    def unlock_customization_set(self, cust_set):
+        """
+        Unlocks the given set of customizations in the main customization
+        area.
+        """
+        current_custs = self.get_cur_customizations(cust_set)
+        missing = cust_set - current_custs
+        for cust in missing:
+            self.prof.unlocked_customizations.append(OakShared_pb2.OakCustomizationSaveGameData(
+                is_new=True,
+                customization_asset_path=cust,
+                ))
+
+    def get_customizations_total(self):
+        """
+        Returns a set of all the customizations that are possible to unlock.  Includes
+        the customizations which are unlocked by default
+        """
+        return profile_customizations | profile_customizations_defaults
+
+    def get_customizations_current(self):
+        """
+        Returns a set of the current customizations which are unlocked.  Includes the
+        customizations which are unlocked by default
+        """
+        return self.get_cur_customizations(profile_customizations) | profile_customizations_defaults
+
+    def unlock_customizations(self):
+        """
+        Unlocks all customizations
+        """
+        self.unlock_customization_set(profile_customizations)
+
+    def clear_all_customizations(self):
+        """
+        Removes all unlocked customizations.
+        """
+        del self.prof.unlocked_customizations[:]
+
     def get_cur_customizations_by_type(self):
         """
         Returns a dict of all currently-unlocked customizations, whose keys are
@@ -481,45 +520,6 @@ class TTWLProfile(object):
         # Return!
         return to_ret
 
-
-    def unlock_customization_set(self, cust_set):
-        """
-        Unlocks the given set of customizations in the main customization
-        area.
-        """
-        current_custs = self.get_cur_customizations(cust_set)
-        missing = cust_set - current_custs
-        for cust in missing:
-            self.prof.unlocked_customizations.append(OakShared_pb2.OakCustomizationSaveGameData(
-                is_new=True,
-                customization_asset_path=cust,
-                ))
-
-    def get_customizations_total(self):
-        """
-        Returns the total number of customizations that are possible to unlock.  Includes
-        the customizations which are unlocked by default
-        """
-        return len(profile_customizations) + len(profile_customizations_defaults)
-
-    def get_customizations(self):
-        """
-        Returns a set of the current customizations which are unlocked.  Includes the
-        customizations which are unlocked by default
-        """
-        return self.get_cur_customizations(profile_customizations) | profile_customizations_defaults
-
-    def unlock_customizations(self):
-        """
-        Unlocks all customizations
-        """
-        self.unlock_customization_set(profile_customizations)
-
-    def clear_all_customizations(self):
-        """
-        Removes all unlocked customizations.
-        """
-        del self.prof.unlocked_customizations[:]
 
     def _get_generic_keys(self, key):
         """

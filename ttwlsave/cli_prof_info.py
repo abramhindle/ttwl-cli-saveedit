@@ -120,8 +120,8 @@ def main():
 
     # Customizations
     print('Customizations Unlocked: {}/{}'.format(
-        len(prof.get_customizations()),
-        prof.get_customizations_total(),
+        len(prof.get_customizations_current()),
+        len(prof.get_customizations_total()),
         ))
 
     # Myth Rank
