@@ -129,7 +129,7 @@ def item_types(item_type):
     save = TTWLSave( input_filename )
     save.randomize_guid();
     import ttwlsave.cli_common
-    ttwlsave.cli_common.update_item_type(save.get_items(),
+    ttwlsave.cli_common.update_chaos_level(save.get_items(),
                     item_type,
                     False
     )
