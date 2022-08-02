@@ -280,6 +280,28 @@ is currently being maintained by a third party, though:
 
 # Changelog
 
+**v0.0.12**
+  - Apocalyptech contributions
+      - Adding missing Fealty Oath ring from DLC3
+      - Shuffling this custom exception around -- I did want that to live inside TTWLProfile, I suppose.
+      - Option to see chosen customizations with ttwl-save-info
+      - Slight bit of rearranging, and making some fuctions behave a bit more consistently
+      - Turns out the DLCs have some Ear Shape customizations I missed
+      - Missing EarShape and Exception in the wrong place?
+      - Version update
+      - Fixing link
+      - Oh yeah, one more thing I'd wanted to add
+      - A few more things for the TODO
+      - A few more comments -- I suppose I probably should've waited another few tens of minutes before committing originally.  Ah, well.
+      - Adding a bit of docs to this class
+      - Add customization randomization
+      - Updating this to take advantage of our simplified playthrough handling
+      - Ah right, something else I'd wanted to look into
+      - Rewording
+      - May as well add that simple example back in to the main README; probably a good idea.
+      - Get my savegame archive script up to theoretical snuff
+
+
 **v0.0.10**
  - Mega patch from Apocalyptech
 
