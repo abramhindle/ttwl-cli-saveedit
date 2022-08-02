@@ -157,7 +157,6 @@ def import_items(items_text):
                                          save.create_new_item_encoded,
                                          save.add_item,
                                          file_csv=True,
-                                         allow_fabricator=True,
                                          quiet=False
         )
     res =  wrap_io(task)
