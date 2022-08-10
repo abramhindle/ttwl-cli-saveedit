@@ -97,7 +97,9 @@ def randomize_guid():
     return save.get_savegame_guid()
 
 def get_guid():
-    return sav.get_savegame_guid()
+    from ttwlsave.ttwlsave import TTWLSave    
+    save = TTWLSave( input_filename )
+    return save.get_savegame_guid()
 
 # duped in cli_edit.py
 def unfinish_missions():
