@@ -6,6 +6,7 @@ from pyodide import to_js
 sav = None
 input_filename = "/input.sav"
 output_filename = "/output.sav"
+profile_filename = "/profile.sav"
 
 async def install_deps():
     await micropip.install('setuptools')
@@ -57,14 +58,12 @@ def wrap_io(f):
 
 def character_info():
     import sys
-    def task():
-        oldargv = sys.argv
-        sys.argv = [__name__, "-i", "-v", "/input.sav"]
-        import ttwlsave.cli_info
-        ttwlsave.cli_info.main()
-        sys.argv = oldargv
-    #return task()
-    return wrap_io(task)
+    import ttwlsave.cli_info
+    return call_commandline(
+        ttwlsave.cli_info.main,
+        ["-i", "-v", "/input.sav"]
+    )
+
 
 #  josephernest  https://github.com/pyodide/pyodide/issues/679#issuecomment-637519913
 def load_file_from_browser():
@@ -162,3 +161,33 @@ def import_items(items_text):
     res =  wrap_io(task)
     save.save_to( input_filename )
     return to_js([res,guid])
+
+
+def save_edit_command_line(args):
+    args = args.to_py()
+    import ttwlsave.cli_edit
+    total_args = args + [input_filename, input_filename]
+    print(total_args)
+    return call_commandline(
+        ttwlsave.cli_edit.main,
+        total_args
+    )
+
+def profile_edit_command_line(args):
+    import ttwlsave.cli_prof_edit
+    return call_commandline(ttwlsave.cli_prof_edit.main,
+                     args + [profile_filename, profile_filename])
+
+def profile_info():
+    import ttwlsave.cli_prof_info
+    return call_commandline(ttwlsave.cli_prof_info.main, ["-i", "-v", input_filename])
+
+def call_commandline(our_main, args):
+    import sys
+    def task():
+        oldargv = sys.argv
+        sys.argv = [__name__] + args
+        our_main()
+        sys.argv = oldargv
+    return wrap_io(task)
+    
