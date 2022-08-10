@@ -48,8 +48,11 @@ def wrap_io(f):
     sys.stdout = sys.stderr = out
     try:
         f()
-    except:
-        traceback.print_exc()
+    except Exception as e:
+        print(e)
+        # traceback.print_exc()
+    except SystemExit as e:
+        print(e)
     sys.stdout = oldout
     sys.stderr = olderr
     res =  out.getvalue()
