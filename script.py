@@ -208,7 +208,7 @@ def profile_edit_command_line(args):
 
 def profile_info():
     import ttwlsave.cli_prof_info
-    return call_commandline(ttwlsave.cli_prof_info.main, ["-i", "-v", input_filename])
+    return call_commandline(ttwlsave.cli_prof_info.main, ["-i", "-v", profile_filename])
 
 def call_commandline(our_main, args):
     import sys
