@@ -39,6 +39,13 @@ async def load_example():
     print(sav.get_char_name())
     return sav.get_char_name()
 
+async def load_profile_example():
+    global sav
+    import ttwlsave
+    from ttwlsave.ttwlsave import TTWLSave    
+    await save_binary_url("./example-profile.sav",profile_filename)
+    return profile_filename
+
 def wrap_io(f):
     import io
     import sys
@@ -64,19 +71,30 @@ def character_info():
     import ttwlsave.cli_info
     return call_commandline(
         ttwlsave.cli_info.main,
-        ["-i", "-v", "/input.sav"]
+        [ "-i", "-v", input_filename ]
+    )
+
+def profile_info():
+    import sys
+    import ttwlsave.cli_prof_info
+    return call_commandline(
+        ttwlsave.cli_prof_info.main,
+        [ "-i", "-v", "--rerolls", profile_filename ]
     )
 
 
 #  josephernest  https://github.com/pyodide/pyodide/issues/679#issuecomment-637519913
-def load_file_from_browser():
+def load_file_from_browser(filename=input_filename):
     ''' saves the browser content as input_filename '''
     from js import content
-    with open(input_filename,"wb") as fd:
+    with open(filename,"wb") as fd:
         return fd.write(content.to_bytes())
 
 def get_input_file():
     return file_to_buffer(input_filename)
+
+def get_profile_file():
+    return file_to_buffer(profile_filename)
 
 def get_output_file():
     return file_to_buffer(output_filename)
@@ -147,6 +165,10 @@ def volatile():
 def primordial():
     return item_types(3)
 
+def write_text(filename, items_text):
+    with open(filename,"wt") as fd:
+        fd.write(items_text)
+
 def import_items(items_text):
     filename = "/import.csv"
     with open(filename,"wt") as fd:
@@ -179,6 +201,7 @@ def save_edit_command_line(args):
     )
 
 def profile_edit_command_line(args):
+    args = args.to_py()
     import ttwlsave.cli_prof_edit
     return call_commandline(ttwlsave.cli_prof_edit.main,
                      args + [profile_filename, profile_filename])
