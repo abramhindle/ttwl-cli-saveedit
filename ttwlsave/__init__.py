@@ -140,6 +140,7 @@ class HashLabelEnum(LabelEnum):
 
 # Classes
 class CharClass(LabelEnum):
+    BLIGHTCALLER = ('Blightcaller', '/Game/PatchDLC/Indigo4/PlayerCharacters/Shaman/_Shared/_Design/SkillTree/AbilityTree_Branch_Shaman.AbilityTree_Branch_Shaman')
     BRRZERKER = ('Brr-Zerker', '/Game/PlayerCharacters/Barbarian/_Shared/_Design/SkillTree/AbilityTree_Branch_Barbarian.AbilityTree_Branch_Barbarian')
     CLAWBRINGER = ('Clawbringer', '/Game/PlayerCharacters/KnightOfTheClaw/_Shared/_Design/SkillTree/AbilityTree_Branch_DragonCleric.AbilityTree_Branch_DragonCleric')
     GRAVEBORN = ('Graveborn', '/Game/PlayerCharacters/Necromancer/_Shared/_Design/SkillTree/AbilityTree_Branch_Necromancer.AbilityTree_Branch_Necromancer')
@@ -277,6 +278,14 @@ class Backstory(LabelEnum):
             '/Game/PlayerCharacters/_Shared/_Design/Aspects/Aspect_04.Aspect_04')
     ALCHEMIST = ('Rogue Alchemist: DEX-2, WIS+8, CON-5, ATT+2',
             '/Game/PlayerCharacters/_Shared/_Design/Aspects/Aspect_05.Aspect_05')
+    NERFED = ('Nerfed By The Bunker Master: STR+2, DEX-8, INT+2, WIS+2, CON+2, ATT+2',
+            '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Aspects/Aspect_PLC_1.Aspect_PLC_1')
+    CLOWNBLOOD = ('Clownblood: STR+2, INT+8, WIS-3, ATT-4',
+            '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Aspects/Aspect_PLC_2.Aspect_PLC_2')
+    SCRAPER = ('Apprentice Barnacle Scraper: STR+3, INT-6, ATT+7',
+            '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Aspects/Aspect_PLC_3.Aspect_PLC_3')
+    URCHIN = ('Street Urchin Success Story: STR+4, INT+5, CON-6',
+            '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Aspects/Aspect_PLC_4.Aspect_PLC_4')
 
 # Char-level Stat (not sure if this is useful to set, but we'll do it anyway)
 level_stat = '/Game/GameData/Stats/Progression/Stat_Character_Level.Stat_Character_Level'
@@ -417,6 +426,8 @@ enchantment_invdata_types = {
         '/Game/Gear/Weapons/SniperRifles/Jakobs/_Shared/_Design/WT_SR_JAK.WT_SR_JAK',
         '/Game/Gear/Weapons/SniperRifles/Vladof/_Shared/_Design/WT_SR_VLA.WT_SR_VLA',
         '/Game/PatchDLC/Indigo2/Gear/Weapons/Pistols/Torgue/_Shared/_Design/_Unique/Butterboom/WT_PS_Butterboom.WT_PS_Butterboom',
+        '/Game/PatchDLC/Indigo4/Gear/Weapons/SniperRifles/Dahl/_Shared/_Design/Tiabolt/Custom/WT_SR_DAL_Tiabolt.WT_SR_DAL_Tiabolt',
+        '/Game/PatchDLC/Indigo4/Gear/Weapons/AssaultRifles/Torgue/_Shared/_Design/_Unique/Vengeance/Custom/WT_AR_TOR_Vengeance.WT_AR_TOR_Vengeance',
         }
 enchantment_invdata_lower_types = set([t.lower() for t in enchantment_invdata_types])
 
@@ -2167,6 +2178,7 @@ customization_voices = [
         '/Game/Dialog/Nametags/DNT_PlGruffM.DNT_PlGruffM',
         '/Game/Dialog/Nametags/DNT_PlWeirdF.DNT_PlWeirdF',
         '/Game/Dialog/Nametags/DNT_PlWeirdM.DNT_PlWeirdM',
+        '/Game/Dialog/Nametags/DNT_PlGrim.DNT_PlGrim',
         ]
 
 # Mission names
@@ -2261,6 +2273,11 @@ mission_to_name = {
         '/Game/PatchDLC/Indigo3/Missions/Mission_PLC3_3_3': "Puns and Crimeishment: Slammer Central",
         '/Game/PatchDLC/Indigo3/Missions/Mission_PLC3_3_4': "Puns and Crimeishment: Firedeep Forge",
         '/Game/PatchDLC/Indigo3/Missions/Mission_PLC3': "Puns and Crimeishment",
+        '/Game/PatchDLC/Indigo4/Missions/CompletionMissions/Mission_PLC4_CompletionV1': "Defeated Redmourne: Difficulty 1",
+        '/Game/PatchDLC/Indigo4/Missions/CompletionMissions/Mission_PLC4_CompletionV2': "Defeated Redmourne: Difficulty 2",
+        '/Game/PatchDLC/Indigo4/Missions/CompletionMissions/Mission_PLC4_CompletionV3': "Defeated Redmourne: Difficulty 3",
+        '/Game/PatchDLC/Indigo4/Missions/CompletionMissions/Mission_PLC4_CompletionV4': "Defeated Redmourne: Difficulty 4",
+        '/Game/PatchDLC/Indigo4/Missions/Mission_PLC4': "Outer Daemons",
         }
 for k, v in list(mission_to_name.items()):
     lower = k.lower()
