@@ -362,7 +362,7 @@ class TTWLProfile(object):
         for psdu_proto in self.prof.profile_sdu_list:
             psdu = ProfileSDU(psdu_proto.sdu_data_path)
             if psdu in all_sdus:
-                all_sdus.remote(psdu)
+                all_sdus.remove(psdu)
                 psdu_proto.sdu_level = psdu.num
 
         # If we're missing any, add them.
