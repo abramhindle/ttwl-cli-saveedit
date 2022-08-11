@@ -206,6 +206,7 @@ For instructions on using the Profile portions of the editor, see
 
 # TODO
 
+- Option to clear Loot Dice from profile
 - Figure out equation for Myth Rank XP -> Points
 - Unlock overworld abilities early?
 - Customization Randomization improvements:
