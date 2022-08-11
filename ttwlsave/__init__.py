@@ -1532,7 +1532,6 @@ profile_customizations_by_cat = {
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Banner/IconColor/BannerColor_32_Icon.BannerColor_32_Icon',
                 '/Game/PatchDLC/Indigo1/PlayerCharacters/_Shared/_Design/Customization/Banners/BannerColor_Icon_33.BannerColor_Icon_33',
                 '/Game/PatchDLC/Indigo1/PlayerCharacters/_Shared/_Design/Customization/Banners/BannerColor_Icon_34.BannerColor_Icon_34',
-                # TODO: figure out if there's an issue between this and the BannerColor_35_Icon below
                 '/Game/PatchDLC/Indigo1/PlayerCharacters/_Shared/_Design/Customization/Banners/BannerColor_Icon_35.BannerColor_Icon_35',
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/Banners/BannerColor_36_Icon.BannerColor_36_Icon',
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/Banners/BannerColor_37_Icon.BannerColor_37_Icon',
@@ -1540,8 +1539,6 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/BannerColor_39_Icon.BannerColor_39_Icon',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/BannerColor_40_Icon.BannerColor_40_Icon',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/BannerColor_41_Icon.BannerColor_41_Icon',
-                # TODO: figure out if there's an issue between this and the BannerColor_Icon_35 above
-                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Banners/BannerColor_35_Icon.BannerColor_35_Icon',
                 '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/BannerColor_42_Icon.BannerColor_42_Icon',
                 '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/BannerColor_43_Icon.BannerColor_43_Icon',
                 '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/BannerColor_44_Icon.BannerColor_44_Icon',
@@ -1551,6 +1548,10 @@ profile_customizations_by_cat = {
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Banner/IconColor/BannerColor_29_Icon.BannerColor_29_Icon',
                 # Shows up automatically - Butt Stallion Pack
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Banner/IconColor/BannerColor_30_Icon.BannerColor_30_Icon',
+                # This is in the DLC4 data, and looks like it could be a valid object, but it doesn't show up in-game
+                # even if unlocked, and it's not in the usual object path for these, anyway.  (Also, a DLC1 customization
+                # technically already consumed number 35.)  So, almost certainly broken and just left in by accident.
+                #'/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Banners/BannerColor_35_Icon.BannerColor_35_Icon',
                 },
         Customization.STATUE_MATERIAL: {
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/HeroStatue/Material/HeroStatueMaterial_03.HeroStatueMaterial_03',
