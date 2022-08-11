@@ -158,6 +158,14 @@ If that works, you can then run the `pip3 install ttwl-cli-saveedit` command
 as mentioned above, and use the commandline scripts to edit to your heart's
 content.
 
+### Notes for people on Steam Deck
+
+Miniconda is a user space python distribution that works on Steam Deck.  
+Once you've installed it open a new terminal session and it's executables 
+will be in your path.
+
+https://docs.conda.io/en/latest/miniconda.html
+
 ### Running from Github
 
 Alternatively, if you want to download or run the Github version of
