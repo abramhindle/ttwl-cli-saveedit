@@ -288,6 +288,8 @@ is currently being maintained by a third party, though:
   Written in C#, has EXE downloads for ease of use on Windows.
 
 # Changelog
+**v0.0.13**
+  - Updated DLC4 definitions
 
 **v0.0.12**
   - Apocalyptech contributions
