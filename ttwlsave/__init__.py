@@ -500,6 +500,7 @@ profile_customizations_by_cat = {
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/SkinTone/SkinToneColor_42.SkinToneColor_42',
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/SkinTone/SkinToneColor_43.SkinToneColor_43',
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/SkinTone/SkinToneColor_44.SkinToneColor_44',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/SkinTones/SkinToneColor_35.SkinToneColor_35',
                 },
         Customization.HAIR_HEADGEAR: {
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/HeadAcc/HeadAccessory_01.HeadAccessory_01',
@@ -536,6 +537,14 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/HeadAccessories/HeadAccessory_49.HeadAccessory_49',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/HeadAccessories/HeadAccessory_50.HeadAccessory_50',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/HeadAccessories/HeadAccessory_51.HeadAccessory_51',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/HeadAccessories/HeadAccessory_52.HeadAccessory_52',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/HeadAccessories/HeadAccessory_53.HeadAccessory_53',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/HeadAccessories/HeadAccessory_54.HeadAccessory_54',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/HeadAccessories/HeadAccessory_55.HeadAccessory_55',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/HeadAccessories/HeadAccessory_56.HeadAccessory_56',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/HeadAccessories/HeadAccessory_57.HeadAccessory_57',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/HeadAccessories/HeadAccessory_58.HeadAccessory_58',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/HeadAccessories/HeadAccessory_59.HeadAccessory_59',
                 },
         Customization.FACIAL_HAIR_MASKS: {
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/FaceAcc/FaceAccessory_10.FaceAccessory_10',
@@ -557,6 +566,11 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/FaceAccessories/FaceAccessory_27.FaceAccessory_27',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/FaceAccessories/FaceAccessory_28.FaceAccessory_28',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/FaceAccessories/FaceAccessory_29.FaceAccessory_29',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/FaceAccessories/FaceAccessory_30.FaceAccessory_30',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/FaceAccessories/FaceAccessory_31.FaceAccessory_31',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/FaceAccessories/FaceAccessory_32.FaceAccessory_32',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/FaceAccessories/FaceAccessory_33.FaceAccessory_33',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/FaceAccessories/FaceAccessory_34.FaceAccessory_34',
                 },
         Customization.HAIR_COLOR: {
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/HairColor/HairColor_12.HairColor_12',
@@ -580,6 +594,8 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/HairColor/HairColor_35.HairColor_35',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/HairColor/HairColor_37.HairColor_37',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/HairColor/HairColor_38.HairColor_38',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/HairColors/HairColor_40.HairColor_40',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/HairColors/HairColor_41.HairColor_41',
                 },
         Customization.EAR_SHAPE: {
                 '/Game/PatchDLC/Indigo1/PlayerCharacters/_Shared/_Design/Customization/EarShape/EarShape_13.EarShape_13',
@@ -588,6 +604,8 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/EarShapes/EarShape_16.EarShape_16',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/EarShape/EarShape_17.EarShape_17',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/EarShape/EarShape_18.EarShape_18',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/EarShape/EarShape_19.EarShape_19',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/EarShape/EarShape_20.EarShape_20',
                 },
         Customization.NOSE_SHAPE: set(),
         Customization.MOUTH_SHAPE: set(),
@@ -610,6 +628,8 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/Pupils/Pupil_19.Pupil_19',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Pupils/Pupil_20.Pupil_20',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Pupils/Pupil_21.Pupil_21',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Pupils/Pupil_22.Pupil_22',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Pupils/Pupil_23.Pupil_23',
                 # Shows up automatically - Dragon Lord Pack
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/PupilShape/Pupil_03.Pupil_03',
                 },
@@ -629,6 +649,8 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/EyeColor/EyeColor_21.EyeColor_21',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/EyeColor/EyeColor_23.EyeColor_23',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/EyeColor/EyeColor_24.EyeColor_24',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/EyeColor/EyeColor_26.EyeColor_26',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/EyeColor/EyeColor_27.EyeColor_27',
                 # Shows up automatically - Dragon Lord Pack
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/EyeColor/EyeColor_16.EyeColor_16',
                 },
@@ -652,6 +674,11 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Scars/Scars_30.Scars_30',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Scars/Scars_31.Scars_31',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Scars/Scars_32.Scars_32',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Scars/Scars_33.Scars_33',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Scars/Scars_34.Scars_34',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Scars/Scars_35.Scars_35',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Scars/Scars_36.Scars_36',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Scars/Scars_37.Scars_37',
                 # Shows up automatically - Dragon Lord Pack
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Scar/Scars_17.Scars_17',
                 },
@@ -683,6 +710,11 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Tattoos/Tattoos_29.Tattoos_29',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Tattoos/Tattoos_30.Tattoos_30',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Tattoos/Tattoos_31.Tattoos_31',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Tattoos/Tattoos_32.Tattoos_32',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Tattoos/Tattoos_33.Tattoos_33',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Tattoos/Tattoos_34.Tattoos_34',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Tattoos/Tattoos_35.Tattoos_35',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Tattoos/Tattoos_36.Tattoos_36',
                 # Shows up automatically - Dragon Lord Pack
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Tattoo/Tattoos_16.Tattoos_16',
                 },
@@ -706,6 +738,8 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/TattooColor/TattooColor_35.TattooColor_35',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/TattooColor/TattooColor_37.TattooColor_37',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/TattooColor/TattooColor_38.TattooColor_38',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/TattooColor/TattooColor_40.TattooColor_40',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/TattooColor/TattooColor_41.TattooColor_41',
                 # Shows up automatically - Dragon Lord Pack
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/TattooColor/TattooColor_30.TattooColor_30',
                 # Shows up automatically - Butt Stallion Pack
@@ -739,6 +773,11 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Eyeliner/EyelinerShape_34.EyelinerShape_34',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Eyeliner/EyelinerShape_35.EyelinerShape_35',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Eyeliner/EyelinerShape_36.EyelinerShape_36',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Eyeliner/EyelinerShape_37.EyelinerShape_37',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Eyeliner/EyelinerShape_38.EyelinerShape_38',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Eyeliner/EyelinerShape_39.EyelinerShape_39',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Eyeliner/EyelinerShape_40.EyelinerShape_40',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Eyeliner/EyelinerShape_41.EyelinerShape_41',
                 # Shows up automatically - Butt Stallion Pack
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Makeup/EyeLiner/EyelinerShape_21.EyelinerShape_21',
                 },
@@ -761,6 +800,8 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/MakeupColor/MakeupColor_35_Eyeliner.MakeupColor_35_Eyeliner',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/MakeupColor/MakeupColor_37_Eyeliner.MakeupColor_37_Eyeliner',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/MakeupColor/MakeupColor_38_Eyeliner.MakeupColor_38_Eyeliner',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/MakeupColor/MakeupColor_40_Eyeliner.MakeupColor_40_Eyeliner',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/MakeupColor/MakeupColor_41_Eyeliner.MakeupColor_41_Eyeliner',
                 # Shows up automatically - Dragon Lord Pack
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Makeup/EyeLinerColor/MakeupColor_30_Eyeliner.MakeupColor_30_Eyeliner',
                 # Shows up automatically - Butt Stallion Pack
@@ -794,6 +835,11 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/EyeShadow/EyeShadow_34.EyeShadow_34',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/EyeShadow/EyeShadow_35.EyeShadow_35',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/EyeShadow/EyeShadow_36.EyeShadow_36',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/EyeShadow/EyeShadow_37.EyeShadow_37',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/EyeShadow/EyeShadow_38.EyeShadow_38',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/EyeShadow/EyeShadow_39.EyeShadow_39',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/EyeShadow/EyeShadow_40.EyeShadow_40',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/EyeShadow/EyeShadow_41.EyeShadow_41',
                 # Shows up automatically - Dragon Lord Pack
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Makeup/EyeShadowColor/MakeupColor_30_Eyeshadow.MakeupColor_30_Eyeshadow',
                 # Shows up automatically - Butt Stallion Pack
@@ -818,6 +864,8 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/MakeupColor/MakeupColor_35_Eyeshadow.MakeupColor_35_Eyeshadow',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/MakeupColor/MakeupColor_37_Eyeshadow.MakeupColor_37_Eyeshadow',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/MakeupColor/MakeupColor_38_Eyeshadow.MakeupColor_38_Eyeshadow',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/MakeupColor/MakeupColor_40_Eyeshadow.MakeupColor_40_Eyeshadow',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/MakeupColor/MakeupColor_41_Eyeshadow.MakeupColor_41_Eyeshadow',
                 # Shows up automatically - Butt Stallion Pack
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Makeup/EyeShadowColor/MakeupColor_29_Eyeshadow.MakeupColor_29_Eyeshadow',
                 },
@@ -849,6 +897,11 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Blush/BlushShape_34.BlushShape_34',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Blush/BlushShape_35.BlushShape_35',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Blush/BlushShape_36.BlushShape_36',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Blush/BlushShape_37.BlushShape_37',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Blush/BlushShape_38.BlushShape_38',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Blush/BlushShape_39.BlushShape_39',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Blush/BlushShape_40.BlushShape_40',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Blush/BlushShape_41.BlushShape_41',
                 # Shows up automatically - Butt Stallion Pack
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Makeup/Blush/BlushShape_21.BlushShape_21',
                 },
@@ -871,6 +924,8 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/MakeupColor/MakeupColor_35_Blush.MakeupColor_35_Blush',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/MakeupColor/MakeupColor_37_Blush.MakeupColor_37_Blush',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/MakeupColor/MakeupColor_38_Blush.MakeupColor_38_Blush',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/MakeupColor/MakeupColor_40_Blush.MakeupColor_40_Blush',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/MakeupColor/MakeupColor_41_Blush.MakeupColor_41_Blush',
                 # Shows up automatically - Dragon Lord Pack
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Makeup/BlushColor/MakeupColor_30_Blush.MakeupColor_30_Blush',
                 # Shows up automatically - Butt Stallion Pack
@@ -905,6 +960,11 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Lipstick/Lipstick_34.Lipstick_34',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Lipstick/Lipstick_35.Lipstick_35',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Lipstick/Lipstick_36.Lipstick_36',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Lipstick/Lipstick_37.Lipstick_37',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Lipstick/Lipstick_38.Lipstick_38',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Lipstick/Lipstick_39.Lipstick_39',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Lipstick/Lipstick_40.Lipstick_40',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Lipstick/Lipstick_41.Lipstick_41',
                 # Shows up automatically - Butt Stallion Pack
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Makeup/Lipstick/Lipstick_21.Lipstick_21',
                 },
@@ -927,6 +987,8 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/MakeupColor/MakeupColor_35_Lipstick.MakeupColor_35_Lipstick',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/MakeupColor/MakeupColor_37_Lipstick.MakeupColor_37_Lipstick',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/MakeupColor/MakeupColor_38_Lipstick.MakeupColor_38_Lipstick',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/MakeupColor/MakeupColor_40_Lipstick.MakeupColor_40_Lipstick',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/MakeupColor/MakeupColor_41_Lipstick.MakeupColor_41_Lipstick',
                 # Shows up automatically - Dragon Lord Pack
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Makeup/LipstickColor/MakeupColor_30_Lipstick.MakeupColor_30_Lipstick',
                 # Shows up automatically - Butt Stallion Pack
@@ -957,6 +1019,8 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/ArmorPatterns/ArmorPattern_30.ArmorPattern_30',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/ArmorPattern/ArmorPattern_31.ArmorPattern_31',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/ArmorPattern/ArmorPattern_32.ArmorPattern_32',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/ArmorPattern/ArmorPattern_33.ArmorPattern_33',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/ArmorPattern/ArmorPattern_34.ArmorPattern_34',
                 # Shows up automatically - Dragon Lord Pack
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Armor/Pattern/ArmorPattern_24.ArmorPattern_24',
                 },
@@ -978,6 +1042,7 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo1/PlayerCharacters/_Shared/_Design/Customization/UnderArmorPatterns/UnderArmorPattern_27.UnderArmorPattern_27',
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/UnderArmorPatterns/UnderArmorPattern_28.UnderArmorPattern_28',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/UnderArmorPattern/UnderArmorPattern_29.UnderArmorPattern_29',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/UnderArmorPattern/UnderArmorPattern_30.UnderArmorPattern_30',
                 # Shows up automatically - Dragon Lord Pack
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Armor/UnderPattern/UnderArmorPattern_14.UnderArmorPattern_14',
                 # Shows up automatically - Butt Stallion Pack
@@ -1043,6 +1108,10 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/ArmorColor/ArmorColor_85_Primary.ArmorColor_85_Primary',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/ArmorColor/ArmorColor_86_Primary.ArmorColor_86_Primary',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/ArmorColor/ArmorColor_87_Primary.ArmorColor_87_Primary',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/ArmorColor/ArmorColor_89_Primary.ArmorColor_89_Primary',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/ArmorColor/ArmorColor_90_Primary.ArmorColor_90_Primary',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/ArmorColor/ArmorColor_91_Primary.ArmorColor_91_Primary',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/ArmorColor/ArmorColor_92_Primary.ArmorColor_92_Primary',
                 # Assigned as part of the Butt Stallion Pack, but does *not* actually show up automatically!
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Armor/ColorPrimary/ArmorColor_63_Primary.ArmorColor_63_Primary',
                 # Shows up automatically - Preorder Bonus (Gold armor)
@@ -1116,6 +1185,10 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/ArmorColor/ArmorColor_85_Secondary.ArmorColor_85_Secondary',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/ArmorColor/ArmorColor_86_Secondary.ArmorColor_86_Secondary',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/ArmorColor/ArmorColor_87_Secondary.ArmorColor_87_Secondary',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/ArmorColor/ArmorColor_89_Secondary.ArmorColor_89_Secondary',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/ArmorColor/ArmorColor_90_Secondary.ArmorColor_90_Secondary',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/ArmorColor/ArmorColor_91_Secondary.ArmorColor_91_Secondary',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/ArmorColor/ArmorColor_92_Secondary.ArmorColor_92_Secondary',
                 # Assigned as part of the Butt Stallion Pack, but does *not* actually show up automatically!
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Armor/ColorSecondary/ArmorColor_63_Secondary.ArmorColor_63_Secondary',
                 # Shows up automatically - Preorder Bonus (Gold armor)
@@ -1189,6 +1262,10 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/ArmorColor/ArmorColor_85_Tertiary.ArmorColor_85_Tertiary',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/ArmorColor/ArmorColor_86_Tertiary.ArmorColor_86_Tertiary',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/ArmorColor/ArmorColor_87_Tertiary.ArmorColor_87_Tertiary',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/ArmorColor/ArmorColor_89_Tertiary.ArmorColor_89_Tertiary',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/ArmorColor/ArmorColor_90_Tertiary.ArmorColor_90_Tertiary',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/ArmorColor/ArmorColor_91_Tertiary.ArmorColor_91_Tertiary',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/ArmorColor/ArmorColor_92_Tertiary.ArmorColor_92_Tertiary',
                 # Assigned as part of the Butt Stallion Pack, but does *not* actually show up automatically!
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Armor/ColorTertiary/ArmorColor_63_Tertiary.ArmorColor_63_Tertiary',
                 # Shows up automatically - Preorder Bonus (Gold armor)
@@ -1221,6 +1298,8 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/Emotes/Emote_20.Emote_20',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Emote/Emote_21.Emote_21',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Emote/Emote_22.Emote_22',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Emote/Emote_23.Emote_23',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Emote/Emote_24.Emote_24',
                 },
         Customization.BANNER_SHAPE: {
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Banner/Background/BannerShape_02.BannerShape_02',
@@ -1243,6 +1322,8 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/Banners/Banner_Shape_24.Banner_Shape_24',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/Banner_Shape_25.Banner_Shape_25',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/Banner_Shape_26.Banner_Shape_26',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/Banner_Shape_27.Banner_Shape_27',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/Banner_Shape_28.Banner_Shape_28',
                 # Shows up automatically - Dragon Lord Pack
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Banner/Background/BannerShape_14.BannerShape_14',
                 },
@@ -1277,6 +1358,9 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/BannerColor_39_Shape.BannerColor_39_Shape',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/BannerColor_40_Shape.BannerColor_40_Shape',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/BannerColor_41_Shape.BannerColor_41_Shape',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/BannerColor_42_Shape.BannerColor_42_Shape',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/BannerColor_43_Shape.BannerColor_43_Shape',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/BannerColor_44_Shape.BannerColor_44_Shape',
                 # Shows up automatically, apparently - Vault-symbol related stuff
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Banner/BackgroundColor/BannerColor_31_Shape.BannerColor_31_Shape',
                 # Shows up automatically - Dragon Lord Pack
@@ -1317,6 +1401,10 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/Banner_Pattern_37.Banner_Pattern_37',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/Banner_Pattern_38.Banner_Pattern_38',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/Banner_Pattern_39.Banner_Pattern_39',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/Banner_Pattern_40.Banner_Pattern_40',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/Banner_Pattern_41.Banner_Pattern_41',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/Banner_Pattern_42.Banner_Pattern_42',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/Banner_Pattern_43.Banner_Pattern_43',
                 # Shows up automatically, apparently - Vault-symbol related stuff
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Banner/Pattern/BannerPattern_26.BannerPattern_26',
                 },
@@ -1351,6 +1439,9 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/BannerColor_39_Pattern.BannerColor_39_Pattern',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/BannerColor_40_Pattern.BannerColor_40_Pattern',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/BannerColor_41_Pattern.BannerColor_41_Pattern',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/BannerColor_42_Pattern.BannerColor_42_Pattern',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/BannerColor_43_Pattern.BannerColor_43_Pattern',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/BannerColor_44_Pattern.BannerColor_44_Pattern',
                 # Shows up automatically, apparently - Vault-symbol related stuff
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Banner/PatternColor/BannerColor_31_Pattern.BannerColor_31_Pattern',
                 # Shows up automatically - Dragon Lord Pack
@@ -1404,6 +1495,12 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/Banner_Icon_58.Banner_Icon_58',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/Banner_Icon_59.Banner_Icon_59',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/Banner_Icon_60.Banner_Icon_60',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/Banner_Icon_61.Banner_Icon_61',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/Banner_Icon_62.Banner_Icon_62',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/Banner_Icon_63.Banner_Icon_63',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/Banner_Icon_64.Banner_Icon_64',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/Banner_Icon_65.Banner_Icon_65',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/Banner_Icon_66.Banner_Icon_66',
                 # Shows up automatically, apparently - Vault-symbol related stuff
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Banner/Icon/BannerIcon_40.BannerIcon_40',
                 # Shows up automatically - Dragon Lord Pack
@@ -1435,6 +1532,7 @@ profile_customizations_by_cat = {
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Banner/IconColor/BannerColor_32_Icon.BannerColor_32_Icon',
                 '/Game/PatchDLC/Indigo1/PlayerCharacters/_Shared/_Design/Customization/Banners/BannerColor_Icon_33.BannerColor_Icon_33',
                 '/Game/PatchDLC/Indigo1/PlayerCharacters/_Shared/_Design/Customization/Banners/BannerColor_Icon_34.BannerColor_Icon_34',
+                # TODO: figure out if there's an issue between this and the BannerColor_35_Icon below
                 '/Game/PatchDLC/Indigo1/PlayerCharacters/_Shared/_Design/Customization/Banners/BannerColor_Icon_35.BannerColor_Icon_35',
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/Banners/BannerColor_36_Icon.BannerColor_36_Icon',
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/Banners/BannerColor_37_Icon.BannerColor_37_Icon',
@@ -1442,6 +1540,11 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/BannerColor_39_Icon.BannerColor_39_Icon',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/BannerColor_40_Icon.BannerColor_40_Icon',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Banners/BannerColor_41_Icon.BannerColor_41_Icon',
+                # TODO: figure out if there's an issue between this and the BannerColor_Icon_35 above
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Banners/BannerColor_35_Icon.BannerColor_35_Icon',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/BannerColor_42_Icon.BannerColor_42_Icon',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/BannerColor_43_Icon.BannerColor_43_Icon',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Banners/BannerColor_44_Icon.BannerColor_44_Icon',
                 # Shows up automatically, apparently - Vault-symbol related stuff
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/Banner/IconColor/BannerColor_31_Icon.BannerColor_31_Icon',
                 # Shows up automatically - Dragon Lord Pack
@@ -1467,6 +1570,7 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo1/PlayerCharacters/_Shared/_Design/Customization/Statues/Materials/HeroStatueMaterial_22.HeroStatueMaterial_22',
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/Statues/Materials/HeroStatueMaterial_23.HeroStatueMaterial_23',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Statues/Materials/HeroStatueMaterial_24.HeroStatueMaterial_24',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Statues/Materials/HeroStatueMaterial_25.HeroStatueMaterial_25',
                 # Shows up automatically - Dragon Lord Pack
                 '/Game/PlayerCharacters/_Shared/_Design/Customization/HeroStatue/Material/HeroStatueMaterial_20.HeroStatueMaterial_20',
                 # Shows up automatically - Butt Stallion Pack
@@ -1495,6 +1599,8 @@ profile_customizations_by_cat = {
                 '/Game/PatchDLC/Indigo2/PlayerCharacters/_Shared/_Design/Statues/Poses/HeroStatuePose_24.HeroStatuePose_24',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Statues/Poses/HeroStatuePose_25.HeroStatuePose_25',
                 '/Game/PatchDLC/Indigo3/PlayerCharacters/_Shared/Design/Customization/Statues/Poses/HeroStatuePose_26.HeroStatuePose_26',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Statues/Poses/HeroStatuePose_27.HeroStatuePose_27',
+                '/Game/PatchDLC/Indigo4/PlayerCharacters/_Shared/_Design/Customization/Statues/Poses/HeroStatuePose_28.HeroStatuePose_28',
                 },
         }
 
