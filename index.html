@@ -27,6 +27,9 @@
       .smaller {
           font-size: x-small;
       }
+      input.numberOption {
+          width: 9em;
+      }
     </style>
   </head>
   <body>
@@ -37,8 +40,9 @@
         Wonderland's Savefiles, or Tiny Tina Wonderland's Save Games?
         This is tech demo about running Python code in the browser,
         but you may use it to the modify the savefiles in Tiny Tina's
-        Wonderlands. This was working as of TTWL v1.0.4.0a (2022-06-23).
+        Wonderlands. This was working as of TTWL v1.0.5 (2022-08-11).
       </p>
+      <p> If you want to use the <a href="legacy.html">old web interface</a> please <a href="legacy.html">click here.</a></p>
       <p>
         Using <a href="https://pyodide.org/en/stable/">Pyodide</a> I managed to host the python commandline program <a href="https://github.com/abramhindle/ttwl-cli-saveedit/">ttwl-cli-saveedit</a> on the web! So this means python is running in your browser. If you want to run it at home just run on a Linux or OSX computer:
         <code>
@@ -84,19 +88,95 @@
     <div id="ui">
       <button id="example" onclick="loadExample()">Load Example</button> or upload your own:
       <input name="upload" id="upload" type="file"><br>
-      <button class="needFile" id="downloadInput" onclick="downloadInputFile()">Download Inputfile</button>
-      <button class="needFile" id="dupeFile" onclick="randomizeGUID()">Duplicate your Savefile</button>
-      <button class="needFile" id="unfinish" onclick="unfinishMissions()">Unfinish Your Missions</button>
-      <button class="needFile" id="tvhm" onclick="fakeTVHM()">Fake TVHM with Chaos Level</button><br>
-      <button class="needFile" id="tvhm" onclick="chaotic()">Make all gear Chaotic</button>
-      <button class="needFile" id="tvhm" onclick="volatile()">Make all gear Volatile</button>
-      <button class="needFile" id="tvhm" onclick="primordial()">Make all gear Primordial</button><br>
       <div>
-        <h3>Item import</h3>
-        Try items like: Balance_M_Sword2H_BansheeClaw_Leg (level 40, mayhem unknown): BL3(BQAAAADCvYA7Cxphg0La6XWPTqQjCAAJAQ==)<br>
-        <textarea cols="80" id="inventory"></textarea></br>
-        <button class="needFile" id="import" onclick="importInventory()">Import Inventory Items</button>
-      </div>
+      <pre class="needFile">
+optional arguments:
+  -h, --help            show this help message and exit
+  -V, --version         show program's version number and exit
+  -o {savegame,protobuf,json,items}, --output {savegame,protobuf,json,items}
+                        Output file format (default: savegame)
+<span class="flag" id="--csv"></span>  --csv                 When importing or exporting items, use CSV files
+                        (default: False)
+  -f, --force           Force output file to overwrite (default: False)
+  -q, --quiet           Supress all non-essential output (default: False)
+<span class="textOption" id="--name"></span>  --name NAME           Set the name of the character (default: None)
+<span class="textOption" id="--save-game-id"></span>  --save-game-id SAVE_GAME_ID
+                        Set the save game slot ID (possibly not actually ever
+                        needed) (default: None)
+<span class="flag" id="--dont-randomize-guid"></span>  --dont-randomize-guid
+                        DON'T Randomize the savegame GUID (default: True)
+<span class="numberOption" id="--level"></span>  --level LEVEL         Set the character to this level (from 1 to 40)
+                        (default: None)
+<span class="flag" id="--level-max"></span>  --level-max           Set the character to max level (40) (default: False)
+<span class="flag" id="--xp-max"></span>  --xp-max              When using --level, instead of assigning the minimum
+                        amount of XP for the level, assign the maximum (so
+                        that 1 more XP will level to the next). Has no effect
+                        when setting a char to max level. (default: False)
+<span class="flag" id="--items-to-char"></span>   --items-to-char       Set all inventory items to the level of the character
+                        (default: False)
+<span class="numberOption" id="--item-levels"></span>  --item-levels ITEM_LEVELS
+                        Set all inventory items to the specified level
+                        (default: None)
+<span class="flag" id="--items-regular"></span>  --items-regular       Set all inventory item chaos levels to Regular
+                        (default: None)
+<span class="flag" id="--items-chaotic"></span>  --items-chaotic       Set all inventory item chaos levels to Chaotic
+                        (default: None)
+<span class="flag" id="--items-volatile"></span>  --items-volatile      Set all inventory item chaos levels to Volatile
+                        (default: None)
+<span class="flag" id="--items-primordial"></span>  --items-primordial    Set all inventory item chaos levels to Primordial
+                        (default: None)
+<span class="flag" id="--items-ascended"></span>  --items-ascended      Set all inventory item chaos levels to Ascended
+                        (default: None)
+<span class="flag" id="--clear-rerolls"></span>  --clear-rerolls       Clears the reroll counter for all items in inventory
+                        (default: False)
+<span class="textOption" id="--backstory"></span>  --backstory {idiot,elves,monk,hoarder,alchemist}
+                        Set backstory (default: None)
+<span class="numberOption" id="--hero-stats"></span>  --hero-stats HERO_STATS
+                        Sets all raw Hero Stats to the specified value (from
+                        10-30) (default: None)
+<span class="flag" id="--hero-stats-max"></span>  --hero-stats-max      Sets all raw Hero Stats to their maximum values
+                        (default: False)
+<span class="numberOption" id="--str"></span>  --str STRENGTH        Sets the value of the Strength Hero Stat (from 10-30)
+                        (default: None)
+<span class="numberOption" id="--dex"></span>  --dex DEXTERITY       Sets the value of the Dexterity Hero Stat (from 10-30)
+                        (default: None)
+<span class="numberOption" id="--int"></span>  --int INTELLIGENCE    Sets the value of the Intelligence Hero Stat (from
+                        10-30) (default: None)
+<span class="numberOption" id="--wis"></span>  --wis WISDOM          Sets the value of the Wisdom Hero Stat (from 10-30)
+                        (default: None)
+<span class="numberOption" id="--con"></span>  --con CONSTITUTION    Sets the value of the Constitution Hero Stat (from
+                        10-30) (default: None)
+<span class="numberOption" id="--att"></span>  --att ATTUNEMENT      Sets the value of the Attunement Hero Stat (from
+                        10-30) (default: None)
+<span class="numberOption" id="--chaos"></span>  --chaos CHAOS         Set the Chaos Level (default: None)
+<span class="numberOption" id="--money"></span>  --money MONEY         Set money value (default: None)
+<span class="numberOption" id="--moon-orbs"></span>  --moon-orbs MOON_ORBS
+                        Set Moon Orbs value (default: None)
+<span class="numberOption" id="--souls"></span>  --souls SOULS         Set Lost Souls value (default: None)
+<span class="textOption" id="--unlock"></span>  --unlock {ammo,backpack,equipslots,feat,multiclass,all}
+                        Game features to unlock (default: {})
+<span class="flag" id="--unfinish-missions"></span>  --unfinish-missions   "Un-finishes" the game: remove all Playthrough 0 to
+                        Not Completed (default: False)
+<span class="flag" id="--fake-tvhm"></span>   --fake-tvhm           "Un-finishes" the missions but finishes the game
+                        (default: False)
+<span class="textFile" id="-i" filename="/import.txt"></span>  -i IMPORT_ITEMS, --import-items IMPORT_ITEMS
+                        Import items from file (default: None)
+<span class="textOption" id="--delete-mission"></span>  --delete-mission MISSIONPATH
+                        Deletes all stored info about the specified mission.
+                        Will only work on sidemissions. Use ttwl-save-info's
+                        --mission-paths to see the correct mission path to use
+                        here. This option can be specified more than once.
+                        (default: None)
+  --randomize-customizations PROFILE
+                        Randomize customziations based on the customizations
+                        unlocked in the specified profile file. (default:
+                        None)
+  --overdrive           When randomizing customizations, use the "overdrive"
+                        slider settings, which allow for wilder extremes.
+                        (default: False)
+
+      </pre>
+      <button class="needFile" id="run" onclick="runTTWLSaveEdit()">Run ttwl-save-edit and download modified savefile</button>
     </div>
     <div>
           <code>
@@ -203,71 +283,121 @@
           downloadInputFile("ttwl-"+newGUID+".sav");
           disableUI(false);
       }
-      function unfinishMissions() {
-          disableUI(true);
-          status("Randomizing the GUID");
-          var newGUID = pkg.unfinish_missions();
-          status("Unfinished Missions and New GUID: "+newGUID);
-          characterInfo();
-          // downloadOutputFile();
-          downloadInputFile("ttwl-"+newGUID+".sav");
-          disableUI(false);
+
+      function isOptionEnabled( domObj ) {
+          var elm = domObj.querySelector('.optionEnable');
+          return elm.checked;
       }
-      function fakeTVHM() {
-          disableUI(true);
-          status("Randomizing the GUID");
-          var newGUID = pkg.fake_tvhm();
-          status("Fake TVHM New GUID: "+newGUID);
-          characterInfo();
-          // downloadOutputFile();
-          downloadInputFile("ttwl-"+newGUID+".sav");
-          disableUI(false);
+      function getValueOfOption( domObj ) {
+          if (domObj.classList.contains('textFile')) {
+              return domObj.getAttribute('filename');
+          }
+          var v = domObj.querySelector('input.numberOption, input.textOption');
+          return v.value;
       }
-      function chaotic() {
-          disableUI(true);
-          status("Turning Weapons Chaotic")
-          var newGUID = pkg.chaotic();
-          status("New GUID: "+newGUID);
-          characterInfo();
-          // downloadOutputFile();
-          downloadInputFile("ttwl-"+newGUID+".sav");
-          disableUI(false);
+      function getTextFileInput( domObj ) {
+          if (domObj.classList.contains('textFile') && isOptionEnabled(domObj)) {
+              var v = domObj.querySelector('textarea.textFile');
+              return v.value;
+          }
+          return "";
       }
-      function volatile() {
-          disableUI(true);
-          status("Turning Weapons Volatile")
-          var newGUID = pkg.volatile();
-          status("New GUID: "+newGUID);
-          characterInfo();
-          // downloadOutputFile();
-          downloadInputFile("ttwl-"+newGUID+".sav");
-          disableUI(false);
+      function commandLineArgs() {
+          var flags = [...document.querySelectorAll('span.flag')];
+          var checked = flags.filter( isOptionEnabled );
+          var checkedOptions = checked.map( x => [x.id] ).flat();
+          // console.log(["CheckOptions",checkedOptions]);
+          var values = [...document.querySelectorAll('span.numberOption, span.textOption, span.textFile')];
+          // console.log(["Values",values]);
+          var valued = values.filter( isOptionEnabled );
+          // console.log(["Valued",valued]);
+          var valuedOptions = valued.map( x => [x.id, getValueOfOption(x) ] ).flat();
+          // console.log(valuedOptions);
+          return checkedOptions.concat( valuedOptions );
       }
-      function primordial() {
-          disableUI(true);
-          status("Turning Weapons Primordial")
-          var newGUID = pkg.primordial();
-          status("New GUID: "+newGUID);
-          characterInfo();
-          // downloadOutputFile();
-          downloadInputFile("ttwl-"+newGUID+".sav");
-          disableUI(false);
+      function computeCommandline() {
+          var args = commandLineArgs();
+          var text = args.join(" ");          
+          console.log(text);
+          status("ttwl-save-edit -f "+text+ " input.sav input.sav");
+      }
+      function makeCheckBox(option) {
+          var input = document.createElement("input");
+          input.type = "checkbox";
+          input.setAttribute('class', "optionEnable");
+          input.setAttribute('option', option);
+          input.onchange = computeCommandline;
+          return input;
+      }
+      function makeTextInput(option) {
+          var input = document.createElement("input");
+          input.type = "text";
+          input.setAttribute('class', "textOption");
+          input.setAttribute('option', option);
+          input.onchange = computeCommandline;
+          return input;
+      }
+      function makeNumberInput(option) {
+          var input = makeTextInput(option);
+          input.setAttribute('class',"numberOption");
+          // input.setAttribute('size',9);
+          return input;
+      }
+      function makeTextFileInput(option,filename) {
+          var input = document.createElement("textarea");
+          input.setAttribute('class', "textFile");
+          input.setAttribute('cols', 80);
+          input.setAttribute('option', option);
+          input.setAttribute('filename', filename);
+          input.onchange = computeCommandline;
+          return input;
       }
 
-      function importInventory() {
-          disableUI(true);
-          status("Importing Items");
-          var items = document.getElementById("inventory").value;
-          var out = pkg.import_items( items );
-          outText = out[0];
-          newGUID = out[1];
-          logOutput(outText);
-          characterInfo();
-          // downloadOutputFile();
-          downloadInputFile("ttwl-"+newGUID+".sav");
-          disableUI(false);              
+      function decorateText( textOption ) {
+          var input = makeCheckBox(textOption.id);
+          textOption.appendChild( input );
+          textOption.appendChild(makeTextInput(textOption.id));
+      }
+      function decorateFlag( textOption ) {
+          var input = makeCheckBox(textOption.id);
+          textOption.appendChild( input );
+      }
+      function decorateNumber( numberOption ) {
+          var input = makeCheckBox(numberOption.id);
+          numberOption.appendChild( input );          
+          numberOption.appendChild(makeNumberInput(numberOption.id));          
+      }
+      function decorateTextFile( textFileOption ) {
+          var input = makeCheckBox(textFileOption.id);
+          textFileOption.appendChild( input );          
+          textFileOption.appendChild(makeTextFileInput(textFileOption.id,textFileOption.getAttribute('filename')));          
+      }
+      function decorateUI() {
+          let decor = ( query, decorator) => [...(document.querySelectorAll(query))].forEach( to => decorator( to ) );
+          decor('span.textOption', decorateText);
+          decor('span.flag', decorateFlag);
+          decor('span.numberOption', decorateNumber);
+          decor('span.textFile', decorateTextFile);
       }
 
+      function runTTWLSaveEdit() {
+          disableUI(true);          
+          var dashI = document.getElementById('-i');
+          var importDotTxt = getTextFileInput(dashI);
+          if (importDotTxt && importDotTxt.length > 0) {
+              status("Writing Out Imports");
+              pkg.write_text('/import.txt', importDotTxt);
+          }
+          // var newGUID = pkg.randomize_guid();
+          var args = commandLineArgs();
+          args = ["-f"].concat(args);
+          var output = pkg.save_edit_command_line(args);
+          logOutput(output);
+          characterInfo();
+          downloadInputFile("ttwl-"+pkg.get_guid()+".sav");
+          disableUI(false);          
+      }
+      
       async function main(){
           let pyodide = await loadPyodide();
           await pyodide.loadPackage(["micropip"]);
@@ -289,11 +419,13 @@
       disableUI(true);
       window.addEventListener("load", 
                               function() {
+                                  decorateUI();
+                                  //return;
                                   disableUI(true);
                                   installListeners();
                                   main().then( () => {
-                                               disableUI(false);
-                                               disableNeedFile(true);
+                                      disableUI(false);
+                                      disableNeedFile(true);
                                   })
                               }, false);
                               
