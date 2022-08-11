@@ -148,6 +148,8 @@ used by the WL Memory Editor.
     <script type="text/javascript">
       var pkg = undefined;
       var content = undefined;
+      var targetExe = "ttwl-profile-edit";
+      var targetFile = "/profile.sav";
       function disableUI(v) {
           v = v?true:false;
           [...(document.getElementById("ui").children)].forEach( elm => {
@@ -314,7 +316,7 @@ used by the WL Memory Editor.
           var args = commandLineArgs();
           var text = args.join(" ");          
           console.log(text);
-          status("ttwl-save-edit -f "+text+ " input.sav input.sav");
+          status( targetExe + " -f " + text + " " + targetFile + " " + targetFile );
       }
       function makeCheckBox(option) {
           var input = document.createElement("input");
