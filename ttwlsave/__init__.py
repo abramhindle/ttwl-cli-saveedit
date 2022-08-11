@@ -20,7 +20,7 @@
 # 3. This notice may not be removed or altered from any source distribution.
 
 # Editor Version
-__version__ = '0.0.13'
+__version__ = '0.0.14'
 # Forked from bl3-cli-saveedit
 # __version__ = '1.16.1b1'
 
