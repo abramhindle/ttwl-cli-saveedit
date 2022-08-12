@@ -202,6 +202,8 @@ def main():
             importants.append('DLC2 - Glutton\'s Gamble')
         if 'Defeated Fyodor: Difficulty 4' in mission_set:
             importants.append('DLC3 - Molten Mirrors')
+        if 'Defeated Redmourne: Difficulty 4' in mission_set:
+            importants.append('DLC4 - Shattering Spectreglass')
         if len(importants) > 0:
             print(' - Mission Milestones:')
             for important in importants:
