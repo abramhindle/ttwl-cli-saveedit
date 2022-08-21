@@ -675,7 +675,10 @@ class TTWLSave(object):
         a single playthrough, but we're wrapping it like this so it's easier to revert,
         if GBX ever does add TVHM-or-whatever.
         """
-        return self.get_pt_active_ft_station_lists()[0]
+        active_stations = self.get_pt_active_ft_station_lists()
+        if active_stations:
+            return active_stations[0]
+        return []
 
     def get_pt_active_ft_station_list(self, pt=0):
         """

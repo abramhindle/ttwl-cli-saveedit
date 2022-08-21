@@ -544,13 +544,22 @@ def main():
             # ... or clearing TVHM state entirely.
             # save.clear_playthrough_data(0)
             # save.clear_mission_pt(0)
-            missions = save.get_completed_mission_lists()
-            for mission in missions:
-                # print(mission)
-                if mission != "/Game/Missions/Plot/Mission_Plot11.Mission_Plot11_C":
-                    save.delete_mission(mission, allow_plot=True)
-            save.set_playthroughs_completed(1)
-            save.finish_game()
+            # missions = save.get_completed_mission_lists()
+            # for mission in missions:
+            #     # print(mission)
+            #     if mission != "/Game/Missions/Plot/Mission_Plot11.Mission_Plot11_C":
+            #         save.delete_mission(mission, allow_plot=True)
+            # save.set_playthroughs_completed(1)
+            # save.finish_game()
+            # This now just unfinishes missions and sets chaos levels
+            # Manual test cases:
+            # [ ] TVHM on a character that didn't complete the game
+            # [ ] TVHM on a character that did complete the game and has chaos
+            (current_chaos_level, unlocked_chaos_level ) = save.get_chaos_level_with_max()
+            save.set_playthroughs_completed(0)
+            save.clear_playthrough_data() 
+            save.set_chaos_level( unlocked_chaos_level )
+
 
         # Randomize customizations
         if args.randomize_customizations:
