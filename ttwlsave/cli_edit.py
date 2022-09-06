@@ -189,6 +189,7 @@ def main():
             'ammo', 'backpack',
             'equipslots',
             'feat', 'multiclass',
+            'chaos',
             ]
     parser.add_argument('--unlock',
             action=cli_common.SetAction,
@@ -258,9 +259,15 @@ def main():
                 ttwlsave.max_level,
                 ))
 
+    # If unlock is a dict, none was specified; turn it into a set regardless.
+    # (I don't like how `set()` shows up in the default reporting, if I set
+    # it right at the argparse level).
+    if args.unlock == {}:
+        args.unlock = set()
+
     # Expand any of our "all" unlock actions
     if 'all' in args.unlock:
-        args.unlock = {k: True for k in unlock_choices}
+        args.unlock = set(unlock_choices)
 
     # Set max level arg
     if args.level_max:
@@ -284,6 +291,7 @@ def main():
     if args.chaos is not None:
         if args.chaos < 0 or args.chaos > ttwlsave.max_chaos_level:
             raise argparse.ArgumentTypeError(f'Valid Chaos Level range is 0 through {ttwlsave.max_chaos_level}')
+        args.unlock.add('set_chaos')
 
     # Check Hero Stats level
     if args.hero_stats is not None:
@@ -490,6 +498,18 @@ def main():
                 if save.unlock_multiclass():
                     if not args.quiet:
                         print('     - Also added +2 Skill Points')
+
+            # Chaos Mode
+            if 'chaos' in args.unlock or 'set_chaos' in args.unlock:
+                if 'chaos' in args.unlock:
+                    to_level = ttwlsave.max_chaos_level
+                else:
+                    # This would be technically already done when setting the active
+                    # chaos level, but whatever.
+                    to_level = args.chaos
+                if not args.quiet:
+                    print(f'   - Chaos Mode Level {to_level}')
+                save.set_chaos_level(to_level, unlock_only=True)
 
         # Import Items (cli_common provides the console output)
         if args.import_items:

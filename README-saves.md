@@ -36,6 +36,7 @@ commands will be:
     - [Equipment Slots](#equipment-slots)
     - [Feat/Companion](#featcompanion)
     - [Multiclass](#multiclass)
+    - [Chaos Mode](#chaos-mode)
     - [All Unlocks at Once](#all-unlocks-at-once)
   - ["Un-Finish" Missions](#un-finish-missions)
   - [Fake TVHM](#fake-tvhm)
@@ -231,6 +232,9 @@ finish the game properly.
 
     ttwl-save-edit old.sav new.sav --chaos 50
 
+To unlock Chaos Mode without setting the active Chaos Level, use the
+`--unlock chaos` option.
+
 ## Currency (Money, Moon Orbs, and Lost Souls)
 
 Money, Moon Orbs, and Lost Souls can be set with the `--money`, `--moon-orbs`,
@@ -345,6 +349,16 @@ second class slot is unlocked (the skill points will not be
 given if the savegame's secondary class is already unlocked).
 
     ttwl-save-edit old.sav new.sav --unlock multiclass
+
+### Chaos Mode
+
+The `chaos` unlock will unlock Chaos Mode all the way through
+the maximum available Chaos Level, without making any changes
+to the active Chaos Level.  To set the active level, or to only
+unlock Chaos Levels up to a certain point, use the `--chaos`
+option.
+
+    ttwl-save-edit old.sav new.sav --unlock chaos
 
 ### All Unlocks at Once
 
