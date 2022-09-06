@@ -1,11 +1,9 @@
-# Testing gear used for my mod-testing characters.  Intended to be
-# used with my "super buff" mods.  Note that the only syntax that
-# actually matters in this file is the "BL3(foo)" lines; these
-# hash-commented lines could just as easily do without the hashes.
+# Transistor (level 40, Ascended)
+WL(BQAAAACnEIC79mEggTIGugpRfCgjCAAABA==)
 
-# Crader's EM-P5:
-BL3(A/keqg/yMeLAidiwT5/bWQwqG3OuxeEhDH4LZAPWg1a2HG2imaCQ)
+# Manual Transmission (level 40, Ascended)
+WL(BQAAAABXNIA7ORppgmool0p50WCcRx0zrBU6hAAAAAAAAGdAACAA)
 
-# Transformer:
-BL3(AzYihiL46NplGmPm8iw3O1fqwmf9kw==)
+# Goblin Pickaxe (level 40, Ascended)
+WL(BQAAAAA0SIA7LQmBgzJG6DEwMSwAAEAA)
 
