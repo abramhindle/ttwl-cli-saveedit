@@ -23,6 +23,7 @@
 
 import os
 import sys
+import html
 import argparse
 import ttwlsave
 from ttwlsave.ttwlsave import TTWLSave
@@ -141,13 +142,15 @@ def main():
         # Load!
         print('Processing: {}'.format(filename))
         save = TTWLSave(filename)
+        char_level = save.get_level()
 
         # Write to our info file, if we have it
         if args.info:
 
             # Write out the row
             print('<tr class="row{}">'.format((files_written + row_offset) % 2), file=idf)
-            print('<td class="filename"><a href="wl/{}">{}</a></td>'.format(base_filename, base_filename), file=idf)
+            print(f'<td class="level">{char_level}</td>', file=idf)
+            print(f'<td class="filename"><a href="wl/{base_filename}">{base_filename}</a></td>', file=idf)
             print('<td class="in_map">{}</td>'.format(save.get_pt_last_map(0, True)), file=idf)
             missions = save.get_pt_active_mission_list(0, True)
             if len(missions) == 0:
@@ -156,7 +159,7 @@ def main():
                 print('<td class="active_missions">', file=idf)
                 print('<ul>', file=idf)
                 for mission in sorted(missions):
-                    print('<li>{}</li>'.format(mission), file=idf)
+                    print('<li>{}</li>'.format(html.escape(mission, quote=False)), file=idf)
                 print('</ul>', file=idf)
                 print('</td>', file=idf)
             print('</tr>', file=idf)
@@ -168,12 +171,16 @@ def main():
         save.randomize_guid()
 
         # Max XP
-        save.set_level(ttwlsave.max_level)
+        # (Actually, not bothering with this -- Wonderlands enemies scale with
+        # your char so there's no real advantage to forcing us to max, and this
+        # way we'd have an opportunity to test out some level-change-based
+        # behavior.)
+        #save.set_level(ttwlsave.max_level)
 
         # Max Hero Stats
         # (eh, actually don't bother -- would probably just gunk up the UI
         # with "points available" warnings, and it's not like we're not
-        # cheating like hell with our gear anyway).
+        # cheating like hell with our gear anyway.)
         #save.set_hero_stats(ttwlsave.HeroStats, 30)
 
         # Currency
@@ -191,10 +198,12 @@ def main():
         save.unlock_slots()
 
         # Unlock Feats/Companions
-        save.unlock_feat()
+        # (Not gonna do this after all, I don't think.)
+        #save.unlock_feat()
 
         # Unlock Multiclass
-        save.unlock_multiclass()
+        # (Not gonna do this after all, I don't think.)
+        #save.unlock_multiclass()
 
         # Unlock Chaos Mode (though don't actually set a value)
         save.set_chaos_level(ttwlsave.max_chaos_level, unlock_only=True)
@@ -211,8 +220,8 @@ def main():
 
         # Bring testing gear up to our max level, while we're at it.
         for item in save.get_items():
-            if item.level != ttwlsave.max_level:
-                item.level = ttwlsave.max_level
+            if item.level != char_level:
+                item.level = char_level
             if item.chaos_level != ttwlsave.ChaosLevel.ASCENDED.value:
                 item.chaos_level = ttwlsave.ChaosLevel.ASCENDED.value
             # The serials above don't have any rerolls logged, but we may as well
