@@ -25,7 +25,7 @@ import os
 import sys
 import ttwlsave
 import argparse
-from . import cli_common
+from . import cli_common, myth_xp_for_rank, myth_rank_for_xp
 from ttwlsave import ProfileSDU, ChaosLevel
 from ttwlsave.ttwlprofile import TTWLProfile
 
@@ -98,9 +98,16 @@ def main():
                 go over the maximums for each category though)."""
             )
 
-    parser.add_argument('--myth-xp',
+    rank_group = parser.add_mutually_exclusive_group()
+
+    rank_group.add_argument('--myth-xp',
             type=int,
             help='Sets the raw Myth Rank XP value',
+            )
+
+    rank_group.add_argument('--myth-rank',
+            type=int,
+            help='Sets the Myth Rank to the specified level',
             )
 
     itemlevelgroup = parser.add_mutually_exclusive_group()
@@ -197,6 +204,11 @@ def main():
         if args.myth_xp < 0:
             raise argparse.ArgumentTypeError('Myth Rank XP value cannot be negative')
 
+    # Check Myth Rank Numbers
+    if args.myth_rank is not None:
+        if args.myth_rank < 1:
+            raise argparse.ArgumentTypeError('Myth Rank value must be at least 1')
+
     # Check for overwrite warnings
     if os.path.exists(args.output_filename) and not args.force:
         if args.output_filename == args.input_filename:
@@ -225,6 +237,7 @@ def main():
         args.myth_stats_max,
         args.myth_stats_points is not None,
         args.myth_xp is not None,
+        args.myth_rank is not None,
         len(args.unlock) > 0,
         args.import_items,
         args.item_levels,
@@ -252,24 +265,78 @@ def main():
                 print(' - Clearing Myth Rank Entirely')
             profile.zero_myth_rank()
 
+        # See if we need to doublecheck Myth XP
+        check_myth_xp = False
+
         # Maxing out Myth Rank Stats (where appropriate)
         if args.myth_stats_max:
             if not args.quiet:
                 print(' - Setting Myth Rank stats to the maximum, where possible')
             profile.myth_stats_max()
+            check_myth_xp = True
 
         # Setting Myth Rank Stats to a specific value
         if args.myth_stats_points is not None:
             if not args.quiet:
                 print(f' - Setting all Myth Rank points to: {args.myth_stats_points}')
             profile.set_myth_stats_points(args.myth_stats_points)
+            check_myth_xp = True
 
-        # Setting Myth Rank XP
-        # (make sure this happens *after* zero_myth_rank, in case the user specifies both)
-        if args.myth_xp is not None:
-            if not args.quiet:
-                print(f' - Setting Myth XP to: {args.myth_xp:,}')
-            profile.set_myth_xp(args.myth_xp)
+        # Setting Myth Rank/XP
+        # Make sure this happens *after* the other Myth Rank options, in case the user's
+        # specified multiple options.  Our general operating procedure is as follows:
+        #   1. We check for the minimum required rank/XP, given the Rank Stats which have
+        #      been chosen.  Under no circumstances allow the XP value to drop below that.
+        #   2. If the user's explicitly setting a rank or XP value, we *will* allow the
+        #      values to drop below what the user currently has set (though not below
+        #      that minimum amount).
+        #   3. If The user hasn't explicitly set rank or XP (and we're just checking due
+        #      to setting stats, above), the only thing we'll do is bring the XP up to
+        #      the minimum required.
+        if check_myth_xp or args.myth_xp is not None or args.myth_rank is not None:
+            disclaimer = False
+            required_rank = profile.get_myth_points_allocated()
+            required_xp = myth_xp_for_rank(required_rank)
+            if args.myth_xp is not None:
+                if args.myth_xp < required_xp:
+                    args.myth_xp = required_xp
+                    new_rank = required_rank
+                    if not args.quiet:
+                        print(f' - Overriding requested Myth XP to minimum for profile: {args.myth_xp:,}')
+                else:
+                    new_rank = myth_rank_for_xp(args.myth_xp)
+                    if new_rank == -1:
+                        new_rank = 'unknown'
+                if not args.quiet:
+                    print(f' - Setting Myth XP to: {args.myth_xp:,} (rank {new_rank})')
+                    disclaimer = True
+                profile.set_myth_xp(args.myth_xp)
+            elif args.myth_rank is not None:
+                if args.myth_rank < required_rank:
+                    args.myth_rank = required_rank
+                    if not args.quiet:
+                        print(f' - Overriding requested Myth Rank to minimum for profile: {args.myth_rank}')
+                if profile.get_myth_rank() == args.myth_rank:
+                    if not args.quiet:
+                        print(f' - Not setting Myth Rank (already at Myth Rank {args.myth_rank})')
+                        disclaimer = True
+                else:
+                    # We're not using required_xp because we might be setting higher than
+                    # is actually required
+                    rank_xp = myth_xp_for_rank(args.myth_rank)
+                    if not args.quiet:
+                        print(f' - Setting Myth Rank to: {args.myth_rank} (XP {rank_xp:,})')
+                        disclaimer = True
+                    profile.set_myth_xp(rank_xp)
+            else:
+                if profile.get_myth_xp() < required_xp:
+                    if not args.quiet:
+                        print(f' - Setting Myth Rank to: {required_rank} (XP {required_xp:,})')
+                        disclaimer = True
+                    profile.set_myth_xp(required_xp)
+
+            if disclaimer:
+                print('   (note: Myth Rank calculation might not be 100% accurate)')
 
         # Clear Customizations (do this *before* explicit customization unlocks)
         if args.clear_customizations:

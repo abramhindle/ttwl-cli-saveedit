@@ -608,6 +608,21 @@ class TTWLProfile(object):
         """
         return self.prof.player_prestige.prestige_experience
 
+    def set_myth_rank(self, rank):
+        """
+        Sets our Myth Rank to the specified `rank`.  Note that the rank itself is
+        not stored in the profile -- only the raw XP value.
+        """
+        self.set_myth_xp(myth_xp_for_rank(rank))
+
+    def get_myth_rank(self):
+        """
+        Returns our Myth Rank, if we can.  __init__.py has a hardcoded rank
+        limit (2 million at time of writing) beyond which it will stop trying
+        to compute it.  In that case, it'll return -1.
+        """
+        return myth_rank_for_xp(self.get_myth_xp())
+
     def get_myth_rank_stats(self):
         """
         Returns a dict containing information about how Myth Rank is allocated
@@ -618,4 +633,12 @@ class TTWLProfile(object):
         for stat, cur_value in zip(MythRank, self.prof.player_prestige.points_spent_by_index_order):
             to_ret[stat] = cur_value
         return to_ret
+
+    def get_myth_points_allocated(self):
+        """
+        Returns the total number of Myth points allocated in the profile.  This
+        will correspond to the minimum Myth Rank the profile should be set to,
+        for the game to not report negative points available.
+        """
+        return sum(self.get_myth_rank_stats().values())
 

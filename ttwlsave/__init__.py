@@ -25,6 +25,7 @@ __version__ = '0.0.14'
 # __version__ = '1.16.1b1'
 
 import enum
+import math
 import random
 
 class LabelEnum(enum.Enum):
@@ -380,6 +381,60 @@ max_supported_level = len(required_xp_list)
 
 # Maximum Chaos Level
 max_chaos_level = 50
+
+# Myth XP
+# More code that I generally wouldn't want in a data file like this,
+# but it seems appropriate since I've got the "regular" XP hardcoded
+# above here.  If I ever figure out a way to generate exact values
+# (in C or whatever) I may end up adding hardcodes for the first
+# thousand or so, too.
+_myth_xp_exponent = 2.3
+_myth_xp_exponent_inverse = 1/_myth_xp_exponent
+_myth_xp_mult = 60
+_myth_xp_base = 40
+def _myth_xp_for_rank_raw(rank):
+    """
+    These values don't end up being *exact*, especially once you get beyond the
+    initial ones.  Python uses doubles behind the scenes, whereas the game
+    itself seems to be using floats, which accounts for most of the errors.
+    Fortunately, Python seems to only ever *overshoot* the value by a bit, so
+    it seems Good Enough to level a char to the specified Myth Rank.  The
+    differences are quite small, to boot.
+    """
+    global _myth_xp_exponent, _myth_xp_mult, _myth_xp_base
+    return math.ceil(_myth_xp_mult*math.pow(_myth_xp_base+rank, _myth_xp_exponent))
+_myth_xp_offset = _myth_xp_for_rank_raw(1)
+
+def myth_xp_for_rank(rank):
+    """
+    Given a Myth Rank `rank`, return the Myth XP required to achieve
+    that rank.  The results here are slightly off, as described in
+    `_myth_xp_for_rank_raw()`.
+
+    I considered caching these results but it doesn't seem worth it.
+    """
+    global _myth_xp_offset
+    if rank == 0:
+        return 0
+    elif rank == 1:
+        return 1
+    return _myth_xp_for_rank_raw(rank) - _myth_xp_offset
+
+def myth_rank_for_xp(query_xp):
+    """
+    Given an amount of Myth XP `query_xp`, return the Myth Rank it
+    corresponds to.  Have verified through the first thousand
+    Myth Ranks that this maps perfectly to the (slightly incorrect)
+    values given by `myth_xp_for_rank()`, so hopefully that trend
+    continues down the line.
+    """
+    global _myth_xp_exponent_inverse, _myth_xp_mult, _myth_xp_base, _myth_xp_offset
+    if query_xp == 0:
+        return 0
+    return int(math.pow(
+        (query_xp+_myth_xp_offset)/_myth_xp_mult,
+        _myth_xp_exponent_inverse,
+        ))-_myth_xp_base
 
 # InvData types which can accept Enchantment parts
 # I'd be shocked if there weren't omissions of some sort in here.  These

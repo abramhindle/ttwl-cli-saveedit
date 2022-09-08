@@ -125,7 +125,13 @@ def main():
         ))
 
     # Myth Rank
-    print('Myth Rank XP: {:,}'.format(prof.get_myth_xp()))
+    myth_xp = prof.get_myth_xp()
+    myth_rank = prof.get_myth_rank()
+    if myth_rank == 0:
+        disclaimer = ''
+    else:
+        disclaimer = '*'
+    print(f'Myth Rank{disclaimer}: {myth_rank} (XP: {myth_xp:,})')
     total_myth = 0
     for stat, cur_value in prof.get_myth_rank_stats().items():
         if cur_value > 0:
@@ -141,6 +147,11 @@ def main():
         print('No points allocated in Myth Rank')
     else:
         print(f'Total Myth Points Allocated: {total_myth}')
+
+    # Myth Rank disclaimer
+    if myth_rank != 0:
+        print('')
+        print('* Note: Myth Rank calculation may not be 100% accurate')
 
 if __name__ == '__main__':
     main()

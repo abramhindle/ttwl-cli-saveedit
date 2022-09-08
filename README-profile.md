@@ -25,6 +25,7 @@ commands will be:
     - [Set Myth Rank Stats to Max](#set-myth-rank-stats-to-max)
     - [Set Arbitrary Myth Rank Stats Points](#set-arbitrary-myth-rank-stats-points)
     - [Set Myth Rank XP](#set-myth-rank-xp)
+    - [Set Myth Rank Level](#set-myth-rank-level)
   - [Bank Item Levels](#bank-item-levels)
   - [Bank Item Chaos Levels](#bank-item-chaos-levels)
   - [Bank Item Reroll Counts](#bank-item-reroll-counts)
@@ -121,11 +122,14 @@ the `--skeleton-keys` argument:
 ## Myth Rank
 
 There are a number of functions available for managing Myth Rank
-in profiles.  Note that we don't currently know the equation used to
-convert Myth Rank XP into Myth Points, so allocating points into
-the Myth Rank stats can lead to the game's UI showing negative
-points available, etc.  That doesn't seem to hurt the game at all,
-though.
+in profiles.  Note that while we do know the equation for computing
+Myth Rank values based on Myth XP, Python doesn't handle the math
+in the same way the game does, and the specific values we get are
+often slightly off.  The difference is extremely slight (and unlikely
+to even show up on the XP bar), and in all known cases the amount of
+XP this utility thinks is required for a given level is a bit *more*
+than what's actually required, not less.  So levelling up to a
+specific Myth Rank seems pretty solid.
 
 ### Zeroing Myth Rank
 
@@ -144,6 +148,9 @@ also ensure that the stats *without* maximum values have at least
 
     ttwl-profile-edit profile.sav newprofile.sav --myth-stats-max
 
+This function will increase your Myth Rank/XP to the appropriate
+level for the points allocated, if need be.
+
 ### Set Arbitrary Myth Rank Stats Points
 
 You can also globally set a specific value to be allocated into all
@@ -153,17 +160,31 @@ stats which have a maximum value established.  For example, to put
 
     ttwl-profile-edit profile.sav newprofile.sav --myth-stats-points 7
 
+This function will increase your Myth Rank/XP to the appropriate
+level for the points allocated, if need be.
+
 ### Set Myth Rank XP
 
-As mentioned above, we don't currently know the equation used to convert
-Myth Rank XP into Myth Rank Points.  If you use one of the arguments
-above to allocate more points than your current XP would allow, the game's
-UI will report a negative number of points available.  This doesn't
-actually hurt anything, but might be annoying to look at, so you can
-use `--myth-xp` to try and get rid of that.  Alternatively, this could
-just be used to provide you with some more points to allocate in-game.
+The `--myth-xp` option can be used to set the raw XP value for Myth
+Rank.
 
     ttwl-profile-edit profile.sav newprofile.sav --myth-xp 2000000
+
+Note that this function will *not* set the XP lower than that required
+to account for all allocated Myth Rank Points, so the editor might
+override your selection if you choose a value too low for your
+allocated points.
+
+### Set Myth Rank Level
+
+The `--myth-rank` option can be used to set the profile's Myth Rank.
+
+    ttwl-profile-edit profile.sav newprofile.sav --myth-rank 100
+
+Note that this function will *not* set the rank lower than that required
+to account for all allocated Myth Rank Points, so the editor might
+override your selection if you choose a value too low for your
+allocated points.
 
 ## Bank Item Levels
 
