@@ -383,6 +383,7 @@ max_supported_level = len(required_xp_list)
 max_chaos_level = 50
 
 # Myth XP
+# Thanks to shroomz for figuring out this equation!
 # More code that I generally wouldn't want in a data file like this,
 # but it seems appropriate since I've got the "regular" XP hardcoded
 # above here.  If I ever figure out a way to generate exact values

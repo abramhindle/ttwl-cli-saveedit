@@ -269,6 +269,8 @@ Many thanks also to Baysix, who endured an awful lot of basic questions about
 pulling apart item serial numbers.  Without their help, we wouldn't have
 item level editing (or nice item names in the output)!
 
+Many thanks to shroomz for figuring out the Myth Rank XP-to-Rank calculation.
+
 Basically what I'm saying is that anything remotely "hard" in here is all thanks
 to lots of other folks.  I'm just pasting together all their stuff.  Thanks, all!
 
