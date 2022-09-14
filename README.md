@@ -290,6 +290,9 @@ is currently being maintained by a third party, though:
   Written in C#, has EXE downloads for ease of use on Windows.
 
 # Changelog
+**v0.0.15**
+  - Mythrank Updates thanks to Shroomz
+
 **v0.0.13**
   - Updated DLC4 definitions
 
