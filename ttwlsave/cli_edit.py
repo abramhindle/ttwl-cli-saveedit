@@ -208,6 +208,12 @@ def main():
             help='"Un-finishes" the missions but finishes the game',
             )
 
+    parser.add_argument('-w', '--wipe-inventory',
+            action='store_true',
+            help="""Wipes all items from inventory.  Will be processed before
+                --import-items, so imported items will remain in inventory.""",
+            )
+
     parser.add_argument('-i', '--import-items',
             type=str,
             help='Import items from file',
@@ -345,6 +351,7 @@ def main():
         args.moon_orbs is not None,
         args.souls is not None,
         len(args.unlock) > 0,
+        args.wipe_inventory,
         args.import_items,
         args.items_to_char,
         args.item_levels,
@@ -510,6 +517,12 @@ def main():
                 if not args.quiet:
                     print(f'   - Chaos Mode Level {to_level}')
                 save.set_chaos_level(to_level, unlock_only=True)
+
+        # Wipe Inventory
+        if args.wipe_inventory:
+            if not args.quiet:
+                print(' - Wiping Inventory')
+            save.wipe_inventory()
 
         # Import Items (cli_common provides the console output)
         if args.import_items:

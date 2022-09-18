@@ -31,6 +31,7 @@ commands will be:
   - [Item Levels](#item-levels)
   - [Item Chaos Levels](#item-chaos-levels)
   - [Item Reroll Counts](#item-reroll-counts)
+  - [Wipe Inventory](#wipe-inventory)
   - [Unlocks](#unlocks)
     - [Ammo/Backpack Unlocks](#ammobackpack-unlocks)
     - [Equipment Slots](#equipment-slots)
@@ -304,6 +305,16 @@ it becomes literally impossible given the Moon Orb currency cap.  The
 your inventory, so the reroll costs reset as well.
 
     ttwl-save-edit old.sav new.sav --clear-rerolls
+
+## Wipe Inventory
+
+Inventory can be wiped entirely using the `--wipe-inventory` argument:
+
+    ttwl-save-edit old.sav new.sav --wipe-inventory
+
+This will happen prior to any item imports (see below), so you can wipe
+the inventory and import in the same command (and then use the above
+levelling commands to alter the gear after import).
 
 ## Unlocks
 

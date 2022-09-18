@@ -926,6 +926,16 @@ class TTWLSave(object):
         for slot in slots:
             self.equipslots[slot].set_enabled()
 
+    def wipe_inventory(self):
+        """
+        Removes all items from inventory
+        """
+
+        del self.save.inventory_items[:]
+        self.items = []
+        for slot in self.equipslots.values():
+            slot.protobuf.inventory_list_index = -1
+
     def add_item(self, new_item):
         """
         Adds a new `new_item` (WLItem object) to our item list.  Returns the item's
