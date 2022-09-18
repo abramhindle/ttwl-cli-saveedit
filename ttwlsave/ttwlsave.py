@@ -36,6 +36,7 @@ import google.protobuf.json_format
 from . import *
 from . import datalib
 from . import OakSave_pb2, OakShared_pb2
+from .ttwlbase import TTWLBase
 from .ttwlprofile import TTWLProfile
 
 MissionState = OakSave_pb2.MissionStatusPlayerSaveGameData.MissionState
@@ -95,7 +96,7 @@ class WLEquipSlot(object):
         """
         return self.protobuf.slot_data_path
 
-class TTWLSave(object):
+class TTWLSave(TTWLBase):
     """
     Real simple wrapper for a WL savegame file.
     
@@ -123,6 +124,7 @@ class TTWLSave(object):
         ])
 
     def __init__(self, filename, debug=False):
+        super().__init__()
         self.filename = filename
         self.datawrapper = datalib.DataWrapper()
         with open(filename, 'rb') as df:
@@ -196,6 +198,7 @@ class TTWLSave(object):
 
         # Now parse the protobufs
         self.save = OakSave_pb2.Character()
+        self.base_obj = self.save
         try:
             self.save.ParseFromString(data)
         except google.protobuf.message.DecodeError as e:
@@ -1211,12 +1214,6 @@ class TTWLSave(object):
             if ammo:
                 pool.amount = ammo.num
 
-    def get_all_challenges_raw(self):
-        """
-        Returns the savegame's list of all challenges, as the actual protobuf objects.
-        """
-        return sorted(self.save.challenge_data, key=lambda chal: chal.challenge_class_path)
-
     def set_stats_obj(self, stat_obj, stat_value):
         """
         Sets the given `stat_obj`, which lives in `game_stats_data`.
@@ -1233,27 +1230,6 @@ class TTWLSave(object):
             stat_value=stat_value,
             stat_path=stat_obj,
             ))
-
-    def unlock_challenge_obj(self, challenge_obj, completed_count=1, progress_level=0):
-        """
-        Unlock the given challenge object.  Not sure what `progress_level`
-        does, honestly.  Presumably `completed_count` would be useful for the
-        more user-visible challenges on the map menu.  The ones that we're
-        primarily concerned with here will just have 1 for it, though.
-        """
-        # First look for existing objects (should always be here, I think)
-        for chal in self.save.challenge_data:
-            if chal.challenge_class_path == challenge_obj:
-                chal.currently_completed = True
-                chal.is_active = False
-                chal.completed_count = completed_count
-                chal.progress_counter = 0
-                chal.completed_progress_level = progress_level
-                return
-
-        # AFAIK we should never get here; rather than create a new one,
-        # I'm just going to raise an Exception for now.
-        raise Exception('Challenge not found: {}'.format(challenge_obj))
 
     def get_savegame_guid(self):
         """
@@ -1378,20 +1354,6 @@ class TTWLSave(object):
         else:
             del self.save.mission_playthroughs_data[pt].mission_list[idx]
             return True
-
-    def clear_challenge_prefix(self, prefix):
-        """
-        Removes all challenge data which matches the given `prefix`.  Completely
-        removes the entries, as opposed to trying to intelligently clear their
-        values.
-        """
-        prefix_lower = prefix.lower()
-        indicies_to_del = []
-        for idx, challenge in enumerate(self.save.challenge_data):
-            if challenge.challenge_class_path.lower().startswith(prefix_lower):
-                indicies_to_del.append(idx)
-        for idx in reversed(indicies_to_del):
-            del self.save.challenge_data[idx]
 
     def unlock_feat(self):
         """
@@ -1632,4 +1594,19 @@ class TTWLSave(object):
 
         # Voice Pack
         self.save.player_voice.data = random.choice(customization_voices)
+
+
+    def clear_dice_interacts(self):
+        """
+        Clears out the savegame's `tracked_interactions` structure, used as an
+        additional way to know which dice have been found.  If we ever support
+        *finishing* savegame dice, we may want to re-populate this structure,
+        though the game itself will rebuild it if not present (based on the
+        dice challenges), so that may not be worth it.  For now we're only
+        supporting dice clearing on saves, though, so it's academic.
+        """
+        for inter in self.save.tracked_interactions:
+            if inter.tracked_interaction_data == '/Game/GameData/Challenges/GoldenDice/TrackedInteraction_GoldenDice.TrackedInteraction_GoldenDice':
+                del inter.completed_instances[:]
+                break
 

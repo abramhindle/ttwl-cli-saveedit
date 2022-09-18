@@ -136,6 +136,11 @@ def main():
             help='Clears the reroll counter for all items in inventory',
             )
 
+    parser.add_argument('--clear-lucky-dice',
+            action='store_true',
+            help='Remove all Lucky Dice discoveries',
+            )
+
     parser.add_argument('--backstory',
             choices=[b.name.lower() for b in Backstory],
             help='Set backstory',
@@ -362,6 +367,7 @@ def main():
         args.fake_tvhm,
         args.delete_mission is not None,
         args.randomize_customizations,
+        args.clear_lucky_dice,
         ])
 
     # Make changes
@@ -448,6 +454,13 @@ def main():
             if not args.quiet:
                 print(' - Setting Lost Souls to: {:,}'.format(args.souls))
             save.set_souls(args.souls)
+
+        # Clear Lucky Dice
+        if args.clear_lucky_dice:
+            if not args.quiet:
+                print(' - Clearing Lucky Dice discoveries')
+            save.clear_dice_challenges()
+            save.clear_dice_interacts()
 
         # Deleting missions
         if args.delete_mission is not None:
