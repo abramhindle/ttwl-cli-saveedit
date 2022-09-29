@@ -288,6 +288,9 @@ is currently being maintained by a third party, though:
   Written in C#, has EXE downloads for ease of use on Windows.
 
 # Changelog
+**v0.0.16**
+  - New extraction and update to chaos level 100
+
 **v0.0.15**
   - Mythrank Updates thanks to Shroomz
 
