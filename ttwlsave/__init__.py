@@ -380,7 +380,7 @@ required_xp_list = [
 max_supported_level = len(required_xp_list)
 
 # Maximum Chaos Level
-max_chaos_level = 50
+max_chaos_level = 100
 
 # Myth XP
 # Thanks to shroomz for figuring out this equation!
