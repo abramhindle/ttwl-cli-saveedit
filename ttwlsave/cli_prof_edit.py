@@ -145,6 +145,18 @@ def main():
             help='Remove all unlocked customizations',
             )
 
+    dice_group = parser.add_mutually_exclusive_group()
+
+    dice_group.add_argument('--clear-lucky-dice',
+            action='store_true',
+            help='Remove all Lucky Dice discoveries',
+            )
+
+    dice_group.add_argument('--finish-lucky-dice',
+            action='store_true',
+            help='Marks all Lucky Dice as discovered',
+            )
+
     unlock_choices = [
             'lostloot', 'bank',
             'customizations',
@@ -244,6 +256,8 @@ def main():
         args.items_chaos_level is not None,
         args.clear_rerolls,
         args.clear_customizations,
+        args.clear_lucky_dice,
+        args.finish_lucky_dice,
         ])
 
     # Make changes
@@ -258,6 +272,18 @@ def main():
             if not args.quiet:
                 print(' - Setting Skeleton Key count to {}'.format(args.skeleton_keys))
             profile.set_skeleton_keys(args.skeleton_keys)
+
+        # Clear Lucky Dice
+        if args.clear_lucky_dice:
+            if not args.quiet:
+                print(' - Clearing Lucky Dice discoveries')
+            profile.clear_dice_challenges()
+
+        # Finish Lucky Dice
+        if args.finish_lucky_dice:
+            if not args.quiet:
+                print(' - Marking all Lucky Dice as Discovered')
+            profile.finish_dice_challenges()
 
         # Zeroing Myth Rank Entirely
         if args.zero_myth_rank:

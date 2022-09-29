@@ -30,6 +30,8 @@ commands will be:
   - [Bank Item Chaos Levels](#bank-item-chaos-levels)
   - [Bank Item Reroll Counts](#bank-item-reroll-counts)
   - [Clear Customizations](#clear-customizations)
+  - [Clear Lucky Dice](#clear-lucky-dice)
+  - [Finish Lucky Dice](#finish-lucky-dice)
   - [Unlocks](#unlocks)
     - [Lost Loot and Bank Capacity](#lost-loot-and-bank-capacity)
     - [Customizations](#customizations)
@@ -228,6 +230,26 @@ customizations, you can do so with `--clear-customizations`.  (This was
 honestly mostly just useful to myself when testing the app.)
 
     ttwl-profile-edit profile.sav newprofile.sav --clear-customizations
+
+## Clear Lucky Dice
+
+If you feel like hunting for Lucky Dice after unlocking them all, the
+`--clear-lucky-dice` argument can be used to mark them all as no longer
+found:
+
+    ttwl-profile-edit profile.sav newprofile.sav --clear-lucky-dice
+
+Note that Lucky Dice information is *also* stored in the savegame, and
+Lucky Dice completions are propagated between the two.  You will need
+to clear out Lucky Dice completion from your savegame as well, if you
+want to start from scratch.
+
+## Finish Lucky Dice
+
+Alternatively, if you'd like to mark all Lucky Dice as completed, use
+the `--finish-lucky-dice` option:
+
+    ttwl-profile-edit profile.sav newprofile.sav --finish-lucky-dice
 
 ## Unlocks
 

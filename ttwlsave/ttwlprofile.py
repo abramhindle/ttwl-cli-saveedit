@@ -35,6 +35,7 @@ import google.protobuf.json_format
 from . import *
 from . import datalib
 from . import OakProfile_pb2, OakShared_pb2
+from .ttwlbase import TTWLBase
 
 class LostLootItem(datalib.WLSerial):
     """
@@ -73,7 +74,7 @@ class LostLootItem(datalib.WLSerial):
         if self.index >= 0:
             self.container[self.index] = self.serial
 
-class TTWLProfile(object):
+class TTWLProfile(TTWLBase):
     """
     Wrapper around the protobuf object for a WL profile file.
 
@@ -109,6 +110,7 @@ class TTWLProfile(object):
         ])
 
     def __init__(self, filename, debug=False):
+        super().__init__()
         self.filename = filename
         self.datawrapper = datalib.DataWrapper()
         with open(filename, 'rb') as df:
@@ -182,6 +184,7 @@ class TTWLProfile(object):
 
         # Now parse the protobufs
         self.prof = OakProfile_pb2.Profile()
+        self.base_obj = self.prof
         try:
             self.prof.ParseFromString(data)
         except google.protobuf.message.DecodeError as e:

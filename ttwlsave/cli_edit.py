@@ -136,6 +136,11 @@ def main():
             help='Clears the reroll counter for all items in inventory',
             )
 
+    parser.add_argument('--clear-lucky-dice',
+            action='store_true',
+            help='Remove all Lucky Dice discoveries',
+            )
+
     parser.add_argument('--backstory',
             choices=[b.name.lower() for b in Backstory],
             help='Set backstory',
@@ -206,6 +211,12 @@ def main():
     parser.add_argument('--fake-tvhm',
             action='store_true',
             help='"Un-finishes" the missions but finishes the game',
+            )
+
+    parser.add_argument('-w', '--wipe-inventory',
+            action='store_true',
+            help="""Wipes all items from inventory.  Will be processed before
+                --import-items, so imported items will remain in inventory.""",
             )
 
     parser.add_argument('-i', '--import-items',
@@ -345,6 +356,7 @@ def main():
         args.moon_orbs is not None,
         args.souls is not None,
         len(args.unlock) > 0,
+        args.wipe_inventory,
         args.import_items,
         args.items_to_char,
         args.item_levels,
@@ -355,6 +367,7 @@ def main():
         args.fake_tvhm,
         args.delete_mission is not None,
         args.randomize_customizations,
+        args.clear_lucky_dice,
         ])
 
     # Make changes
@@ -442,6 +455,13 @@ def main():
                 print(' - Setting Lost Souls to: {:,}'.format(args.souls))
             save.set_souls(args.souls)
 
+        # Clear Lucky Dice
+        if args.clear_lucky_dice:
+            if not args.quiet:
+                print(' - Clearing Lucky Dice discoveries')
+            save.clear_dice_challenges()
+            save.clear_dice_interacts()
+
         # Deleting missions
         if args.delete_mission is not None:
             for mission in args.delete_mission:
@@ -510,6 +530,12 @@ def main():
                 if not args.quiet:
                     print(f'   - Chaos Mode Level {to_level}')
                 save.set_chaos_level(to_level, unlock_only=True)
+
+        # Wipe Inventory
+        if args.wipe_inventory:
+            if not args.quiet:
+                print(' - Wiping Inventory')
+            save.wipe_inventory()
 
         # Import Items (cli_common provides the console output)
         if args.import_items:

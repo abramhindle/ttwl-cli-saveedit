@@ -31,6 +31,8 @@ commands will be:
   - [Item Levels](#item-levels)
   - [Item Chaos Levels](#item-chaos-levels)
   - [Item Reroll Counts](#item-reroll-counts)
+  - [Wipe Inventory](#wipe-inventory)
+  - [Clear Lucky Dice](#clear-lucky-dice)
   - [Unlocks](#unlocks)
     - [Ammo/Backpack Unlocks](#ammobackpack-unlocks)
     - [Equipment Slots](#equipment-slots)
@@ -304,6 +306,32 @@ it becomes literally impossible given the Moon Orb currency cap.  The
 your inventory, so the reroll costs reset as well.
 
     ttwl-save-edit old.sav new.sav --clear-rerolls
+
+## Wipe Inventory
+
+Inventory can be wiped entirely using the `--wipe-inventory` argument:
+
+    ttwl-save-edit old.sav new.sav --wipe-inventory
+
+This will happen prior to any item imports (see below), so you can wipe
+the inventory and import in the same command (and then use the above
+levelling commands to alter the gear after import).
+
+## Clear Lucky Dice
+
+If you feel like hunting for Lucky Dice after unlocking them all, the
+`--clear-lucky-dice` argument can be used to mark them all as no longer
+found:
+
+    ttwl-save-edit old.sav new.sav --clear-lucky-dice
+
+Note that Lucky Dice information is *also* stored in the profile, and
+Lucky Dice completions are propagated between the two.  You will need
+to clear out Lucky Dice completion from your profile as well, if you
+want to start from scratch.
+
+There is no argument to *finish* Lucky Dice discoveries on the savegame
+side -- to do that, edit the profile instead.
 
 ## Unlocks
 
