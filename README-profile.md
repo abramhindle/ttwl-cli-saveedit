@@ -92,8 +92,7 @@ specify the format using the `-o`/`--output` option, like so:
 - **json** - Alternatively, this will write out the raw protobufs
   as encoded into JSON.  Like the protobuf output, you should be
   able to edit this by hand and then re-import using the
-  `ttwl-profile-import-json` utility.  **NOTE:** JSON import is not
-  super well-tested yet, so keep backups!
+  `ttwl-profile-import-json` utility.
 - **items** - This will output a text file containing item codes
   for all items in your bank, which can be read back in to other
   savegames or profiles.  It uses a format similar to the item codes
@@ -297,20 +296,6 @@ any line starting with `TTWL(` as an item into the savegame:
 
     ttwl-profile-edit profile.sav newprofile.sav -i items.txt
 
-Note that by default, the app will not allow Fabricators to be
-imported into the bank, since the player doesn't have a good way to
-get rid of them.  You can tell the app to allow importing
-Fabricators anyway with the `--allow-fabricator` option (which has
-no use when not used along with `-i`/`--import-items`)
-
-    ttwl-profile-edit profile.sav newprofile.sav -i items.txt --allow-fabricator
-
-If the utility can't tell what an item is during import (which may
-happen if WL has been updated but this editor hasn't been updated
-yet), it will refuse to import the unknown items, unless
-`--allow-fabricator` is specified, since the unknown item could be
-a Fabricator.  Other edits and imports can still happen, however.
-
 If you have items saved in a CSV file (such as one exported using
 `-o items --csv`), you can add the `--csv` argument to import items
 from the CSV:
@@ -395,5 +380,5 @@ You can also add in the `--rerolls` argument to also show the number of
 enchantment rerolls that each item has logged.  This will only change
 the output when there's been at least one reroll.
 
-    ttwl-profile-info -i --reroll profile.sav
+    ttwl-profile-info -i --rerolls profile.sav
 
