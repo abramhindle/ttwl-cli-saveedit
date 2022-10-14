@@ -1610,3 +1610,19 @@ class TTWLSave(TTWLBase):
                 del inter.completed_instances[:]
                 break
 
+
+    def clear_overworld_challenges(self):
+        """
+        Clears out Overworld challenges, or specifically the Shrine completions and
+        Bottlecap shortcuts, intended for use with the --fake-tvhm option on the save
+        editor.  This is done via a custom routine because there's a bunch of them,
+        and there's no real point to hardcoding them.  The above methods would be
+        pretty inefficient to use, too, since we loop through challenges until we
+        find the correct name.
+        """
+        for chal in self.base_obj.challenge_data:
+            if chal.challenge_class_path.startswith('/Game/GameData/Challenges/Shrines/Shrine') \
+                    or chal.challenge_class_path.startswith('/Game/GameData/Challenges/OverworldShortcuts/Challenge_Crew_OWShortcut'):
+                chal.completed_count = 0
+                chal.currently_completed = False
+

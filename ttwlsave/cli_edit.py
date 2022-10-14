@@ -203,14 +203,16 @@ def main():
             help='Game features to unlock',
             )
 
-    parser.add_argument('--unfinish-missions',
-            action='store_true',
-            help='"Un-finishes" the game: remove all Playthrough 0 to Not Completed',
-            )
-
     parser.add_argument('--fake-tvhm',
             action='store_true',
-            help='"Un-finishes" the missions but finishes the game',
+            help="""Resets all missions and game state.  Preserves XP, skills,
+                inventory, unlocked Chaos Mode, etc.""",
+            )
+
+    parser.add_argument('--tvhm-reset-overworld',
+            action='store_true',
+            help="""When using --fake-tvhm, reset all Shrine and Bottlecap
+                Shortcut statuses, so they must be unlocked/finished again.""",
             )
 
     parser.add_argument('-w', '--wipe-inventory',
@@ -363,7 +365,6 @@ def main():
         args.items_chaos_level is not None,
         args.clear_rerolls,
         args.backstory,
-        args.unfinish_missions,
         args.fake_tvhm,
         args.delete_mission is not None,
         args.randomize_customizations,
@@ -394,6 +395,45 @@ def main():
             if not args.quiet:
                 print(' - Randomizing savegame GUID')
             save.randomize_guid()
+
+        # Deleting missions
+        # Doing this before fake_tvhm just so it doesn't error out if the user
+        # specifies both.  Would be a bit silly to specify both but doesn't seem
+        # worth setting up a mutually-exclusive constraint.
+        if args.delete_mission is not None:
+            for mission in args.delete_mission:
+                if not args.quiet:
+                    print(' - Deleting mission: {}'.format(mission))
+                if not save.delete_mission(mission):
+                    if not args.quiet:
+                        print('   NOTE: Could not find mission to delete: {}'.format(
+                            mission,
+                            ))
+
+        # Fake "TVHM"
+        # Doing this before setting Chaos level so the user can set that too
+        if args.fake_tvhm:
+            if not args.quiet:
+                print(' - Setting fake TVHM (resetting game state)')
+            # Manual test cases:
+            # [ ] TVHM on a character that didn't complete the game
+            # [ ] TVHM on a character that did complete the game and has chaos
+            current_chaos_level, unlocked_chaos_level = save.get_chaos_level_with_max()
+            save.set_playthroughs_completed(0)
+            save.clear_playthrough_data()
+            if args.tvhm_reset_overworld:
+                if not args.quiet:
+                    print('    - Also clearing Overworld bottlecaps/shrines')
+                save.clear_overworld_challenges()
+            else:
+                # These two shrine challenges *do* need to be reset, otherwise the
+                # Knife To Meet You quest gets broken.
+                save.reset_challenge_obj('/Game/GameData/Challenges/Shrines/ShrinePieces/Diamond/Challenge_Crew_ShrinePiece_Diamond_02.Challenge_Crew_ShrinePiece_Diamond_02_C')
+                save.reset_challenge_obj('/Game/GameData/Challenges/Shrines/ShrinePieceLocations/Challenge_Crew_ShrinePieceLocation_Diamond_2.Challenge_Crew_ShrinePieceLocation_Diamond_2_C')
+            if unlocked_chaos_level > 0:
+                # This'll undo our `set_playthroughs_completed` above, but eh.
+                save.set_chaos_level(unlocked_chaos_level, unlock_only=True)
+                save.set_chaos_level(current_chaos_level)
 
         # Chaos Level
         if args.chaos is not None:
@@ -461,17 +501,6 @@ def main():
                 print(' - Clearing Lucky Dice discoveries')
             save.clear_dice_challenges()
             save.clear_dice_interacts()
-
-        # Deleting missions
-        if args.delete_mission is not None:
-            for mission in args.delete_mission:
-                if not args.quiet:
-                    print(' - Deleting mission: {}'.format(mission))
-                if not save.delete_mission(mission):
-                    if not args.quiet:
-                        print('   NOTE: Could not find mission to delete: {}'.format(
-                            mission,
-                            ))
 
         # Unlocks
         if len(args.unlock) > 0:
@@ -574,38 +603,6 @@ def main():
             cli_common.clear_rerolls(save.get_items(),
                     quiet=args.quiet,
                     )
-
-        # Un-finish missions (TODO: test!)
-        if args.unfinish_missions:
-            if not args.quiet:
-                print(' - Un-finishing NVHM state entirely')
-            # ... or clearing TVHM state entirely.
-            save.set_playthroughs_completed(0)
-            save.clear_playthrough_data()
-
-        # Fake "TVHM" (TODO: Test!)
-        if args.fake_tvhm:
-            if not args.quiet:
-                print(' - Un-finishing missions and marking the playthrough complete state entirely -- enables chaos mode')
-            # ... or clearing TVHM state entirely.
-            # save.clear_playthrough_data(0)
-            # save.clear_mission_pt(0)
-            # missions = save.get_completed_mission_lists()
-            # for mission in missions:
-            #     # print(mission)
-            #     if mission != "/Game/Missions/Plot/Mission_Plot11.Mission_Plot11_C":
-            #         save.delete_mission(mission, allow_plot=True)
-            # save.set_playthroughs_completed(1)
-            # save.finish_game()
-            # This now just unfinishes missions and sets chaos levels
-            # Manual test cases:
-            # [ ] TVHM on a character that didn't complete the game
-            # [ ] TVHM on a character that did complete the game and has chaos
-            (current_chaos_level, unlocked_chaos_level ) = save.get_chaos_level_with_max()
-            save.set_playthroughs_completed(0)
-            save.clear_playthrough_data() 
-            save.set_chaos_level( unlocked_chaos_level )
-
 
         # Randomize customizations
         if args.randomize_customizations:

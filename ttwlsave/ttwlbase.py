@@ -57,6 +57,34 @@ class TTWLBase(object):
         return sorted(self.base_obj.challenge_data, key=lambda chal: chal.challenge_class_path)
 
 
+    def reset_challenge_obj(self, challenge_obj,
+            completed_count=0,
+            progress_level=0,
+            progress_counter=0,
+            is_active=False,
+            ):
+        """
+        Resets the given challenge object.  Not sure what `progress_level`
+        does, honestly.  Presumably `completed_count` would be useful for the
+        more user-visible challenges on the map menu.  The ones that we're
+        primarily concerned with here will just have 1 for it, though.
+        """
+        # First look for existing objects (should always be here, I think)
+        for chal in self.base_obj.challenge_data:
+            if chal.challenge_class_path == challenge_obj:
+                chal.currently_completed = False
+                chal.is_active = is_active
+                chal.completed_count = completed_count
+                chal.progress_counter = progress_counter
+                chal.completed_progress_level = progress_level
+                return
+
+        # AFAIK we should never get here, so long as a valid challenge path has
+        # been given.  Rather than create a new one, I'm just going to raise an
+        # Exception for now.
+        raise Exception('Challenge not found: {}'.format(challenge_obj))
+
+
     def unlock_challenge_obj(self, challenge_obj,
             completed_count=1,
             progress_level=0,
@@ -78,8 +106,9 @@ class TTWLBase(object):
                 chal.completed_progress_level = progress_level
                 return
 
-        # AFAIK we should never get here; rather than create a new one,
-        # I'm just going to raise an Exception for now.
+        # AFAIK we should never get here, so long as a valid challenge path has
+        # been given.  Rather than create a new one, I'm just going to raise an
+        # Exception for now.
         raise Exception('Challenge not found: {}'.format(challenge_obj))
 
 
@@ -147,5 +176,4 @@ class TTWLBase(object):
                 chal.currently_completed = True
                 chal.progress_counter = 0
                 chal.is_active = False
-
 

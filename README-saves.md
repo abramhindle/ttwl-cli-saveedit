@@ -40,7 +40,6 @@ commands will be:
     - [Multiclass](#multiclass)
     - [Chaos Mode](#chaos-mode)
     - [All Unlocks at Once](#all-unlocks-at-once)
-  - ["Un-Finish" Missions](#un-finish-missions)
   - [Fake TVHM](#fake-tvhm)
   - [Delete Missions](#delete-missions)
   - [Randomize Customizations](#randomize-customizations)
@@ -394,13 +393,29 @@ options at once, without having to specify each one individually:
 
     ttwl-save-edit old.sav new.sav --unlock all
 
-## "Un-Finish" Missions
-
-**TODO:** Docs!
-
 ## Fake TVHM
 
-**TODO:** Docs!  (also test to see if we need this)
+Wonderlands doesn't have a THVM mode like previous Borderlands titles,
+but the `--fake-tvhm` option can be used to simulate some of its
+effects:
+
+    ttwl-save-edit old.sav new.sav --fake-tvhm
+
+Namely, this option will wipe all mission status, so that you start
+from the beginning of the game while retaining your XP, skills, inventory,
+unlocked Chaos Mode, unlocked shrines, etc.  The Shrine of Mool-Ah (the
+first one encountered in the game) will end up un-finished because one of
+the shrine pieces is part of the Knife To Meet You quest, but that's the
+first mission you come across after Snoring Valley.
+
+Note that unlike a "real" in-game TVHM mode, your mission state is *not*
+preserved in any way. There's no way recover your original mission states
+unless you kept a backup of your original savegame.
+
+If you want to also clear out bottlecap shortcut and shrine piece statuses
+as well, you can add the `--tvhm-reset-overworld` option:
+
+    ttwl-save-edit old.sav new.sav --fake-tvhm --tvhm-reset-overworld
 
 ## Randomize Customizations
 
