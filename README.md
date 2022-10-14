@@ -14,11 +14,6 @@ savegames are not supported at the moment.
 
 Please keep the following in mind:
 
-- The editor has been getting ported over from the BL3 version for a
-  little while now, and it feels reasonably complete, but keep in mind
-  that there are probably a few rough edges still, and there may be
-  some BL3 references still hanging about -- this project hasn't yet
-  reached v1.0.0.
 - This app does not have any graphical interface.  You must be
   on a commandline in order to use it.  (A rudimentary web interface
   is available, though -- see below.)
@@ -68,7 +63,7 @@ give you a tiny UI to dupe your savefiles or import items.
 # Installation
 
 This editor requires [Python 3](https://www.python.org/), and has been
-tested on 3.7, 3.8, 3.9, and 3.10.  It also requires the [protobuf package](https://pypi.org/project/protobuf/).
+tested on 3.7 through 3.10.  It also requires the [protobuf package](https://pypi.org/project/protobuf/).
 
 The easiest way to install this app is via `pip`/`pip3`.  Once Python 3 is
 installed, you should be able to run this to install the app:
@@ -103,11 +98,10 @@ to import into an existing savegame, you can do that with
 
     ttwl-save-import-json -h
 
-Finally, there's a utility which is intended to be used to generate
-savegame archive saves (like the [BL3 ones found here](http://apocalyptech.com/games/bl-saves/bl3.php).
-That archive doesn't yet exist for Wonderlands, but the utility should
-be good to go.  It's unlikely to be useful to anyone but apocalyptech,
-but you can try it out as well, if you like:
+Finally, there's a utility which is intended to be used to generate the
+[WL Savegame Archive Page](https://apocalyptech.com/games/bl-saves/wl.php).
+This one won't be useful to anyone but apocalyptech, but you can view its
+arguments as well, if you like:
 
     ttwl-process-archive-saves -h
 
@@ -232,6 +226,8 @@ For instructions on using the Profile portions of the editor, see
     covered up...
 - Would be nice to have some enchantment-setting functions in here.
 - Redo how we handle serial editing in `datalib.py`; it's super inefficient as-is
+- Use a smarter wrapper around challenge data -- pull them into a dict so that we can
+  alter them by name without having to loop through the whole list.
 - Might be nice to pull some common item-handling argparse options into `cli_common.py`.
   The actual functionality is handled in there (levelling items, reroll counts, etc)
   but there's a fair bit of duplicated code in `cli_edit.py` and `cli_prof_edit.py`
