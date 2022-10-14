@@ -415,9 +415,6 @@ def main():
         if args.fake_tvhm:
             if not args.quiet:
                 print(' - Setting fake TVHM (resetting game state)')
-            # Manual test cases:
-            # [ ] TVHM on a character that didn't complete the game
-            # [ ] TVHM on a character that did complete the game and has chaos
             current_chaos_level, unlocked_chaos_level = save.get_chaos_level_with_max()
             save.set_playthroughs_completed(0)
             save.clear_playthrough_data()
