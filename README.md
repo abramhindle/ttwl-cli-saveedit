@@ -285,6 +285,11 @@ is currently being maintained by a third party, though:
 
 # Changelog
 
+**v1.0.0** - October 15, 2022
+  - Official 1.0 release!
+  - Fixed up `--fake-tvhm` to handle some edge cases, and removed `--unfinish-missions`
+  - Cleaned up documentation
+
 **v0.0.16**
   - New extraction and update to chaos level 100
 
