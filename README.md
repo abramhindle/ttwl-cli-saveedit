@@ -280,7 +280,7 @@ There aren't too many Wonderlands save editors in the wild yet.  One
 fork of [FromDarkHell's BL3 Save/Profile Editor](https://github.com/FromDarkHell/BL3SaveEditor)
 is currently being maintained by a third party, though:
 
-- [somefunguy's WL fork of FDH's Editor](https://github.com/somefunguy/BL3SaveEditor/tree/ttwl-dlc3) -
+- [somefunguy's WL fork of FDH's Editor](https://github.com/somefunguy/TTWLSaveEditor/tree/ttwl-dlc3) -
   Written in C#, has EXE downloads for ease of use on Windows.
 
 # Changelog
