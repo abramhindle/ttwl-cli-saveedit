@@ -182,6 +182,10 @@ following values are valid to specify which backstory to set:
  - `monk`: Failed Monk
  - `hoarder`: Recovering Inventory Hoarder
  - `alchemist`: Rogue Alchemist
+ - `nerfed`: Nerfed By The Bunker Master
+ - `clownblood`: Clownblood
+ - `scraper`: Apprentice Barnacle Scraper
+ - `urchin`: Street Urchin Success Story
 
 For example:
 
@@ -536,7 +540,7 @@ the output when there's been at least one reroll.
 The `--fast-travel` argument will output a list of all unlocked
 Fast Travel stations, per playthrough.  These are reported as the raw
 object name in the game, so you may have to use a
-[level name reference](https://github.com/BLCM/BLCMods/wiki/Level-Name-Reference#borderlands-3)
+[level name reference](https://github.com/BLCM/BLCMods/wiki/Level-Name-Reference#tiny-tinas-wonderlands)
 to get a feel for what is what.
 
     ttwl-save-info --fast-travel old.sav

@@ -197,7 +197,7 @@ max level in the game.  This can be done with `--item-levels-max`
 
 Alternatively, you can set an explicit level using `--item-levels`
 
-    ttwl-profile-edit profile.sav newprofile.sav --item-levels 57
+    ttwl-profile-edit profile.sav newprofile.sav --item-levels 20
 
 ## Bank Item Chaos Levels
 
