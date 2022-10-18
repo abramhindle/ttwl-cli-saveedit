@@ -93,7 +93,7 @@
       <pre class="needFile">
 optional arguments:
   -h, --help            show this help message and exit
-  -V, --version         show program's version number and exit
+<span class="flag" id="--version"></span>   -V, --version         show program's version number and exit
   -o {savegame,protobuf,json,items}, --output {savegame,protobuf,json,items}
                         Output file format (default: savegame)
 <span class="flag" id="--csv"></span>  --csv                 When importing or exporting items, use CSV files
@@ -130,7 +130,8 @@ optional arguments:
                         (default: None)
 <span class="flag" id="--clear-rerolls"></span>  --clear-rerolls       Clears the reroll counter for all items in inventory
                         (default: False)
-<span class="textOption" id="--backstory"></span>  --backstory {idiot,elves,monk,hoarder,alchemist}
+<span class="flag" id="--clear-lucky-dice"></span>  --clear-lucky-dice    Remove all Lucky Dice discoveries (default: False)
+<span class="textOption" id="--backstory"></span>  --backstory {idiot,elves,monk,hoarder,alchemist,nerfed,clownblood,scraper,urchin}
                         Set backstory (default: None)
 <span class="numberOption" id="--hero-stats"></span>  --hero-stats HERO_STATS
                         Sets all raw Hero Stats to the specified value (from
@@ -156,14 +157,16 @@ optional arguments:
 <span class="numberOption" id="--souls"></span>  --souls SOULS         Set Lost Souls value (default: None)
 <span class="textOption" id="--unlock"></span>  --unlock {ammo,backpack,equipslots,feat,multiclass,all}
                         Game features to unlock (default: {})
-<span class="flag" id="--unfinish-missions"></span>  --unfinish-missions   "Un-finishes" the game: remove all Playthrough 0 to
-                        Not Completed (default: False)
-<span class="flag" id="--fake-tvhm"></span>   --fake-tvhm           "Un-finishes" the missions but finishes the game
-                        (default: False)
+<span class="flag" id="--fake-tvhm"></span>   --fake-tvhm           Resets all missions and game state. Preserves XP,
+                        skills, inventory, unlocked Chaos Mode, etc. (default:
+                        False)
+<span class="flag" id="--tvhm-reset-overworld"></span>   --tvhm-reset-overworld
+                        When using --fake-tvhm, reset all Shrine and Bottlecap
+                        Shortcut statuses, so they must be unlocked/finished
+                        again. (default: False)
 <span class="flag" id="-w"></span>   -w, --wipe-inventory  Wipes all items from inventory. Will be processed
                         before --import-items, so imported items will remain
                         in inventory. (default: False)
-
 <span class="textFile" id="-i" filename="/import.txt"></span>  -i IMPORT_ITEMS, --import-items IMPORT_ITEMS
                         Import items from file (default: None)
 <span class="textOption" id="--delete-mission"></span>  --delete-mission MISSIONPATH
